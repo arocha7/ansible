@@ -13,5 +13,6 @@
   with_items:
   - sysstat
   - nmap
+  - lsof
   - tree
   - htop

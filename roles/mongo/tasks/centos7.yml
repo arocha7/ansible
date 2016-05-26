@@ -24,7 +24,7 @@
   selinux: policy=targeted state=permissive
 
 - name: add MongoDB 3.+ repo to YUM
-  copy: src=~/ansible/roles/mongo/files/mongodb-org-3.2.repo dest=/etc/yum.repos.d/mongodb-org-3.2.repo owner=root group=root mode=0644
+  copy: src=~/ansible/roles/mongo/files/mongodb-org-3.2.repo dest=/etc/yum.repos.d/mongodb-org-3.2_rpm.repo owner=root group=root mode=0644
 
 - name: install MongoDB to CentOS7
   yum: name=mongodb-org state=present update_cache=yes

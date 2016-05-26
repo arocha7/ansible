@@ -6,7 +6,8 @@ Deployment of a MongoDB database
 Requirements
 ------------
 
-Any pre-requisites are required.
+Pre-requisites required:
+- SELinux python bindings for libselinux
 
 Role Variables
 --------------

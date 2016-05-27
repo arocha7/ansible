@@ -26,7 +26,7 @@ Example Playbook
 
 To run this playbook: 
 
-$ ansible-playbook deploy-mongo.yml -e <target-guests> -vvvv
+$ ansible-playbook deploy-mongo.yml -e "target-guests" -vvvv
 
 License
 -------

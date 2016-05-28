@@ -26,6 +26,7 @@ Example Playbook
 Usage syntax:
 
 $ ansible-playbook deploy-nginx.yml -e targets=sonata
+NOTE: the variable "targets" refers the hosts aggregation at the /etc/ansible/hosts inventory file
 
 License
 -------

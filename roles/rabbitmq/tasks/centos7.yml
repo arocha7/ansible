@@ -15,12 +15,12 @@
 - name: SELinux (temporarily) disabled
   selinux: policy=targeted state=permissive
 
-#- name: Import RabbitMQ signing key
-#  command: rpm --import https://www.rabbitmq.com/rabbitmq-release-signing-key.asc
+- name: Import RabbitMQ signing key
+  rpm_key: key=http://www.rabbitmq.com/rabbitmq-release-signing-key.asc state=present
+#  rpm_key: key=file:///tmp/rabbitmq-release-signing-key.asc state=present
 
 - name: Install RabbitMQ server
-  yum: name=rabbitmq-server state=present update_cache=yes disable_gpg_check=yes
-#    gpgkey: https://www.rabbitmq.com/rabbitmq-release-signing-key.asc
+  yum: name=rabbitmq-server state=present update_cache=yes
 
 - name: Start RabbitMQ server
   service: name=rabbitmq-server state=started enabled=yes

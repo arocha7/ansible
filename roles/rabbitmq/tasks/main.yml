@@ -4,9 +4,8 @@
 - include: centos7.yml
   when: ansible_distribution == "CentOS" and ansible_distribution_major_version == "7"
 
-- include: trusty.yml
-  when: ansible_distribution == "Ubuntu" and ansible_distribution_major_version == "14"
+- include: ubuntu.yml
+  when: ansible_distribution == "Ubuntu" 
 
-- include: xenial.yml
-  when: ansible_distribution == "Ubuntu" and ansible_distribution_major_version == "16"
-
+- name: "To enable RabbitMQ Management Console"
+  command: rabbitmq-plugins enable rabbitmq_management

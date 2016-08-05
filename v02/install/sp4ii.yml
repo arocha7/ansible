@@ -1,0 +1,7 @@
+---
+
+- include: deploy-sp4ii-all.yml
+  when: svc = "ALL"
+
+- include: deploy-sp4ii-svc.yml
+  when: svc = "SVC"

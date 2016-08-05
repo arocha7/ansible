@@ -1,0 +1,11 @@
+---
+
+- include: sp4ii.yml
+  when: env == "II"
+
+- include: sp4qi.yml
+  when: env == "QI"
+
+- include: sp4di.yml
+  when: env == "DI"
+

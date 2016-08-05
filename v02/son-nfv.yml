@@ -1,0 +1,25 @@
+---
+
+# This playbook is structured in 4 layers of parameters
+# ops = INST | MNGM | UPGR | DELE
+# env = II | QI | DI
+# svc = ALL | SVC_ID
+# action = START | STOP | RESTART | KILL
+
+
+- name: SONATA-NVF Service Platform CRUD 
+  hosts: "{{ targets }}"
+  sudo: yes
+
+- include: install/inst-son-sp.yml
+  when: ops == "INST"
+
+- include: manage/mngm-son-sp.yml
+  when: ops == "MNGM"
+
+- include: upgrade/upgr-son-sp.yml
+  when: ops == "UPGR"
+
+- include: destroy/dele-son-sp.yml
+  when: ops == "DELE"
+

@@ -1,0 +1,6 @@
+---
+- name: deploying a VM via Ansible Cloud Module for Openstack
+  hosts: localhost
+  sudo: yes
+  roles:
+  - openstack-ansible

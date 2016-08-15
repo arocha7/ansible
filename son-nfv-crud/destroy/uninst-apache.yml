@@ -1,6 +1,6 @@
 ---
 
-- name: UNINSTALLING NGINX database server
+- name: UNINSTALLING APACHE
   hosts: "{{ targets }}"
   sudo: yes
   tasks:

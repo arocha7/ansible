@@ -1,8 +1,8 @@
 ---
 # tasks file for OTRS 5
-- include: redhat.yml
+- include: centos.yml
   when: ansible_distribution == "CentOS"
 
-- include: debian.yml
+- include: ubuntu.yml
   when: ansible_distribution == "Ubuntu"
 

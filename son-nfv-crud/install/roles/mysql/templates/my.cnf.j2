@@ -22,7 +22,7 @@ key_buffer		= 16M
 max_allowed_packet	= 16M
 thread_stack		= 192K
 thread_cache_size       = 8
-myisam-recover         = BACKUP
+myisam-recover          = BACKUP
 query_cache_limit	= 1M
 query_cache_size        = 16M
 log_error = /var/log/mysql/error.log
@@ -42,3 +42,5 @@ max_allowed_packet	= 16M
 key_buffer		= 16M
 
 !includedir /etc/mysql/conf.d/
+
+TimeoutSec=300

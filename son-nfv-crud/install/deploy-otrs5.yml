@@ -3,5 +3,6 @@
   hosts: "{{ targets }}"
   sudo: yes
   roles:
+  - apache
 #  - mysql
   - otrs5

@@ -9,7 +9,7 @@
   yum: name="perl(Text::CSV_XS)" state=present update_cache=y
 
 - name: install OTRS 
-  yum: name=otrs-5.0.12-01 state=present update_cache=yes
+  yum: name=otrs-5.0.12 state=present update_cache=yes
 
 - name: restart Apache
   service: name=httpd state=restarted enabled=yes

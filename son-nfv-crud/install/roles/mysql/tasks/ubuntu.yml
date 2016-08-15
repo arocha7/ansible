@@ -38,6 +38,9 @@
 - name: create the DB configuration file
   template: src=my.cnf.j2 dest=/etc/mysql/my.cnf owner=root group=root mode=0600
 
+- name: Create target directory
+  file: path=/var/lib/mysql state=directory mode=0755
+
 - name: start DB service/daemon on Debian/Ubuntu machine
   service: name=mysql state=started enabled=yes
 

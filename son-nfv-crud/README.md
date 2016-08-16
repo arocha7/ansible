@@ -28,16 +28,16 @@ The available actions are (obvious):
 ## SP CLI
 
 ### INSTALL SP ALL
-$ ansible-playbook son-nfv.yml -e "ops=OPS_TYPE, env=INFRA_TYPE, svc=ALL|SVC_ID"
+$ ansible-playbook son-nfv.yml -e "targets=localhost ops=OPS_TYPE env=INFRA_TYPE svc=ALL|SVC_ID" -vvvv
 
 ### MANAGE SP ALL
-$ ansible-playbook son-nfv.yml -e "ops=OPS_TYPE, env=INFRA_TYPE, svc=ALL|SVC_ID, action=status,stop,start,restart"
+$ ansible-playbook son-nfv.yml -e "targets=localhost ops=OPS_TYPE env=INFRA_TYPE svc=ALL|SVC_ID action=status,stop,start,restart" -vvvv
 
 ### UPGRADE SP ALL
-$ ansible-playbook son-nfv.yml -e "ops=OPS_TYPE, env=INFRA_TYPE, svc=ALL|SVC_ID"
+$ ansible-playbook son-nfv.yml -e "targets=localhost ops=OPS_TYPE env=INFRA_TYPE svc=ALL|SVC_ID"
 
 ### REMOVE SP ALL
-$ ansible-playbook son-nfv.yml -e "ops=OPS_TYPE, env=INFRA_TYPE, svc=ALL|SVC_ID"
+$ ansible-playbook son-nfv.yml -e "targets=localhost ops=OPS_TYPE env=INFRA_TYPE svc=ALL|SVC_ID"
 
 
 ## Report feedback to:

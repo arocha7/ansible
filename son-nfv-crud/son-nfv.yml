@@ -10,6 +10,10 @@
 - name: SONATA-NVF Service Platform CRUD 
   hosts: "{{ targets }}"
   sudo: yes
+  vars:
+    ops: INST
+    env: MNGM
+    svc: ALL
 
 - include: install/inst-son-sp.yml
   when: ops == "INST"

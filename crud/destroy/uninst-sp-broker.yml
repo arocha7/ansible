@@ -4,10 +4,10 @@
   sudo: yes
   tasks:
 
-# Verify if the Container is running
+  # Verify if the Container is running
 
 
-# Remove the Sonata BROKER Container (if running)
+  # Remove the Sonata BROKER Container (if running)
   - name: destroy the "SP Message Bus"
     docker_container: 
       name: broker

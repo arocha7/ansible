@@ -4,16 +4,7 @@
   sudo: yes
   tasks:
 
-# Login to private Docker Registry
-
-#  - name: Log into private registry and force re-authorization
-#    docker_login:
-#      registry_url: sonatanfv
-#      username: sonata-nfv
-#      password: s0n@t@
-#      reauthorize: yes
-
-# Running the Sonata GK Docker Images
+  # Running the Sonata GK Docker Images
 
   - name: GATEKEEPER GUI - running Docker containers
     docker_container:

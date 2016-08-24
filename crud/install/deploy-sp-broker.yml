@@ -8,16 +8,6 @@
     stat: path=/etc/init.d/docker
     register: service_status
 
-# Login to private Docker Registry
-
-#- name: Log into private registry and force re-authorization
-#  docker_login:
-#    registry_url: registry.sonata-nfv.eu:5000
-#    username: sonata-nfv
-#    password: s0n@t@
-#    reauthorize: yes
-
-# Running the Sonata BROKER Docker Image (if Docker is running)
   - name: run the "SP Message Bus"
     docker_container: 
       name: broker

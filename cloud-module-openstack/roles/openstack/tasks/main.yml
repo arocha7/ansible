@@ -6,14 +6,14 @@
     state: present
     auth:
       auth_url: http://10.112.230.10:5000/v2.0/
-      username: alberto-m-rocha
-      password: 0rch3$trat10n
+      username: son-admin
+      password: S0n-2adm1n
       project_name: APTECIES
     name: "{{ vm_name }}"
     #region_name: RegionOne
     availability_zone: nova
     image: "e2ae4fac-5f12-4a23-8b18-372c3bc18f49"
-    key_name: arocha2
+    key_name: son-admin
     timeout: "180"
     flavor: fl.large
     security_groups: default

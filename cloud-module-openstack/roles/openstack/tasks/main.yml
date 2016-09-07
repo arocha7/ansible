@@ -5,18 +5,20 @@
   os_server:
     state: present
     auth:
-      auth_url: http://10.112.230.10:5000/v2.0/
-      username: son-admin
-      password: S0n-2adm1n
-      project_name: APTECIES
+      auth_url: http://172.31.6.4:5000/v2.0/
+      username: son-qual
+      password: S0n-qu@l
+      project_name: son-qual
     name: "{{ vm_name }}"
     #region_name: RegionOne
     availability_zone: nova
-    image: "e2ae4fac-5f12-4a23-8b18-372c3bc18f49"
-    key_name: son-admin
+    #image: "Ubuntu 14.04.5 (Trusty)"
+    image: "7129fb44-a239-458c-a45f-f93342ed458c"
+    key_name: son-ift-ptin
     timeout: "180"
-    flavor: fl.large
-    security_groups: default
+    flavor: m1.small
+    security_groups: son-qual-secgrp
     nics:
-      - net-name: net-ptin
+      - net-id: "ffdf5f4f-eeee-49ac-ac34-ccaf814bfb84"
+#      - net-name: "son-qual-subnet"
     auto_ip: yes

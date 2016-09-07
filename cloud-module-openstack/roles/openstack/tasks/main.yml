@@ -23,6 +23,6 @@
 #      - net-name: son-qual-subnet
     auto_ip: yes
     userdata: 
-      - userdata_ansible_{{ ansible_distribution }}_{{ ansible_distribution_major_version }}.txt
-      - userdata_openstackclients{{ ansible_distribution }}_{{ ansible_distribution_major_version }}.txt
+      - userdata_ansible_{{ ansible_distribution_release }}.txt
+      - userdata_openstackclients{{ ansible_distribution_release }}.txt
 

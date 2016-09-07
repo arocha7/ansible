@@ -12,11 +12,8 @@
     name: "{{ vm_name }}"
     #region_name: RegionOne
     availability_zone: nova
-<<<<<<< HEAD
     #image: "Ubuntu 14.04.5 (Trusty)"
-=======
     #image: "trusty-cloud-image"
->>>>>>> 6e3ff50ddd7c776e16ab14805f43b97b2f83ef84
     image: "7129fb44-a239-458c-a45f-f93342ed458c"
     key_name: son-ift-ptin
     timeout: "180"
@@ -24,17 +21,8 @@
     security_groups: son-qual-secgrp
     nics:
       - net-id: "ffdf5f4f-eeee-49ac-ac34-ccaf814bfb84"
-<<<<<<< HEAD
 #      - net-name: "son-qual-subnet"
     auto_ip: yes
     userdata:
       - userdata_ansible_{{ ansible_distribution_release }}.txt
-      - userdata_openstackclients{{ ansible_distribution_release  }}.txt
-=======
-#      - net-name: son-qual-subnet
-    auto_ip: yes
-    userdata: 
-      - userdata_ansible_{{ ansible_distribution_release }}.txt
-      - userdata_openstackclients{{ ansible_distribution_release }}.txt
-
->>>>>>> 6e3ff50ddd7c776e16ab14805f43b97b2f83ef84
+      - userdata_openstackclients_{{ ansible_distribution_release  }}.txt

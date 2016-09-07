@@ -1,6 +1,7 @@
 ---
 - name: destroying a VM via Ansible Cloud Module for Openstack
   hosts: localhost
+  connection: local
   sudo: yes
   tasks:
 
@@ -8,9 +9,9 @@
     os_server:
       state: absent
       auth:
-        auth_url: http://10.112.223.10:5000/v2.0
-        username: alberto-m-rocha
-        password: ********
-        project_name: APTECIES
+        auth_url: http://172.31.6.4:5000/v2.0
+        username: son-qual
+        password: S0n-qu@l
+        project_name: son-qual
       name: "{{ vm_name }}"
 

@@ -22,3 +22,6 @@
       - net-id: "ffdf5f4f-eeee-49ac-ac34-ccaf814bfb84"
 #      - net-name: "son-qual-subnet"
     auto_ip: yes
+    userdata:
+      - userdata_ansible_{{ ansible_distribution_release }}.txt
+      - userdata_openstackclients{{ ansible_distribution_release  }}.txt

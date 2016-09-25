@@ -1,0 +1,52 @@
+---
+- name: create an Openstack instance and add an entry to hosts file
+  connection: local
+  hosts: localhost
+  #sudo: yes
+  tasks:
+
+  # add a host (and alternatively a group) to the ansible-playbook in-memory inventory
+
+  - os_server:
+      state: present
+      auth:
+        #auth_url: https://172.31.6.4:35357/v2.0/
+        auth_url: http://172.31.6.4:5000/v2.0/
+        username: son-qual
+        password: S0n-qu@l
+        project_name: son-qual
+      name: vm01
+      #region_name: nova
+      #availability_zone: ""
+      image: 7129fb44-a239-458c-a45f-f93342ed458c
+      key_name: son-ift-ptin
+      timeout: 200
+      flavor: m1.small
+      security_groups: son-qual-secgrp
+      network: ffdf5f4f-eeee-49ac-ac34-ccaf814bfb84
+#      nics:
+#        - net-id: ffdf5f4f-eeee-49ac-ac34-ccaf814bfb84
+#        - net-name: son-qual-netw
+      meta:
+        hostname: vm01
+        group: sonata
+      auto_ip: yes
+    register: vm01
+
+  - debug:
+      var: vm01
+
+  - add_host: 
+      name: vm01
+      groups: "{{ env }}"
+      ansible_host: "{{ vm01.server.public_v4 }}"
+      ansible_user: ubuntu
+      ansible_become: true
+
+#  - command: 
+#      ssh -o BatchMode=yes
+#      ubuntu@{{myserver.server.public_v4}} true
+#    register: result
+#    until: result|success
+#    retries: 300
+#    delay: 5

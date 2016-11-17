@@ -1,0 +1,10 @@
+---
+- name: remove MySQL container for MONITORY from the 'target' machine
+  hosts: "{{ target }}"
+  become: true
+  tasks:
+  - name: destroy mysql container
+    docker_container:
+      name: son-monitor-mysql
+      state: absent
+

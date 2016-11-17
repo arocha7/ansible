@@ -1,0 +1,34 @@
+---
+- name: SONATA-NVF Service Platform CMUD - v1.1
+  hosts: "{{ target }}"
+  become: true
+
+# - include: "{{ env }}/{{ operation }}/{{ service }}.yml"
+
+
+#### INTEGRATION
+
+- include: inte/{{ operation }}/{{ service }}.yml
+  when: env == "inte" and (operation == "install" or operation == "upgrade" or operation == "destroy")
+
+- include: inte/{{ manage }}/{{ action }}/{{ service }}.yml
+  when: env == "inte" and operation == "manage"
+
+
+#### QUALIFICATION
+
+- include: qual/{{ operation }}/{{ service }}.yml
+  when: env == "qual" and (operation == "install" or operation == "upgrade" or operation == "destroy")
+
+- include: qual/{{ manage }}/{{ action }}/{{ service }}.yml
+  when: env == "qual" and operation == "manage"
+
+
+#### DEMONSTRATION
+
+- include: demo/{{ operation }}/{{ service }}.yml
+  when: env == "demo" and (operation == "install" or operation == "upgrade" or operation == "destroy")
+
+- include: demo/{{ manage }}/{{ action }}/{{ service }}.yml
+  when: env == "demo" and operation == "manage"
+

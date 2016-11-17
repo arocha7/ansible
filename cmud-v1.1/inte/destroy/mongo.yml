@@ -1,0 +1,10 @@
+---
+- name: remove MongoDB container from the 'target' machine
+  hosts: "{{ target }}"
+  become: true
+  tasks:
+  - name: destroy mongo container
+    docker_container:
+      name: son-mongo
+      state: absent
+

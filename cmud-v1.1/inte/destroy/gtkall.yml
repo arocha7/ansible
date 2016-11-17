@@ -1,0 +1,46 @@
+---
+- name: remove ALL SP Docker containers from VM
+  hosts: "{{ target }}"
+  become: true
+  tasks:
+
+  - name: GATEKEEPER API - removing Docker containers
+    docker_container:
+      name: son-gtkapi
+      state: absent
+
+  - name: GATEKEEPER VIM - removing Docker containers
+    docker_container:
+      name: son-gtkvim
+      state: absent
+
+  - name: GATEKEEPER SERVER - removing Docker containers
+    docker_container:
+      name: son-gtksrv
+      state: absent
+
+  - name: GATEKEEPER GUI - removing Docker containers
+    docker_container:
+      name: son-gui
+      state: absent
+
+  - name: GATEKEEPER BSS - removing Docker containers
+    docker_container:
+      name: son-bss
+      state: absent
+
+  - name: GATEKEEPER PACKAGES - removing Docker containers
+    docker_container:
+      name: son-gtkpkg
+      state: absent
+
+  - name: GATEKEEPER FUNCTIONS - removing Docker containers
+    docker_container:
+      name: son-gtkfnct
+      state: absent
+
+  - name: GATEKEEPER RECORDS - removing Docker containers
+    docker_container:
+      name: son-gtkrec
+      state: absent
+

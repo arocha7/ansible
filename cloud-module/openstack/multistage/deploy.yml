@@ -25,15 +25,17 @@
 
     - name: OPTION1 - create in-memory Inventory
       add_host:
-        name: "{{ item['openstack']['human_id'] }}"
-        groups: "{{ item['item']['meta']['group'] }}"
+        #name: "{{ item['openstack']['human_id'] }}"
+        #groups: "{{ item['item']['meta']['group'] }}"
+        #ansible_host: "{{ item.openstack.accessIPv4 }}"
+        name: "{{ item.openstack.human_id }}"
+        groups: "{{ item.item.meta.group }}"
         ansible_host: "{{ item.openstack.accessIPv4 }}"
+
       with_items: "{{ os_hosts.results }}"
       register: "aresult"
 
-# CREDITS: this playbook follows and extends [Ansible - Create OpenStack servers with Ansible 2.0 and the os_server module and a dynamic inventory](https://raymii.org/s/tutorials/Ansible_-_create_OpenStack_servers_with_os_server.html), by Remi van Elst
-
-    - name: OPTION2 - create static Inventory
+    - name: OPTION2 - create static Inventory based on a provided Template ('jinja2') - http://docs.ansible.com/ansible/template_module.html
       template: 
-        src: ansible-hosts.j2
+        src: inventory_template.j2
         dest: "./environments/{{ environ }}/hosts"

@@ -13,7 +13,7 @@
         #auth_url: https://172.31.6.4:35357/v2.0/
         auth_url: http://172.31.6.4:5000/v2.0/
         username: son-qual
-        password: S0n-qu@l
+        password: "******"
         project_name: son-qual
       name: vm01
       #region_name: nova

@@ -1,0 +1,6 @@
+---
+
+# 'groups' of hosts in DEMO Inventory
+
+[sp4demo]
+

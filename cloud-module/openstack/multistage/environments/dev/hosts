@@ -1,0 +1,11 @@
+
+[ungrouped]
+---
+localhost
+
+[all]
+---
+dev-vm
+
+[sp4dev]
+dev-vm

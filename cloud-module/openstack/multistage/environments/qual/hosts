@@ -1,0 +1,12 @@
+---
+
+# 'groups' of hosts for QUAL Inventory
+
+[sp4qual]
+
+#[sp-secur]
+
+#[sp-perform]
+
+#[sp-conform]
+

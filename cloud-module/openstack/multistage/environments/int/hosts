@@ -1,0 +1,15 @@
+
+[ungrouped]
+---
+localhost
+
+[all]
+---
+int-jks
+int-srv1
+int-srv2
+
+[sp4int]
+int-jks
+int-srv1
+int-srv2

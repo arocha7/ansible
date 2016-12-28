@@ -1,0 +1,30 @@
+---
+
+prefix: qual
+
+servers:
+  - name: sp-secur
+    image: trusty-cldimg
+    flavor: m1.small
+    key: "son-ift-ptin"
+    nics: "net-id=ffdf5f4f-eeee-49ac-ac34-ccaf814bfb84" # son-qual-netw
+    availability_zone: "nova"
+    meta:
+      group: sp4qual
+  - name: sp-perform
+    image: trusty-cldimg
+    flavor: m1.small
+    key: "son-ift-ptin"
+    nics: "net-id=ffdf5f4f-eeee-49ac-ac34-ccaf814bfb84" # son-qual-netw
+    availability_zone: "nova"
+    meta: 
+      group: sp4qual
+  - name: sp-conform
+    image: trusty-cldimg
+    flavor: m1.small
+    key: "son-ift-ptin"
+    nics: "net-id=ffdf5f4f-eeee-49ac-ac34-ccaf814bfb84" # son-qual-netw
+    availability_zone: "nova"
+    meta: 
+      group: sp4qual
+

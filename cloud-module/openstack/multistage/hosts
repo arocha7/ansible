@@ -1,0 +1,22 @@
+---
+
+### Inventory 'groups' of hosts ###
+
+# DEV
+
+
+
+# INT
+
+[sp4int]
+
+
+# QUAL 
+
+[sp4qual]
+
+
+# DEMO
+
+[sp4demo]
+

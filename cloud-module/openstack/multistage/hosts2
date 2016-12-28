@@ -1,0 +1,11 @@
+
+[ungrouped]
+---
+localhost
+
+[all]
+---
+demo-vnf
+
+[sp4demo]
+demo-vnf

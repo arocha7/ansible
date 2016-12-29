@@ -1,6 +1,12 @@
-{% for item in groups %}
-[{{item}}]
-{%   for entry in groups[item] %}
-{{ entry }}
-{%   endfor %}
+{% for group in groups %}
+{% if group != 'all' %}
+{% if group != 'ungrouped' %}
+[{{ group }}]
+{% for host in os_hosts.results %}
+{% if group == host.item.meta.group %}
+{{ host.item.name }} ansible_ssh_private_key_file={{ host.item.key }}.pem ansible_host={{ host.openstack.accessIPv4 }}
+{% endif %}
+{% endfor %}
+{% endif %}
+{% endif %}
 {% endfor %}

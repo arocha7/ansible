@@ -1,15 +1,4 @@
-
-[ungrouped]
----
-localhost
-
-[all]
----
-int-jks
-int-srv1
-int-srv2
-
 [sp4int]
-int-jks
-int-srv1
-int-srv2
+jks ansible_ssh_private_key_file=son-ift-ptin.pem ansible_host=172.31.6.176
+srv1 ansible_ssh_private_key_file=son-ift-ptin.pem ansible_host=172.31.6.170
+srv2 ansible_ssh_private_key_file=son-ift-ptin.pem ansible_host=172.31.6.175

@@ -23,7 +23,7 @@
       with_items: "{{ servers }}"
       register: "os_hosts"
 
-    - name: OPTION1 - create in-memory Inventory
+    - name: create in-memory Inventory # temporary in-memory group of hosts that only persists until the end of the playbook (to be used in the next task)
       add_host:
         #name: "{{ item['openstack']['human_id'] }}"
         #groups: "{{ item['item']['meta']['group'] }}"
@@ -31,9 +31,7 @@
         name: "{{ item.openstack.human_id }}"
         groups: "{{ item.item.meta.group }}"
         ansible_host: "{{ item.openstack.accessIPv4 }}"
-
       with_items: "{{ os_hosts.results }}"
-      register: "aresult"
 
     - name: OPTION2 - create static Inventory based on a provided Template ('jinja2') - http://docs.ansible.com/ansible/template_module.html
       template: 

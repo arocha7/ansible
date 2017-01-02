@@ -1,0 +1,49 @@
+- name: Deploy on OpenStack
+  hosts: localhost
+  gather_facts: true
+  tasks:
+  - name: Deploy an instance
+    os_server:
+      auth:
+        auth_url: http://172.31.6.4:5000/v2.0/
+        username: son-dev
+        password: S0n-d3v
+        project_name: son-dev
+      state: present
+      name: webserver
+      image: centos7-cldimg
+      key_name: son-ift-ptin
+      security_groups: son-dev-secgrp
+      flavor: m1.small
+      auto_floating_ip: yes
+      network: son-dev-netw
+      meta:
+        hostname: webserver.localdomain
+      userdata:
+        - "./userdata/ansible-{{ ansible_distribution_release }}.sh"
+      wait: yes
+    register: webserver
+
+  - name: Wait for SSH on the Instance
+    command: >
+      ssh -oBatchMode=yes -oStrictHostKeyChecking=no
+      -i ~/.ssh/{{ webserver.server.key_name }}.pem centos@{{webserver.server.public_v4}} true
+    register: result
+    until: result|success
+    retries: 30
+    delay: 10
+
+  - name: Add CentOS Instance to Inventory
+    add_host: name=webserver groups=webservers
+              ansible_ssh_private_key_file=~/.ssh/{{ webserver.server.key_name }}.pem
+              ansible_ssh_host={{ webserver.server.public_v4 }}
+
+- hosts: webservers
+  remote_user: centos
+  become: true
+  tasks:
+    - name: ensure apache is at the latest version
+      yum: name=httpd state=latest
+    - name: make sure apache is running
+      service: name=httpd state=running
+

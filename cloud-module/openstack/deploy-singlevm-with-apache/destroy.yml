@@ -1,0 +1,14 @@
+- name: Destroy on OpenStack
+  hosts: localhost
+  gather_facts: false
+  tasks:
+  - name: Destroy an instance
+    os_server:
+      auth:
+        auth_url: http://172.31.6.4:5000/v2.0/
+        username: son-dev
+        password: S0n-d3v
+        project_name: son-dev
+      state: absent
+      name: webserver # this is hard-coded: you must look for the real host name in Inventory
+      wait: yes

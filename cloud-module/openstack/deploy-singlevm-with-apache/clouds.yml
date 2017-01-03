@@ -1,0 +1,10 @@
+clouds:
+  os_cloud:
+    #private: true
+    region_name: RegionOne
+    auth:
+      auth_url: http://172.31.6.4:5000/v2.0/
+      username: son-dev
+      password: S0n-d3v
+      project_name: son-dev
+

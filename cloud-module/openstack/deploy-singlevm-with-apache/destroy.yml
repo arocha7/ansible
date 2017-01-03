@@ -2,7 +2,7 @@
   hosts: localhost
   gather_facts: false
   tasks:
-  - name: Destroy an instance
+  - name: Destroy an Instance
     os_server:
       auth:
         auth_url: http://172.31.6.4:5000/v2.0/

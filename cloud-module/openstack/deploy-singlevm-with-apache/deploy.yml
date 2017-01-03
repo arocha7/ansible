@@ -2,14 +2,19 @@
   hosts: localhost
   gather_facts: true
   tasks:
-  - name: Deploy an instance
+  - name: load User Data script
+    shell: "cat ./userdata/ansible-{{ ansible_distribution_release }}.sh"
+    register: user_data
+
+  - name: Deploy an Instance
     os_server:
-      auth:
-        auth_url: http://172.31.6.4:5000/v2.0/
-        username: son-dev
-        password: S0n-d3v
-        project_name: son-dev
+      #auth:
+        #auth_url: http://172.31.6.4:5000/v2.0/
+        #username: son-dev
+        #password: S0n-d3v
+        #project_name: son-dev
       state: present
+      cloud: os_cloud
       name: webserver
       image: centos7-cldimg
       key_name: son-ift-ptin
@@ -19,8 +24,8 @@
       network: son-dev-netw
       meta:
         hostname: webserver.localdomain
-      userdata:
-        - "./userdata/ansible-{{ ansible_distribution_release }}.sh"
+      userdata: "{{ user_data.stdout }}"
+      # - "./userdata/ansible-{{ ansible_distribution_release }}.sh"
       wait: yes
     register: webserver
 
@@ -42,8 +47,8 @@
   remote_user: centos
   become: true
   tasks:
-    - name: ensure apache is at the latest version
+    - name: ensure Apache is at the latest version
       yum: name=httpd state=latest
-    - name: make sure apache is running
+    - name: make sure Apache is running
       service: name=httpd state=running
 

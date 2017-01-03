@@ -1,0 +1,20 @@
+{% for group in groups %}
+{% if group != 'all' %}
+{% if group != 'ungrouped' %}
+[{{ group }}]
+{% for host in os_hosts.results %}
+{% if group == host.item.meta.group %}
+
+{% if group == 'db' %}
+{{ host.item.name }} ansible_user=centos ansible_ssh_private_key_file={{ host.item.key }}.pem ansible_host={{ host.openstack.accessIPv4 }} ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+{% endif %}
+
+{% if group == 'www' %}
+{{ host.item.name }} ansible_user=ubuntu ansible_ssh_private_key_file={{ host.item.key }}.pem ansible_host={{ host.openstack.accessIPv4 }} ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+{% endif %}
+
+{% endif %}
+{% endfor %}
+{% endif %}
+{% endif %}
+{% endfor %}

@@ -1,0 +1,54 @@
+---
+
+prefix: vm
+
+servers:
+
+  - name: web01
+    image: "trusty-cldimg"
+    flavor: m1.small
+    key: "son-ift-ptin"
+    #nics: "net-id=a4177ab4-55d5-4c53-a0b0-f0bd95898c89" # son-int-netw
+    nics: "net-id=ae8475b3-a9e0-426f-9798-1626801da900" # son-dev-netw
+    availability_zone: "nova"
+    userdata:
+      - "userdata/trusty.sh"
+    meta:
+      group: www
+
+  - name: web02
+    image: "trusty-cldimg"
+    flavor: m1.small
+    key: "son-ift-ptin"
+    #nics: "net-id=a4177ab4-55d5-4c53-a0b0-f0bd95898c89" # son-int-netw
+    nics: "net-id=ae8475b3-a9e0-426f-9798-1626801da900" # son-dev-netw
+    availability_zone: "nova"
+    userdata:
+      - "userdata/trusty.sh"
+    meta:
+      group: www
+
+  - name: pg01
+    image: trusty-cldimg
+    flavor: m1.small
+    key: "son-ift-ptin"
+    #nics: "net-id=a4177ab4-55d5-4c53-a0b0-f0bd95898c89" # son-int-netw
+    nics: "net-id=ae8475b3-a9e0-426f-9798-1626801da900" # son-dev-netw
+    availability_zone: "nova"
+    userdata:
+      - "userdata/trusty.sh"
+    meta:
+      group: db
+
+  - name: pg02
+    image: trusty-cldimg
+    flavor: m1.small
+    key: "son-ift-ptin"
+    #nics: "net-id=a4177ab4-55d5-4c53-a0b0-f0bd95898c89" # son-int-netw
+    nics: "net-id=ae8475b3-a9e0-426f-9798-1626801da900" # son-dev-netw
+    availability_zone: "nova"
+    userdata:
+      - "userdata/trusty.sh"
+    meta:
+      group: db
+

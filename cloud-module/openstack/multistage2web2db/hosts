@@ -1,0 +1,6 @@
+[db]
+pg01 ansible_user=ubuntu ansible_ssh_private_key_file='~/.ssh/son-ift-ptin.pem' ansible_host=172.31.6.228 ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+pg02 ansible_user=ubuntu ansible_ssh_private_key_file='~/.ssh/son-ift-ptin.pem' ansible_host=172.31.6.237 ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+[www]
+web01 ansible_user=ubuntu ansible_ssh_private_key_file='~/.ssh/son-ift-ptin.pem' ansible_host=172.31.6.204 ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+web02 ansible_user=ubuntu ansible_ssh_private_key_file='~/.ssh/son-ift-ptin.pem' ansible_host=172.31.6.164 ansible_ssh_common_args='-o StrictHostKeyChecking=no'

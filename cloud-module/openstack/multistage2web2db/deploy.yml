@@ -5,6 +5,15 @@
   connection: local
   tasks:
     - include_vars: "~/.config/openstack/os_ptin_{{ environ }}_vault.yml"
+    - include_vars: "{{ item }}"
+      with_first_found:
+        - "vars/default.yml"
+        - "vars/{{ ansible_distribution_release }}.yml"
+        - "vars/{{ ansible_distribution }}-{{ ansible_distribution_major_version | int }}.yml"
+        - "vars/{{ ansible_distribution }}.yml"
+        - "vars/{{ ansible_os_family }}.yml"
+        #- "vars/default.yml"
+      when: vm_user is not defined or vm_os is not defined
 
     - name: launch 'N' instances
       os_server:
@@ -13,6 +22,7 @@
         state: present
         key_name: "{{ item.key }}"
         availability_zone: "{{ item.availability_zone }}"
+        security_groups: son-dev-secgrp
         nics: "{{ item.nics }}"
         image: "{{ item.image }}"
         flavor: "{{ item.flavor }}"
@@ -21,34 +31,44 @@
 
     - name: create in-memory Inventory # temporary in-memory group of hosts that only persists until the end of the playbook (to be used in the next task)
       add_host:
-        #name: "{{ item['openstack']['human_id'] }}"
-        #groups: "{{ item['item']['meta']['group'] }}"
-        #ansible_host: "{{ item.openstack.accessIPv4 }}"
         name: "{{ item.openstack.human_id }}"
         groups: "{{ item.item.meta.group }}"
         ansible_host: "{{ item.openstack.accessIPv4 }}"
       with_items: "{{ os_hosts.results }}"
 
-    - name: create static Inventory based on a provided Template ('jinja2') - http://docs.ansible.com/ansible/template_module.html
+    - name: create static Inventory based on a provided Template ['jinja2'](http://docs.ansible.com/ansible/template_module.html)
       template: 
         src: inventory_template.j2
         dest: "./hosts"
 
-- hosts: web
-  remote_user: ubuntu
+    - name: Pauses the workflow
+      pause: minutes=1
+
+    - name: Wait for SSH on the Instance
+      command: >
+        ssh -oBatchMode=yes -oStrictHostKeyChecking=no -i ~/.ssh/{{ item.openstack.key_name }}.pem -l centos {{ item.openstack.accessIPv4 }} true
+      register: result
+      until: result|success
+      retries: 20
+      delay: 10
+      with_items: "{{ os_hosts.results }}"
+
+#    - wait_for:
+#      port: 22
+#      delay: 10
+#      with_items: "{{ servers }}"
+
+    - name: Pauses the workflow
+      pause: minutes=1
+
+- hosts: www
+  remote_user: centos
   become: true
-  tasks:
-    - name: ensure Apache is at the latest version
-      yum: name=httpd state=latest
-    - name: make sure Apache is running
-      service: name=httpd state=running
+  roles:
+    - nginx
 
 - hosts: db
   remote_user: centos
   become: true
-  tasks:
-    - name: ensure pgSQL is at the latest version
-      yum: name=postgresql state=latest
-    - name: make sure pgSQL is running
-      service: name=potsgresql state=running
-
+  roles:
+    - pgsql

@@ -5,4 +5,3 @@ sudo yum install ansible -y
 sudo yum install git -y
 sudo yum install python-pip python-setuptools python-wheel -y
 sudo yum install htop nmap tree sysstat -y
-exit 0

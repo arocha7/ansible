@@ -1,0 +1,48 @@
+---
+
+prefix: vm
+
+epel_tarball: "7-9"
+
+servers:
+
+  - name: web01
+    image: "centos7-cldimg"
+    flavor: m1.small
+    key: "son-ift-ptin"
+    nics: "net-id={{ demo_netw }}"
+    availability_zone: "nova"
+    userdata: "{{ lookup('file', 'userdata/Core.sh') }}"
+    meta:
+      group: www
+
+  - name: web02
+    image: "centos7-cldimg"
+    flavor: m1.small
+    key: "son-ift-ptin"
+    nics: "net-id={{ demo_netw }}"
+    availability_zone: "nova"
+    userdata: "{{ lookup('file', 'userdata/Core.sh') }}"
+    meta:
+      group: www
+
+  - name: pg01
+    image: centos7-cldimg
+    flavor: m1.small
+    key: "son-ift-ptin"
+    nics: "net-id={{ demo_netw }}"
+    availability_zone: "nova"
+    userdata: "{{ lookup('file', 'userdata/Core.sh') }}"
+    meta:
+      group: db
+
+  - name: pg02
+    image: centos7-cldimg
+    flavor: m1.small
+    key: "son-ift-ptin"
+    nics: "net-id={{ demo_netw }}"
+    availability_zone: "nova"
+    userdata: "{{ lookup('file', 'userdata/Core.sh') }}"
+    meta:
+      group: db
+

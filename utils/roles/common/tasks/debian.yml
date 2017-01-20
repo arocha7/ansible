@@ -10,4 +10,5 @@
   - nmap
   - tree
   - htop
+  - wget
   - policycoreutils

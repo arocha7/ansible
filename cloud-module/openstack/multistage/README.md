@@ -1,19 +1,17 @@
-# Deployment of a MULTISTAGE environment
+# Deployment of a MULTISTAGE platform with 2 NGINX guests and 2 PostgreSQL guests
 This playbook follows the recommended [best pratices](http://docs.ansible.com/ansible/playbooks_best_practices.html) to organize playbook content, by the separation of inventory variables between different environments,
 
-The structure for a static inventory file should be similar to:
+The static inventory is generated according to a structure defined at a [jinja2] template:
 
-* MULTI-VIM - eg: Openstack, AWS, other
-* MULTI-LOCATION - eg: Aveiro/POR, Athens/GR, other
-* MULTI-FUNCTION - eg: deployment of a developer VM, deployment of a Service Platform VM for Integration or Qualification purposes and finally deployment of a VNF/NS for Demonstration purposes
+[db]
+vm-pg01
+vm-pg02
 
-
-However, considering that a cloud provider is used and a cononical list of platforms should be maintained, then a [Dynamic Inventory](http://docs.ansible.com/ansible/intro_dynamic_inventory.html) will be used to pull information about your compute instances directly from the cloud provider:
-
-* OpenStack external Inventory script ['openstack.py'](https://raw.githubusercontent.com/ansible/ansible/devel/contrib/inventory/openstack.py)
-
-* AWS external Inventory script ['ec2.py'](https://raw.github.com/ansible/ansible/devel/contrib/inventory/ec2.py)
+[www]
+vm-web01
+vm-web02
 
 ## How to invoke
 
-* ansible-playbook deploy.yml -e "environ=int" -i "./environments/int" 
+* ansible-playbook deploy.yml  -e "environ=qual" 
+* ansible-playbook destroy.yml -e "environ=qual" 

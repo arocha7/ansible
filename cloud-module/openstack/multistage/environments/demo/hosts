@@ -1,2 +1,0 @@
-[sp4demo]
-vnf ansible_keypair=son-ift-ptin ansible_host=172.31.6.160

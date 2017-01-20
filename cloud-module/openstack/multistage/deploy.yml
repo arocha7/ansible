@@ -28,7 +28,7 @@
         state: present
         key_name: "{{ item.key }}"
         availability_zone: "{{ item.availability_zone }}"
-        security_groups: son-dev-secgrp
+        security_groups: qual-secgrp
         nics: "{{ item.nics }}"
         image: "{{ item.image }}"
         flavor: "{{ item.flavor }}"

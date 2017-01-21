@@ -16,7 +16,7 @@
 
     - name: terminate 'N' instances
       os_server:
-        cloud: os_cloud
+        cloud: os_ptin
         name: "{{ prefix }}-{{ item.name }}"
         state: "absent"
       with_items: "{{ servers }}"

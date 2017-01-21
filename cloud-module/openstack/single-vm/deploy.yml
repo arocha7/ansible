@@ -1,0 +1,54 @@
+---
+
+#- hosts: localhost
+#  connection: local
+#  become: true
+#  roles:
+#    - ~/ansible/utils/roles/openstackclients/
+
+- name: deploying a VM via Ansible Cloud Module for Openstack
+  hosts: localhost
+  connection: local
+  tasks:
+
+  - include_vars: vars/defaults.yml
+
+  - name: load userdata script
+    shell: cat ./userdata/ansible_{{ ansible_distribution_release }}.sh
+    register: user_data
+
+  - name: launch an Openstack 'nova-compute' instance
+    os_server:
+      state: present
+      cloud: os_ptin
+      name: "{{ vm_name }}"
+      #region_name: RegionOne
+      availability_zone: nova
+      image: "centos7-cldimg"
+      key_name: son-ift-ptin
+      flavor: m1.test
+      security_groups: qual-secgrp
+      nics:
+        - net-id: "3ef0b481-8c8c-49c7-88f5-10e4d8c5612f"
+      auto_ip: yes
+      wait: yes
+      userdata: "{{ user_data.stdout }}"
+#        - "./userdata/ansible_{{ ansible_distribution_release }}.sh"
+    register: newvms
+    with_sequence: count={{ count }}
+
+  - debug: msg="{{ newvms }}"
+
+  - name: add OS instance to hosts
+    #add_host: name="{{ item.openstack.accessIPv4 }}" groups=single
+    add_host: 
+      name={{ item.server.public_v4 }} 
+      groups=single
+      ansible_user=centos
+      instance_name={{ item.server.name }}
+    with_items: "{{ newvms.results }}"
+
+  - name: wait for SSH
+    wait_for: host={{ item.server.accessIPv4 }} port=22 delay=60 timeout=180 state=started
+    with_items: "{{ newvms.results }}"
+

@@ -1,7 +1,0 @@
----
-- name: deploying a VM via Ansible Cloud Module for Openstack
-  hosts: localhost
-  connection: local
-  sudo: yes
-  roles:
-  - openstack

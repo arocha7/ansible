@@ -6,7 +6,7 @@
 #  roles:
 #    - ~/ansible/utils/roles/openstackclients/
 
-- name: deploying a VM via Ansible Cloud Module for Openstack
+- name: ##### 1st STEP: deploy VMs via Ansible Cloud Module for Openstack
   hosts: localhost
   connection: local
   tasks:
@@ -33,13 +33,10 @@
       auto_ip: yes
       wait: yes
       userdata: "{{ user_data.stdout }}"
-#        - "./userdata/ansible_{{ ansible_distribution_release }}.sh"
     register: newvms
     with_sequence: count={{ count }}
 
-  - debug: msg="{{ newvms }}"
-
-  - name: add OS instance to hosts
+  - name: add new VM instances to hosts file
     #add_host: name="{{ item.openstack.accessIPv4 }}" groups=single
     add_host: 
       name={{ item.server.public_v4 }} 
@@ -51,4 +48,26 @@
   - name: wait for SSH
     wait_for: host={{ item.server.accessIPv4 }} port=22 delay=60 timeout=180 state=started
     with_items: "{{ newvms.results }}"
+
+#### 2nd STEP: deploy APP's
+
+- name: #### 2nd STEP: Configure nodes and deploy APP's
+  hosts: single
+  become: true
+  become_method: sudo
+  gather_facts: false
+  tasks:
+    - name: "Wait for SSH banners"
+      local_action: wait_for port=22 host="{{ inventory_hostname }}" search_regex=OpenSSH delay=5
+      become: False
+
+    - name: install apps
+      apt: name={{ item }} update_cache=yes state=latest
+      with_items:
+        - htop
+        - git
+
+    - name: Pause play to interact with the servers
+      pause: prompt="Playbook paused... hit <enter> to continue or <ctrl-c a> to abort"
+
 

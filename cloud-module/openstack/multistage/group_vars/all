@@ -2,47 +2,53 @@
 
 prefix: vm
 
-epel_tarball: "7-9"
-
 servers:
 
   - name: web01
     image: "centos7-cldimg"
     flavor: m1.small
     key: "son-ift-ptin"
-    nics: "net-id={{ demo_netw }}"
+    nics:
+     - net-id: "{{ qual_netw }}"
     availability_zone: "nova"
     userdata: "{{ lookup('file', 'userdata/Core.sh') }}"
     meta:
+      hostname: web01
       group: www
 
   - name: web02
     image: "centos7-cldimg"
     flavor: m1.small
     key: "son-ift-ptin"
-    nics: "net-id={{ demo_netw }}"
+    nics:
+     - net-id: "{{ qual_netw }}"
     availability_zone: "nova"
-    userdata: "{{ lookup('file', 'userdata/Core.sh') }}"
+    userdata: "{{ lookup('file', './userdata/Core.sh') }}"
     meta:
+      hostname: web02
       group: www
 
   - name: pg01
     image: centos7-cldimg
     flavor: m1.small
     key: "son-ift-ptin"
-    nics: "net-id={{ demo_netw }}"
+    nics:
+     - net-id: "{{ qual_netw }}"
     availability_zone: "nova"
     userdata: "{{ lookup('file', 'userdata/Core.sh') }}"
     meta:
+      hostname: db01
       group: db
 
   - name: pg02
     image: centos7-cldimg
     flavor: m1.small
     key: "son-ift-ptin"
-    nics: "net-id={{ demo_netw }}"
+    nics:
+     - net-id: "{{ qual_netw }}"
     availability_zone: "nova"
-    userdata: "{{ lookup('file', 'userdata/Core.sh') }}"
+    userdata: "{{ lookup('file', './userdata/Core.sh') }}"
     meta:
+      hostname: db02
       group: db
 

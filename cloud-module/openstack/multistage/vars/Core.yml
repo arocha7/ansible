@@ -1,4 +1,5 @@
 vm_user: centos
 vm_os: Core
-environ: demo
-demo_netw: 3ef0b481-8c8c-49c7-88f5-10e4d8c5612f
+environ: qual
+qual_netw: 3ef0b481-8c8c-49c7-88f5-10e4d8c5612f
+epel_tarball: "7-9"

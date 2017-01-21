@@ -6,12 +6,11 @@
   roles:
     - ~/ansible/utils/roles/openstackclients/
 
-
 # talk to all hosts just so we can learn about them
 - hosts: localhost
   connection: local
   tasks:
-    - include_vars: "~/.config/openstack/os_ptin_{{ environ }}_vault.yml"
+    - include_vars: "~/.config/openstack/os_ptin_{{ environ }}_vault.yaml"
     - include_vars: "{{ item }}"
       with_first_found:
         - "vars/{{ ansible_distribution_release }}.yml"
@@ -35,9 +34,11 @@
       with_items: "{{ servers }}"
       register: "os_hosts"
 
-    - name: create in-memory Inventory # temporary in-memory group of hosts that only persists until the end of the playbook (to be used in the next task)
+    - debug: msg="{{ os_hosts }}"
+
+    - name: create in-memory Inventory # temporary in-memory group of hosts that only persists until the end of the playbook
       add_host:
-        name: "{{ item.openstack.human_id }}"
+        name: "{{ item.openstack.name }}"
         groups: "{{ item.item.meta.group }}"
         ansible_host: "{{ item.openstack.accessIPv4 }}"
       with_items: "{{ os_hosts.results }}"

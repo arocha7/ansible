@@ -1,2 +1,9 @@
-vm_name: vm
-count: 2
+# VMs
+vm_name_prefix: qual
+vm_user: centos
+nbofvms: 1
+image: centos7-cldimg
+flavor: m1.test
+security_groups: qual-secgrp
+availability_zone: nova
+net-id: "3ef0b481-8c8c-49c7-88f5-10e4d8c5612f"

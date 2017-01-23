@@ -21,7 +21,7 @@
     os_server:
       state: present
       cloud: os_ptin
-      name: "{{ vm_name }}"
+      name: "{{ vm_name_prefix }}-{{ item }}"
       #region_name: RegionOne
       availability_zone: nova
       image: "centos7-cldimg"
@@ -31,23 +31,31 @@
       nics:
         - net-id: "3ef0b481-8c8c-49c7-88f5-10e4d8c5612f"
       auto_ip: yes
-      wait: yes
       userdata: "{{ user_data.stdout }}"
-    register: newvms
-    with_sequence: count={{ count }}
+      meta: group=single
+#        hostname: "{{ vm_name_prefix }}-{{ item }}"
+      wait: yes
+    register: newnodes
+    with_sequence: count={{ nbofvms }}
+    #with_sequence: start=1 end=2 format=%02x
+
+  - debug: msg="{{ newnodes }}"
 
   - name: add new VM instances to hosts file
-    #add_host: name="{{ item.openstack.accessIPv4 }}" groups=single
-    add_host: 
-      name={{ item.server.public_v4 }} 
-      groups=single
-      ansible_user=centos
-      instance_name={{ item.server.name }}
-    with_items: "{{ newvms.results }}"
+    add_host:
+      name: "{{ item.openstack.name }}"
+      groups: "{{ item.openstack.metadata.group }}"
+      ansible_host: "{{ item.openstack.accessIPv4 }}"
+    with_items: "{{ newnodes.results }}"
+
+  - name: create static Inventory based on a provided Template ['jinja2'](http://docs.ansible.com/ansible/template_module.html)
+    template:
+      src: inventory_template.j2
+      dest: "./hosts"
 
   - name: wait for SSH
-    wait_for: host={{ item.server.accessIPv4 }} port=22 delay=60 timeout=180 state=started
-    with_items: "{{ newvms.results }}"
+    wait_for: host={{ item.openstack.accessIPv4 }} port=22 delay=60 timeout=180 state=started
+    with_items: "{{ newnodes.results }}"
 
 #### 2nd STEP: deploy APP's
 

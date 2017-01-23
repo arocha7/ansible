@@ -1,10 +1,10 @@
 ---
 
-- hosts: localhost
-  connection: local
-  become: true
-  roles:
-    - ~/ansible/utils/roles/openstackclients/
+#- hosts: localhost
+#  connection: local
+#  become: true
+#  roles:
+#    - ~/ansible/utils/roles/openstackclients/
 
 # talk to all hosts just so we can learn about them
 - hosts: localhost

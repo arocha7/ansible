@@ -10,5 +10,5 @@
     os_server:
       state: absent
       cloud: os_ptin # ~/.config/openstack/os_ptin_qual_vault.yaml
-      name: "{{ vm_name_prefix }}-{{ item }}"
+      name: "{{ vm_name_prefix }}-0{{ item }}"
     with_sequence: count={{ nbofvms }}

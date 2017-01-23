@@ -22,24 +22,22 @@
       state: present
       cloud: os_ptin
       name: "{{ vm_name_prefix }}-{{ item }}"
-      #region_name: RegionOne
-      availability_zone: nova
-      image: "centos7-cldimg"
-      key_name: son-ift-ptin
-      flavor: m1.test
-      security_groups: qual-secgrp
+      region_name: "{{ region_name }}"
+      availability_zone: "{{ availability_zone }}"
+      image: "{{ image }}"
+      key_name: "{{ key_name }}"
+      flavor: "{{ flavor }}"
+      security_groups: "{{ security_groups }}"
       nics:
-        - net-id: "3ef0b481-8c8c-49c7-88f5-10e4d8c5612f"
+        - net-id: "{{ qual_int_net_id }}"
       auto_ip: yes
       userdata: "{{ user_data.stdout }}"
       meta: group=single
 #        hostname: "{{ vm_name_prefix }}-{{ item }}"
       wait: yes
     register: newnodes
-    with_sequence: count={{ nbofvms }}
-    #with_sequence: start=1 end=2 format=%02x
-
-  - debug: msg="{{ newnodes }}"
+    #with_sequence: count={{ nbofvms }}
+    with_sequence: "start=1 end={{ nbofvms }} format=%02x"
 
   - name: add new VM instances to hosts file
     add_host:
@@ -48,34 +46,24 @@
       ansible_host: "{{ item.openstack.accessIPv4 }}"
     with_items: "{{ newnodes.results }}"
 
-  - name: create static Inventory based on a provided Template ['jinja2'](http://docs.ansible.com/ansible/template_module.html)
+  - name: create static Inventory based on a provided Template 
     template:
       src: inventory_template.j2
-      dest: "./hosts"
+      dest: "/etc/ansible/hosts"
+    # ['jinja2'](http://docs.ansible.com/ansible/template_module.html)
 
-  - name: wait for SSH
-    wait_for: host={{ item.openstack.accessIPv4 }} port=22 delay=60 timeout=180 state=started
-    with_items: "{{ newnodes.results }}"
 
-#### 2nd STEP: deploy APP's
+  - name: "WAIT_FOR"
+    become_user: centos
+    local_action: wait_for port=22 host="{{ ansible_host | default(inventory_hostname) }}" search_regex=OpenSSH delay=10 timeout=300
 
-- name: #### 2nd STEP: Configure nodes and deploy APP's
+
+- name: "2nd STEP - deploy APPs"
   hosts: single
   become: true
-  become_method: sudo
-  gather_facts: false
-  tasks:
-    - name: "Wait for SSH banners"
-      local_action: wait_for port=22 host="{{ inventory_hostname }}" search_regex=OpenSSH delay=5
-      become: False
-
-    - name: install apps
-      apt: name={{ item }} update_cache=yes state=latest
-      with_items:
-        - htop
-        - git
-
-    - name: Pause play to interact with the servers
-      pause: prompt="Playbook paused... hit <enter> to continue or <ctrl-c a> to abort"
-
+  gather_facts: true
+  connection: ssh
+  roles:
+    - ~/ansible/utils/roles/common
+    - ~/ansible/utils/roles/apache
 

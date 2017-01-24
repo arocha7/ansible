@@ -5,12 +5,12 @@
   become: true
   connection: ssh
   roles:
-    - ~/ansible/utils/roles/apache
+    - ~/ansible/utils/roles/nginx
 
 - hosts: db
   remote_user: centos
   become: true
   connection: ssh
   roles:
-    - ~/ansible/utils/roles/mysql
+    - ~/ansible/utils/roles/pgsql
 

@@ -1,6 +1,6 @@
 ---
 
-#- include: "../../../utils/deploy-openstackclients.yml"
+- include: "../../../utils/deploy-openstackclients.yml"
 
 - include: "./deploy-infra.yml"
 

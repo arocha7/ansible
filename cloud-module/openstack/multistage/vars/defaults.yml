@@ -1,0 +1,13 @@
+# VMs
+environ: qual
+vm_user: centos
+nbofvms: 2
+prefix: vm
+image: centos7-cldimg
+flv: m1.small
+security_groups: qual-secgrp
+availability_zone: nova
+region_name: RegionOne
+key_name: son-ift-ptin
+flavor: m1.small
+qual_int_net_id: "3ef0b481-8c8c-49c7-88f5-10e4d8c5612f"

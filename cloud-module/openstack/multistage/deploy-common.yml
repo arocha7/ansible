@@ -1,0 +1,27 @@
+---
+
+#- include: "../../../utils/deploy-openstackclients.yml"
+
+- name: deploy COMMON
+  hosts: single
+  become: true
+  connection: ssh
+  roles:
+    - ~/ansible/utils/roles/common
+  tasks:
+    - name: REBOOT ALL VMs
+      command: shutdown -r now 'rebooting vm'
+      with_items: "{{ os_hosts.results }}"
+
+    - name: 2nd Wait for SSH on the Instance
+      command: >
+        ssh -oBatchMode=yes -oStrictHostKeyChecking=no -i ~/.ssh/{{ item.openstack.key_name }}.pem -l centos {{ item.openstack.accessIPv4 }} true
+      register: result
+      until: result|success
+      retries: 30
+      delay: 10
+      with_items: "{{ os_hosts.results }}"
+
+    - command: uptime
+      with_items: "{{ os_hosts.results }}"
+ 

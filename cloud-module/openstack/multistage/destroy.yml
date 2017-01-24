@@ -3,6 +3,8 @@
 # talk to all hosts just so we can learn about them
 - hosts: localhost
   connection: local
+  vars:
+    environ: qual
   tasks:
     - include_vars: "~/.config/openstack/os_ptin_{{ environ }}_vault.yaml"
     - include_vars: "{{ item }}"
@@ -19,5 +21,5 @@
         cloud: os_ptin
         name: "{{ prefix }}-{{ item.name }}"
         state: "absent"
-      with_items: "{{ servers }}"
+      with_items: "{{ os_hosts.results }}"
 

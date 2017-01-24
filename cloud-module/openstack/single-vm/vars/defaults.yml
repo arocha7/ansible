@@ -3,7 +3,7 @@ vm_name_prefix: qual
 vm_user: centos
 nbofvms: 1
 image: centos7-cldimg
-flavor: m1.small
+flv: m1.small
 security_groups: qual-secgrp
 availability_zone: nova
 region_name: RegionOne

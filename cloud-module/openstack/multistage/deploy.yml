@@ -1,14 +1,12 @@
 ---
 
-#- hosts: localhost
-#  connection: local
-#  become: true
-#  roles:
-#    - ~/ansible/utils/roles/openstackclients/
+#- include: "../../../utils/deploy-openstackclients.yml"
 
 # talk to all hosts just so we can learn about them
 - hosts: localhost
   connection: local
+  vars:
+    environ: qual
   tasks:
     - include_vars: "~/.config/openstack/os_ptin_{{ environ }}_vault.yaml"
     - include_vars: "{{ item }}"
@@ -31,6 +29,7 @@
         nics: "{{ item.nics }}"
         image: "{{ item.image }}"
         flavor: "{{ item.flavor }}"
+        wait: yes
       with_items: "{{ servers }}"
       register: "os_hosts"
 
@@ -44,14 +43,12 @@
       with_items: "{{ os_hosts.results }}"
 
     - name: create static Inventory based on a provided Template ['jinja2'](http://docs.ansible.com/ansible/template_module.html)
+      become: true
       template: 
         src: inventory_template.j2
-        dest: "./hosts"
+        dest: "/etc/ansible/hosts"
 
-    - name: Pauses the workflow
-      pause: minutes=1
-
-    - name: Wait for SSH on the Instance
+    - name: 1st Wait for SSH on the Instance
       command: >
         ssh -oBatchMode=yes -oStrictHostKeyChecking=no -i ~/.ssh/{{ item.openstack.key_name }}.pem -l centos {{ item.openstack.accessIPv4 }} true
       register: result
@@ -60,22 +57,43 @@
       delay: 10
       with_items: "{{ os_hosts.results }}"
 
-#    - wait_for:
-#      port: 22
-#      delay: 10
-#      with_items: "{{ servers }}"
+###
+### 2nd STEP
+###
 
-    - name: Pauses the workflow
-      pause: minutes=1
-
-- hosts: www
-  remote_user: centos
+- hosts: single
   become: true
+  connection: ssh
   roles:
-    - ~/ansible/utils/roles/nginx
+    - ~/ansible/utils/roles/common
+  tasks:
+    - name: REBOOT ALL VMs
+      command: shutdown -r now 'rebooting vm'
+      with_items: "{{ os_hosts.results }}"
 
-- hosts: db
-  remote_user: centos
-  become: true
-  roles:
-    - ~/ansible/utils/roles/pgsql
+    - name: 2nd Wait for SSH on the Instance
+      command: >
+        ssh -oBatchMode=yes -oStrictHostKeyChecking=no -i ~/.ssh/{{ item.openstack.key_name }}.pem -l centos {{ item.openstack.accessIPv4 }} true
+      register: result
+      until: result|success
+      retries: 30
+      delay: 10
+      with_items: "{{ os_hosts.results }}"
+
+    - command: uptime
+      with_items: "{{ os_hosts.results }}"
+ 
+
+#- hosts: www
+#  remote_user: centos
+#  become: true
+#  connection: ssh
+#  roles:
+#    - ~/ansible/utils/roles/nginx
+
+#- hosts: db
+#  remote_user: centos
+#  become: true
+#  connection: ssh
+#  roles:
+#    - ~/ansible/utils/roles/pgsql

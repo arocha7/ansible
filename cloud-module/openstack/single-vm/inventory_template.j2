@@ -1,0 +1,14 @@
+{% for group in groups %}
+{% if group != 'all' %}
+{% if group != 'ungrouped' %}
+[{{ group }}]
+{% for item in newnodes.results %}
+
+{% if group == item.openstack.metadata.group %}
+{{ item.openstack.name }} ansible_user={{ vm_user }} ansible_ssh_private_key_file=~/.ssh/{{ item.openstack.key_name }}.pem ansible_host={{ item.openstack.accessIPv4 }} ansible_ssh_common_args='-o StrictHostKeyChecking=no -o KbdInteractiveAuthentication=no'
+{% endif %}
+
+{% endfor %}
+{% endif %}
+{% endif %}
+{% endfor %}

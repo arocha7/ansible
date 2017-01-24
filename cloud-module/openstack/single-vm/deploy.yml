@@ -26,7 +26,7 @@
       availability_zone: "{{ availability_zone }}"
       image: "{{ image }}"
       key_name: "{{ key_name }}"
-      flavor: "{{ flavor }}"
+      flavor: "{{ flv }}"
       security_groups: "{{ security_groups }}"
       nics:
         - net-id: "{{ qual_int_net_id }}"

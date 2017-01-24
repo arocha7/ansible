@@ -5,48 +5,48 @@ prefix: vm
 servers:
 
   - name: web01
-    image: "centos7-cldimg"
-    flavor: m1.small
-    key: "son-ift-ptin"
+    image: "{{ image }}"
+    flavor: "{{ flv }}"
+    key: "{{ key_name }}"
     nics:
-     - net-id: "{{ qual_netw }}"
-    availability_zone: "nova"
-    userdata: "{{ lookup('file', 'userdata/Core.sh') }}"
+     - net-id: "{{ qual_int_net_id }}"
+    availability_zone: "{{ availability_zone }}"
+    userdata: "{{ lookup('file', './userdata/Core.sh') }}"
     meta:
       hostname: web01
       group: www
 
   - name: web02
-    image: "centos7-cldimg"
-    flavor: m1.small
-    key: "son-ift-ptin"
+    image: "{{ image }}"
+    flavor: "{{ flv }}"
+    key: "{{ key_name }}"
     nics:
-     - net-id: "{{ qual_netw }}"
-    availability_zone: "nova"
+     - net-id: "{{ qual_int_net_id }}"
+    availability_zone: "{{ availability_zone }}"
     userdata: "{{ lookup('file', './userdata/Core.sh') }}"
     meta:
       hostname: web02
       group: www
 
   - name: pg01
-    image: centos7-cldimg
-    flavor: m1.small
-    key: "son-ift-ptin"
+    image: "{{ image }}"
+    flavor: "{{ flv }}"
+    key: "{{ key_name }}"
     nics:
-     - net-id: "{{ qual_netw }}"
-    availability_zone: "nova"
-    userdata: "{{ lookup('file', 'userdata/Core.sh') }}"
+     - net-id: "{{ qual_int_net_id }}"
+    availability_zone: "{{ availability_zone }}"
+    userdata: "{{ lookup('file', './userdata/Core.sh') }}"
     meta:
       hostname: db01
       group: db
 
   - name: pg02
-    image: centos7-cldimg
-    flavor: m1.small
-    key: "son-ift-ptin"
+    image: "{{ image }}"
+    flavor: "{{ flv }}"
+    key: "{{ key_name }}"
     nics:
-     - net-id: "{{ qual_netw }}"
-    availability_zone: "nova"
+     - net-id: "{{ qual_int_net_id }}"
+    availability_zone: "{{ availability_zone }}"
     userdata: "{{ lookup('file', './userdata/Core.sh') }}"
     meta:
       hostname: db02

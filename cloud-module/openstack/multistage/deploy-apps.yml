@@ -1,16 +1,18 @@
 ---
 
-- hosts: www
-  remote_user: centos
-  become: true
-  connection: ssh
-  roles:
-    - ~/ansible/utils/roles/nginx
-
 - hosts: db
+  #remote_user: "{{ vm_user }}"
   remote_user: centos
   become: true
   connection: ssh
   roles:
     - ~/ansible/utils/roles/pgsql
+
+- hosts: www
+  #remote_user: "{{ vm_user }}"
+  remote_user: centos
+  become: true
+  connection: ssh
+  roles:
+    - ~/ansible/utils/roles/nginx
 

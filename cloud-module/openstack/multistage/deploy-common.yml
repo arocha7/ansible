@@ -1,7 +1,5 @@
 ---
 
-#- include: "../../../utils/deploy-openstackclients.yml"
-
 - name: deploy COMMON to ALL nodes
   hosts: all
   become: true
@@ -25,3 +23,4 @@
       local_action: wait_for host={{ ansible_host | default(inventory_hostname) }} port=22 state=started delay=10 timeout=300
       become: false
 
+    - command: sleep 30

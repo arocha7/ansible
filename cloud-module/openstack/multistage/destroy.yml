@@ -4,9 +4,10 @@
 - hosts: localhost
   connection: local
   vars:
+    cld: alb
     environ: qual
   tasks:
-    - include_vars: "~/.config/openstack/os_ptin_{{ environ }}_vault.yaml"
+    - include_vars: "~/.config/openstack/vault_{{ cld }}_{{ environ }}.yaml"
     - include_vars: "{{ item }}"
       with_first_found:
         - "vars/{{ ansible_distribution_release }}.yml"
@@ -16,10 +17,16 @@
         - "vars/default.yml"
       when: vm_user is not defined or vm_os is not defined
 
+### IMPLEMENTED IN THE WRONG WAY: to remove hardcode asap
+
     - name: terminate 'N' instances
       os_server:
-        cloud: os_ptin
-        name: "{{ prefix }}-{{ item.name }}"
+        cloud: "os_{{ cld }}"
+        name: "{{ item }}"
         state: "absent"
-      with_items: "{{ os_hosts.results }}"
+      with_items:
+        - vnf
+        - sp
+        - intsrv
+        - jks
 

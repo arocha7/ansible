@@ -17,12 +17,12 @@
     update_cache: yes
   vars:
     packages:
-    - "postgresql-{{ pg_ver }}"
+    - "postgresql-{{ tarball }}"
     - python-psycopg2
 
 - name: "Replace line in file examples"
   replace: 
-    path: /etc/postgresql/11/main/postgresql.conf
+    path: "/etc/postgresql/{{ tarball }}/main/postgresql.conf
     regexp: "#listen_addresses = 'localhost'"
     replace: '\1*'
     backup: yes

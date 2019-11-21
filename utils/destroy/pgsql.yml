@@ -31,4 +31,4 @@
     with_items:
     - "/var/lib/pgsql/{{ pg_ver }}"
     - "/usr/pgsql-{{ tarball }}"
-
+    - "/etc/postgresql/{{ tarball }}"

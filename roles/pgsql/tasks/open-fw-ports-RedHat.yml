@@ -1,0 +1,7 @@
+---
+- name: Allow all access to tcp port 5432
+  firewalld:
+    port: 5432/tcp
+    permanent: yes
+    state: enabled
+

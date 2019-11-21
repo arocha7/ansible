@@ -1,0 +1,4 @@
+---
+# defaults file for pip
+
+py_ver: '2'

@@ -1,0 +1,60 @@
+---
+
+- name: Ensure group 'sdn' exists
+  group:
+    name: sdn
+    state: present
+
+- name: Add the user 'sdn' with 'system' priveleges
+  user:
+    name: sdn
+    state: present
+    comment: ´SDN system user'
+    system: true
+
+# For a different ONOS_VERSION, set it at 'roles/onos/defaults/main.yml'
+- name: Unarchive a file that needs to be downloaded (added in 2.0)
+  unarchive:
+    src: "http://repo1.maven.org/maven2/org/onosproject/onos-releases/{{ ONOS_VERSION }}/onos-{{ ONOS_VERSION }}.tar.gz"
+    dest: /opt
+    remote_src: yes
+
+- name: create directory for ONOS
+  file:
+    path: /opt/onos
+    state: directory
+  ignore_errors: true
+
+- name: "As of Ansible 2.2.1.0, copying directories in the remote servers are not supported"
+  shell: "sudo rm -fr /opt/onos/* && sudo mv /opt/onos-{{ ONOS_VERSION }}/* /opt/onos/"
+
+- name: Recursively change ownership of a directory
+  file:
+    path: /opt/onos
+    state: directory
+    recurse: yes
+    mode: "0755"
+    owner: sdn
+    group: sdn
+
+- copy:
+    src: /opt/onos/init/onos.initd
+    dest: /etc/init.d/onos
+    owner: root
+    group: root
+    mode: "0755"
+
+- copy:
+    src: /opt/onos/init/onos.service
+    dest: /etc/systemd/system/
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: start ONOS
+  systemd:
+    name: onos
+    state: restarted
+    daemon_reload: yes
+    enabled: yes
+

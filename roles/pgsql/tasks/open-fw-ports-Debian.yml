@@ -1,0 +1,7 @@
+---
+- name: Allow all access to tcp port 5432
+  ufw:
+    rule: allow
+    port: '5432'
+    proto: tcp
+

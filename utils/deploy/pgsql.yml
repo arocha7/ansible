@@ -1,0 +1,12 @@
+---
+
+# HOW-TO-USE EXAMPLE:
+# pgSQL11 (latest): $ ansible-playbook utils/deploy/pgsql.yml -v"
+# pgSQL9.6: $ ansible-playbook utils/deploy/pgsql.yml -e "tarball_url=9.6 tarball_ver=96 pg_ver=9.6-3" -v
+
+- name: installing a PostgreSQL database server
+  hosts: "{{ target | default('localhost') }}"
+  become: true 
+  roles:
+  - common
+  - pgsql

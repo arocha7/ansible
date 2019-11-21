@@ -1,0 +1,33 @@
+---
+# GUIDE: https://computingforgeeks.com/how-to-install-postgresql-11-on-centos-7/
+
+- name: install the PostgreSQL YUM repo
+  yum:
+    name: 'https://download.postgresql.org/pub/repos/yum/{{ tarball_url }}/redhat/rhel-7-x86_64/pgdg-centos{{ pg_ver }}-{{ tarball_url }}-{{ pg_ver_minor }}.noarch.rpm'
+    state: present
+    update_cache: yes
+# NOTE: change 'roles/pgsql/defaults/main.yml' for a different pgSQL version
+
+- name: ensure a list of packages installed
+  yum:
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - "postgresql{{ pg_ver }}-server"
+    - "postgresql{{ pg_ver }}"
+#    - "postgresql{{ pg_ver }}-devel"
+#    - libpq-devel
+    - python-devel
+    - python-psycopg2
+
+- file: "path=/usr/pgsql-{{ pg_ver }} state=directory owner=postgres group=postgres mode=0775"
+
+- file: path=/var/lib/pgsql state=directory owner=postgres group=postgres mode=0775
+
+#- file: path=/usr/local/pgsql/data state=directory owner=postgres group=postgres mode=0777 # for CentOS 6.x
+
+- name: initialize postgresql
+  shell: '/usr/pgsql-{{ tarball_url }}/bin/postgresql-{{ pg_ver }}-setup initdb'
+
+- name: Ensure the PostgreSQL service is running
+  service: name=postgresql-{{ pg_ver }} state=started enabled=yes

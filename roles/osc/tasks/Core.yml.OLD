@@ -1,0 +1,49 @@
+---
+# tasks file for openstackclients
+
+#- name: revert to PIP 9.0.3 (PIP 10 no longer uninstalls distutils packages)
+#  pip:
+#    name: pip==9.0.3
+#    state: forcereinstall
+
+- name: install virtualenv
+  yum:
+    name: python-virtualenv
+    state: present
+
+- name: install SHADE (in a virtualenv)
+  pip:
+    name: shade
+    virtualenv: "{{ lookup('env','HOME') }}/venv"
+    virtualenv_site_packages: yes
+    virtualenv_command: virtualenv-2.7
+
+#- name: enable RDO repo to get OSC packages
+#  yum: 
+#    name: "centos-release-openstack-{{ os_release }}"
+#    state: present
+
+#- name: workaround for distutils
+#  file:
+#    state: "{{ item }}"
+#    path: "/usr/lib/python2.7/site-packages/urllib3/packages/ssl_match_hostname"
+#  with_items:
+#    - absent
+#    - directory
+
+- name: install Openstack command line clients
+  pip: 
+    name: "{{ item }}"
+    virtualenv: "{{ lookup('env','HOME') }}/venv"
+    virtualenv_site_packages: yes
+    virtualenv_command: virtualenv-2.7
+  with_items:
+    - python-openstackclient
+    - python-keystoneclient
+    - python-heatclient
+    - python-glanceclient
+    - python-cinderclient
+    - python-swiftclient
+    - python-novaclient
+    - python-neutronclient
+

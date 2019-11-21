@@ -1,0 +1,33 @@
+---
+# tasks file for openstackclients
+
+#- name: install SHADE library - a simple client library for interacting with OpenStack clouds
+#  pip:
+#    name: shade
+
+#- name: Shade has been superceded by 'openstacksdk'
+#  pip:
+#    name: openstacksdk
+
+- name: enable RDO repository
+  yum: 
+    name: https://rdoproject.org/repos/rdo-release.rpm
+    state: present
+
+- name: upgrade all packages
+  yum:
+    name: '*'
+    state: latest
+
+- name: install Openstack command line clients
+  yum: 
+    name:
+      - python-openstackclient
+      - python-keystoneclient
+      - python-heatclient
+      - python-glanceclient
+      - python-cinderclient
+      - python-swiftclient
+      - python-novaclient
+      - python-neutronclient
+    state: present

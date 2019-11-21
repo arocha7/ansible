@@ -1,0 +1,4 @@
+---
+# defaults file for openstackclients
+
+os_release: pike

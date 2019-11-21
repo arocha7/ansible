@@ -1,0 +1,6 @@
+---
+- name: be sure firewalld is installed
+  systemd: name=firewalld state=stopped enabled=no
+  become: true
+  tags:
+   - firewalld

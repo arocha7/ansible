@@ -1,0 +1,4 @@
+---
+# defaults file for onos
+
+ONOS_VERSION: 2.2.0

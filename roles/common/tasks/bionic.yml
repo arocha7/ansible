@@ -1,0 +1,29 @@
+---
+
+#- name: set external name servers for DNS resolution
+#  copy:
+#    src: "{{ lookup('env','PWD') }}/roles/common/files/resolvconf"
+#    dest: /etc/resolvconf/resolv.conf.d/base
+#    owner: root
+#    group: root
+#    mode: 0644
+#  become_user: root
+
+- name: previous install APTitude
+  apt: name=aptitude state=present
+
+- name: upgrade the cache of local packages to the latest version
+  apt:
+    name: '*'
+    #upgrade: full
+    update_cache: yes
+    autoclean: yes
+    autoremove: yes
+
+- name: install development libraries and tools
+  apt: name=build-essential state=latest
+
+- name: install useful operating system tools
+  apt:
+    name: [sysstat, nmap, tree, htop, policycoreutils, dialog, nscd]
+    state: latest

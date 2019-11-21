@@ -1,0 +1,32 @@
+---
+# tasks file for openstackclients
+
+- name: revert to PIP 9.0.3 (PIP 10 no longer uninstalls distutils packages)
+  pip: 
+    name: pip==9.0.3
+    state: forcereinstall
+
+#- name: install dependency libraries on the remote server
+#  pip: name={{ item }} state=present
+#  with_items:
+    #- pyopenssl
+    #- setuptools
+    #- wheel
+
+- name: install SHADE - a simple client library for interacting with OpenStack clouds
+  pip:
+    name: shade
+    state: present
+
+- name: install Openstack command line clients (OSC)
+  pip:
+    name:
+      - 'python-openstackclient'
+      - 'python-keystoneclient'
+      - 'python-heatclient'
+      - 'python-glanceclient'
+      - 'python-cinderclient'
+      - 'python-swiftclient'
+      - 'python-novaclient'
+      - 'python-neutronclient'
+    state: latest

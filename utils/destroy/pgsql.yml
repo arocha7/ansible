@@ -1,0 +1,33 @@
+---
+
+# HOW TO USE - EXAMPLE: 
+# ansible-playbook utils/destroy/pgsql.yml -e pg_ver_minor=11 -v 
+
+- name: remove PostgreSQL database server
+  hosts: "{{ target | default('localhost') }}"
+  become: true 
+  tasks:
+
+  - name: remove previous pgSQL install
+    yum:
+      name: "{{ packages }}"
+      state: absent
+    vars:
+      packages:
+      - "postgresql{{ pg_ver }}-server"
+      - "postgresql{{ pg_ver }}-libs"
+      - "postgresql{{ pg_ver }}"
+      - "postgresql{{ pg_ver }}-devel"
+      - libpq-devel
+      - python-devel
+      - python-psycopg2
+
+
+  - name: Recursively remove directory
+    file:
+      path: "{{ item }}"
+      state: absent
+    with_items:
+    - "/var/lib/pgsql/{{ pg_ver }}"
+    - "/usr/pgsql-{{ tarball_url }}"
+

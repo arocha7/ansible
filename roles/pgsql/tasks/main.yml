@@ -8,10 +8,6 @@
 - include_tasks: "open-fw-ports-{{ ansible_os_family }}.yml"
 
 
-
-
-
-
 # Create DB, Users and privileges
 
 - name: Ensure database is created

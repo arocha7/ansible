@@ -27,8 +27,9 @@
 
 #- file: path=/usr/local/pgsql/data state=directory owner=postgres group=postgres mode=0777 # for CentOS 6.x
 
-- name: initialize postgresql
+- name: initialize PostgreSQL
   shell: '/usr/pgsql-{{ tarball }}/bin/postgresql-{{ pg_ver }}-setup initdb'
 
 - name: Ensure the PostgreSQL service is running
   systemd: name=postgresql-{{ pg_ver }} state=started enabled=yes
+

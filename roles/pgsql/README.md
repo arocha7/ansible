@@ -37,8 +37,8 @@ $ ansible-playbook utils/deploy/pgsql.yml -e "tarball_url=9.6 tarball_ver=96 pg_
 
 File Locations
 --------------
-* U18: /usr/lib/postgresql/11/bin/postgres -D /var/lib/postgresql/11/main -c config_file=/etc/postgresql
-* Ce7: 
+* U18: /usr/lib/postgresql/11/bin/postgres -D /var/lib/postgresql/11/main -c config_file=/etc/postgresql/11/main/postgresql.conf
+* Ce7: /usr/pgsql-11/bin/postmaster -D /var/lib/pgsql/11/data/
 
 
 Uninstall

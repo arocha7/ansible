@@ -19,3 +19,10 @@
     packages:
     - "postgresql-{{ pg_ver }}"
     - python-psycopg2
+
+- name: "Replace line in file examples"
+  replace: 
+    path: /etc/postgresql/11/main/postgresql.conf
+    regexp: "#listen_addresses = 'localhost'"
+    replace: '\1*'
+    backup: yes

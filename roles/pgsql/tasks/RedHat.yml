@@ -18,7 +18,7 @@
     - python-devel
     - python-psycopg2
     - "postgresql{{ pg_ver }}-devel"
-    - libpq-devel
+#    - libpq-devel
 
 
 - file: "path=/usr/pgsql-{{ pg_ver }} state=directory owner=postgres group=postgres mode=0775"

@@ -26,11 +26,14 @@ Previous install
 * Python module "psycopg2"
 
 
-Example Playbook
+Playbook Usage
 ----------------
-Usage:
+Example using default variables:
+```
 $ ansible-playbook utils/deploy/pgsql.yml -v
 
+$ ansible-playbook utils/deploy/pgsql.yml -e "tarball_url=9.6 tarball_ver=96 pg_ver=9.6-3" -v
+```
 
 File Locations
 --------------
@@ -42,7 +45,9 @@ Uninstall
 ---------
 Example:
 ```
-$ ansible-playbook utils/destroy/pgsql.yml -e "tarball=9.6 pg_dev=96 pg_ver_minor=3" -v
+$ ansible-playbook utils/destroy/pgsql.yml -e "tarball=9.6 pg_dev=96" -v
+
+$ ansible-playbook utils/destroy/pgsql.yml -e "tarball_ver=11 pg_ver=11" -v
 ```
 
 

@@ -2,7 +2,7 @@
 
 # HOW TO USE - EXAMPLES: 
 # ansible-playbook utils/destroy/pgsql.yml -v 
-# ansible-playbook utils/destroy/pgsql.yml -e "tarball_url=11 pg_ver=11.6 pg_ver_minor=1PDGD" -v
+# ansible-playbook utils/destroy/pgsql.yml -e "tarball=11 pg_ver=11.6 pg_ver_minor=1PDGD" -v
 
 - name: remove PostgreSQL database server
   hosts: "{{ target | default('localhost') }}"
@@ -30,5 +30,5 @@
       state: absent
     with_items:
     - "/var/lib/pgsql/{{ pg_ver }}"
-    - "/usr/pgsql-{{ tarball_url }}"
+    - "/usr/pgsql-{{ tarball }}"
 

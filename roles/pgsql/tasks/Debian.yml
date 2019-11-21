@@ -10,9 +10,12 @@
     repo: "deb http://apt.postgresql.org/pub/repos/apt/ {{ ansible_distribution_release }}-pgdg main"
     state: present
 
-- name: Update repositories cache and install "foo" package
+- name: Update repositories cache and install "PostgreSQL" package
   apt:
-    name: "postgresql-{{ pg_ver }}"
+    name: "{{ packages }}"
     state: present
     update_cache: yes
-
+  vars:
+    packages:
+    - "postgresql-{{ pg_ver }}"
+    - python-psycopg2

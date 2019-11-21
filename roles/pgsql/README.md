@@ -1,24 +1,23 @@
 Role Name
 =========
 
-'pgsql' role installs PostgreSQL on multiple distros 
+'pgsql' role installs multiple versions of PostgreSQL on top of multiple distros 
+
 * CentOS 7 - as steps described here: https://wiki.postgresql.org/wiki/YUM_Installation
-* Ubuntu 14.04 
-* Ubuntu 16.04 
+* Ubuntu 18.04 
 
 
 Requirements
 ------------
 
-* Requires Ansible 2.2 because of managed services with 'systemd' 
-* 'firewalld'
+* Requires Ansible +2.2 because of managed services with 'systemd' 
 
 
 Role Variables
 --------------
 To install a different pgSQL version, change variable "tarball". 
 To set your own dbname, username and passwd, change it at role 'vars'
-Current version is: "9.6"
+Current versions are: "9.6" and "11"
 
 
 Dependencies
@@ -30,12 +29,26 @@ Previous install
 Example Playbook
 ----------------
 Usage:
-$ ansible-playbook deploy-pgsql.yml -e target=localhost
-$ ansible-playbook destroy-pgsql.yml -e target=localhost
+$ ansible-playbook utils/deploy/pgsql.yml -v
+
+
+File Locations
+--------------
+* U18: /usr/lib/postgresql/11/bin/postgres -D /var/lib/postgresql/11/main -c config_file=/etc/postgresql
+* Ce7: 
+
+
+Uninstall
+---------
+Example:
+```
+$ ansible-playbook utils/destroy/pgsql.yml -e "tarball=9.6 pg_dev=96 pg_ver_minor=3" -v
+```
 
 
 License
 -------
+n.a.
 
 
 Author Information

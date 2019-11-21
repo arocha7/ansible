@@ -3,7 +3,7 @@
 
 - name: install the PostgreSQL YUM repo
   yum:
-    name: 'https://download.postgresql.org/pub/repos/yum/{{ tarball_url }}/redhat/rhel-7-x86_64/pgdg-centos{{ pg_ver }}-{{ tarball_url }}-{{ pg_ver_minor }}.noarch.rpm'
+    name: 'https://download.postgresql.org/pub/repos/yum/{{ tarball }}/redhat/rhel-7-x86_64/pgdg-centos{{ pg_ver }}-{{ tarball }}-{{ pg_ver_minor }}.noarch.rpm'
     state: present
     update_cache: yes
 # NOTE: change 'roles/pgsql/defaults/main.yml' for a different pgSQL version
@@ -28,7 +28,7 @@
 #- file: path=/usr/local/pgsql/data state=directory owner=postgres group=postgres mode=0777 # for CentOS 6.x
 
 - name: initialize postgresql
-  shell: '/usr/pgsql-{{ tarball_url }}/bin/postgresql-{{ pg_ver }}-setup initdb'
+  shell: '/usr/pgsql-{{ tarball }}/bin/postgresql-{{ pg_ver }}-setup initdb'
 
 - name: Ensure the PostgreSQL service is running
   systemd: name=postgresql-{{ pg_ver }} state=started enabled=yes

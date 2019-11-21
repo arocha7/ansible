@@ -2,12 +2,12 @@
 # defaults file for postgresql
 
 ### Ver. 11
-tarball_url: "11"
+tarball: "11"
 pg_ver: "11"
 pg_ver_minor: "2"
 
 ### Ver. 9
-#tarball_url: "9.6"
+#tarball: "9.6"
 #pg_ver: "96"
 #pg_ver_minor: "16-1PGDG"
 

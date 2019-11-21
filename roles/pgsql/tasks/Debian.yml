@@ -7,7 +7,7 @@
 
 - name: Add specified repository into sources list using specified filename.
   apt_repository:
-    repo: "deb http://apt.postgresql.org/pub/repos/apt/ {{ ansible_distribution_release }}"-pgdg main
+    repo: "deb http://apt.postgresql.org/pub/repos/apt/ {{ ansible_distribution_release }}-pgdg main"
     state: present
 
 - name: Update repositories cache and install "foo" package

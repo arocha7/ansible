@@ -1,0 +1,14 @@
+---
+# tasks file for firewall
+
+# UBUNTU/DEBIAN
+
+- name: start 'firewall' service
+  systemd: name=ufw state=started enabled=yes
+
+- name: open SVC port at FW
+  ufw:
+    state: enabled
+    rule: allow # TO FIX
+    proto: tcp
+    port: 80

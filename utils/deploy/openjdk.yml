@@ -1,0 +1,19 @@
+---
+- name: deploy OpenJDK to the target machine
+  hosts: "{{ target | default('localhost') }}"
+  become: true
+  connection: ssh
+  environment:
+    JAVA_HOME: "/usr/lib/jvm/jre-openjdk"
+    PATH: "/usr/lib/jvm/jre-openjdk:{{ ansible_env.PATH }}"
+    OpenJDK_USER: "{{ lookup('env','USER') }}"
+
+  pre_tasks:
+    - debug: msg="##### start OpenJDK deployment {{ lookup('pipe', 'date +%Y%m%d-%H:%M:%S') }}"
+
+  roles:
+    - openjdk
+
+  post_tasks:
+    - debug: msg="##### ending OpenJDK deployment {{ lookup('pipe', 'date +%Y%m%d-%H:%M:%S') }}"
+

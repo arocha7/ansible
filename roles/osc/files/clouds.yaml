@@ -1,0 +1,18 @@
+###
+## Change the values for your own environment
+####
+
+clouds:
+  os_alb_tango:
+    auth:
+      auth_url: http://172.31.8.16:5000/v3
+      username: "tango"
+      password: "t4ng0"
+      project_id: 5502c800a97a4bb1889dc02a2c3d6ba6
+      project_name: "tango"
+      user_domain_name: "Default"
+    auth_type: password
+    region_name: "regionOne"
+    interface: "public"
+    identity_api_version: 3
+

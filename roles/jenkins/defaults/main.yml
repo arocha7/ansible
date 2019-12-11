@@ -5,5 +5,5 @@ svc_port: 8080
 flv: m1.medium
 
 ### caution: you must use external parameters to override this vars for other sites
-pop: alabs
+pop: alb
 proj: tango

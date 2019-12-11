@@ -19,5 +19,5 @@
     daemon_reload: yes
 
 - name: Openstack modules require OSC
-  include_tasks: create-security-group.yml
+  include_tasks: secgrp.yml
 

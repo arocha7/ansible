@@ -3,7 +3,7 @@
 
 #NOTE: Shade has been superceded by 'openstacksdk'
 
-- name: enable RDO repository
+- name: enable RDO repository (to install OSC packages)
   yum: 
     name: https://rdoproject.org/repos/rdo-release.rpm
     state: present

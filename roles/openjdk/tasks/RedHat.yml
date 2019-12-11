@@ -8,7 +8,7 @@
 - name: installing JDK
   yum: name=java state=present update_cache=yes
 
-- name: installing EPEL
+- name: removing EPEL
   yum:
     name: epel-release
     state: absent # do not break regular YUM dependencies

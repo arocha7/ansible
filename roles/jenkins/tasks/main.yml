@@ -11,7 +11,6 @@
       - jenkins
     state: latest
 
-
 - name: start JENKINS service
   systemd:
     state: started
@@ -20,7 +19,7 @@
     daemon_reload: yes
 
 #
-# requires previous install of OSC
+# Openstack modules require OSC
 #
 - name: create a new security group for VM connectivity
   os_security_group:

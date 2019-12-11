@@ -35,7 +35,9 @@ This Role automatically installs required components, namely:
 Example Playbook
 ----------------
 
-```$ ansible-playbook utils/deploy/jenkins.yml --ask-vault-pass'```
+```$ ansible-playbook utils/deploy/jenkins.yml [-e pop=my-site -e proj=my-tenant] --ask-vault-pass'```
+
+NOTE: you must set '$HOME/.config/openstack/clouds.yaml' 
 
 License
 -------

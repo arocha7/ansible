@@ -6,7 +6,7 @@
 
 - name: Copy file with owner and permissions
   copy:
-    src: "{{ lookup('env','PWD') }}/roles/osc/files/clouds.yaml
+    src: "{{ lookup('env','PWD') }}/roles/osc/files/clouds.yaml"
     dest: "{{ lookup('env','HOME') }}/.config/openstack"
     owner: "{{ lookup('env','USER') }}"
     group: "{{ lookup('env','USER') }}"

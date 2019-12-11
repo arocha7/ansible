@@ -1,0 +1,9 @@
+---
+# defaults file for Jenkins
+plat: jenkins
+svc_port: 8080
+flv: m1.medium
+
+### caution: use external parameter for other sites
+#pop: alabs
+#proj: tng

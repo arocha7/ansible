@@ -1,0 +1,26 @@
+---
+- name: deploy JENKINS to the target machine
+  hosts: "{{ target | default('localhost') }}"
+  become: true
+  connection: local
+  environment:
+    JAVA_HOME: "/usr/lib/jvm/jre-openjdk"
+    PATH: "/usr/lib/jvm/jre-openjdk:{{ ansible_env.PATH }}"
+
+  pre_tasks:
+    - debug: msg="##### start JENKINS deployment {{ lookup('pipe', 'date +%Y%m%d-%H:%M:%S') }}"
+
+    - file:
+        path: "{{ lookup('env','HOME') }}/ansible.log"
+        state: touch
+        owner: "{{ lookup('env','USER') }}"
+        group: "{{ lookup('env','USER') }}"
+        mode: "u=rw,g=rw,o=rw"
+
+  roles:
+    - openjdk
+    - jenkins
+
+  post_tasks:
+    - debug: msg="##### ending JENKINS deployment {{ lookup('pipe', 'date +%Y%m%d-%H:%M:%S') }}"
+

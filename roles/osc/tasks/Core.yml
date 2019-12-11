@@ -1,13 +1,7 @@
 ---
 # tasks file for openstackclients
 
-#- name: install SHADE library - a simple client library for interacting with OpenStack clouds
-#  pip:
-#    name: shade
-
-#- name: Shade has been superceded by 'openstacksdk'
-#  pip:
-#    name: openstacksdk
+#NOTE: Shade has been superceded by 'openstacksdk'
 
 - name: enable RDO repository
   yum: 

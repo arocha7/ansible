@@ -7,8 +7,14 @@
 
 - name: installing JDK
   yum: name=java state=present update_cache=yes
-  #yum: name=java-1.7.0-openjdk state=present update_cache=yes
 
-- name: set environment variables
+- name: installing EPEL
+  yum:
+    name: epel-release
+    state: absent # do not break regular YUM dependencies
+
+- name: set environment variable 'JAVA_HOME'
   shell: "echo 'export JAVA_HOME=/usr/lib/jvm/jre-1.8.0-openjdk' | sudo tee -a /etc/profile"
-- shell: "echo 'export JRE_HOME=/usr/lib/jvm/jre' | sudo tee -a /etc/profile"
+
+- name: set environment variable 'JRE_HOME'
+  shell: "echo 'export JRE_HOME=/usr/lib/jvm/jre' | sudo tee -a /etc/profile"

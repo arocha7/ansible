@@ -1,0 +1,5 @@
+---
+# file: group_vars/vars
+
+ansible_connection: ssh
+ansible_users: tango

@@ -2,6 +2,8 @@ Role Name
 =========
 
 This playbook installs Jenkins to both Ubuntu Xenial/Bionic and CentOS 7 distros
+* [Installing Jenkins on Red Hat distributions](https://wiki.jenkins.io/display/JENKINS/Installing+Jenkins+on+Red+Hat+distributions)
+* 
 
 Requirements
 ------------

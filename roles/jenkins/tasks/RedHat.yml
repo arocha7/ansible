@@ -13,7 +13,10 @@
     dest: /etc/yum.repos.d/jenkins.repo
     mode: 0644
 
-# Open FW ports
+# Install Firewalld and open FW ports
+
+- name: Install Firewalld
+  include_tasks: "{{ lookup('env','PWD') }}/roles/common/tasks/enable-fw-{{ ansible_os_family }}.yml"
 
 - name: open JENKINS default port (8080) at CentOS/Redhat machine
   firewalld:

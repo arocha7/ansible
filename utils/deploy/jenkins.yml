@@ -18,6 +18,7 @@
         mode: "u=rw,g=rw,o=rw"
 
   roles:
+    - osc
     - openjdk
     - jenkins
 

@@ -15,6 +15,10 @@ Role Variables
 
 Settable variables for this role:
 * defaults/main.yml
+```
+pop: alabs
+proj: tng
+```
 * vars/main.yml
 
 Any variables that are read from other roles and/or the global scope:

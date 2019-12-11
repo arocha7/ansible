@@ -2,7 +2,7 @@
 # install guide: "Installing Jenkins on Red Hat distributions", Feb 2018
 # URL: https://wiki.jenkins.io/display/JENKINS/Installing+Jenkins+on+Red+Hat+distributions
 
-- name: Installing Jenkins YUM GPG key
+- name: installing Jenkins YUM GPG key
   rpm_key:
     state: present
     key: https://jenkins-ci.org/redhat/jenkins-ci.org.key
@@ -15,10 +15,10 @@
 
 # Install Firewalld and open FW ports
 
-- name: Install Firewalld
+- name: install Firewalld
   include_tasks: "{{ lookup('env','PWD') }}/roles/common/tasks/enable-fw-{{ ansible_os_family }}.yml"
 
-- name: open JENKINS default port (8080) at CentOS/Redhat machine
+- name: open Jenkins default port (8080) at CentOS/Redhat machine
   firewalld:
     port: 8080/tcp
     permanent: true

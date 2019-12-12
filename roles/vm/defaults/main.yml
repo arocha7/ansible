@@ -1,0 +1,7 @@
+---
+# defaults file for vm
+domain_name: sonata-nfv.eu
+plat: vm
+localhome: "{{ lookup('env','HOME') }}"
+key_name: tng-infra
+#flv: m1.small

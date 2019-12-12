@@ -1,0 +1,13 @@
+# DEFAULT VM CONFIG
+nbofvms: 1
+#vm_user: ubuntu
+distro: xenial
+image: "xenial-server-cloudimg-amd64-disk1"
+os_security_groups: "{{ plat }}-secgrp"
+fip: admin_floating_net
+availability_zone: nova
+region_name: regionOne
+key_name: tng-infra
+int_net_id: "58db8cfd-d27c-440b-b21c-eec4f90f7080" # INT
+ext_net_id: "3283ec5d-984e-46e7-8eac-312a79b878f1" # FIP
+

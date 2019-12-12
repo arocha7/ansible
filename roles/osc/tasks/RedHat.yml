@@ -3,9 +3,14 @@
 
 #NOTE: Shade has been superceded by 'openstacksdk'
 
-- name: enable RDO repository (to install OSC packages)
-  yum: 
-    name: https://rdoproject.org/repos/rdo-release.rpm
+#- name: enable RDO repository (to install OSC packages)
+#  yum: 
+#    name: https://rdoproject.org/repos/rdo-release.rpm
+#    state: present
+
+- name: enable Openstack release (to install via Package instead of PIP)
+  yum:
+    name: "centos-release-openstack-{{ ostk_release }}"
     state: present
 
 - name: upgrade all packages

@@ -1,0 +1,10 @@
+---
+
+- name: connect to Openstack VIM and deploy a guest machine (VM)
+  hosts: localhost
+  become: false
+  pre_tasks:
+    - debug: msg="##### VM START DEPLOYMENT {{ lookup('pipe', 'date +%Y%m%d-%H%M%S') }}"
+  roles:
+    - vm
+

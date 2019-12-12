@@ -1,0 +1,92 @@
+
+# tasks file for vm
+
+- debug: msg="##### CREATE-VM {{ lookup('pipe', 'date +%Y%m%d-%H:%M:%S') }}"
+
+- name: load variables per Site, Tenant and Distro
+  include_vars: "{{ item }}"
+  with_first_found:
+    - files:
+        - "{{ lookup('env','PWD') }}/roles/{{ plat }}/vars/os_{{ pop }}_{{ proj }}_{{ distro }}.yml"
+        - "{{ lookup('env','PWD') }}/group_vars/os_{{ pop }}_{{ proj }}_{{ distro }}.yml"
+        - "defaults.yml"
+      skip: true
+
+- include_vars: "{{ lookup('env','PWD') }}/roles/vm/defaults/{{ distro }}.yml"
+
+- include_tasks: "{{ lookup('env','PWD') }}/roles/{{ plat }}/tasks/secgrp.yml"
+
+- include_tasks: "{{ lookup('env','PWD') }}/roles/vm/tasks/privkey.yml"
+
+#- include_tasks: "{{ lookup('env','PWD') }}/roles/vm/tasks/networks.yml"
+#  when: not plat | search ("docker-")
+#  when: plat.find("docker-") != 1
+
+- include_tasks: "{{ lookup('env','PWD') }}/roles/vm/tasks/vm.yml"
+
+- lineinfile:
+    path: "{{ lookup('env','PWD') }}/ansible.cfg"
+    line: "inventory = environments/{{ plat }}"
+
+- name: create IN-MEMORY Inventory # temporary in-memory group of hosts that only persists until the end of the playbook
+  add_host:
+    name: "{{ item.openstack.name }}"
+    groups: "{{ item.openstack.metadata.group }}"
+    #groups: "{{ plat }}"
+    ansible_host: "{{ item.openstack.accessIPv4 }}"
+  with_items: "{{ newvm.results }}"
+
+- name: ensures dir exists
+  file:
+    path: "{{ lookup('env','PWD') }}/environments/{{ plat }}"
+    state: directory
+    recurse: yes
+    owner: "{{ lookup('env','USER') }}"
+    group: "{{ lookup('env','USER') }}"
+    mode: 0755
+
+- name: create STATIC Inventory based on a provided Template ['jinja2']
+  # http://docs.ansible.com/ansible/template_module.html
+  template:
+    src: "{{ lookup('env','PWD') }}/roles/vm/templates/dynamic_inventory.j2"
+    dest: "{{ lookup('env','PWD') }}/environments/{{ plat }}/hosts"
+
+- name: Add STATIC mappings to /etc/hosts
+  become: true
+  template:
+    src: "{{ lookup('env','PWD') }}/roles/vm/templates/etc_hosts.j2"
+    dest: /etc/hosts
+    owner: "{{ lookup('env','USER') }}"
+    group: "{{ lookup('env','USER') }}"
+    mode: 0644
+
+- set_fact:
+    vm_user = ubuntu
+  when: distro == "xenial" or distro == "bionic"
+
+- set_fact:
+    vm_user = centos
+  when: distro == "Core"
+
+- name: WAIT the SSH port listening at the new deployed instance
+  command: >
+    ssh -oControlMaster=auto -oControlPersist=60s -oUserKnownHostsFile=/dev/null -oBatchMode=yes -oStrictHostKeyChecking=no -i {{ localhome }}/.ssh/{{ item.openstack.key_name }}.pem -l {{ vm_user }} {{ item.openstack.accessIPv4 }} true
+  register: result
+  until: result is success
+  retries: 30
+  delay: 10
+  with_items: "{{ newvm.results }}"
+
+- name: install Python 2.7 to the new deployed instance, if Xenial
+  shell: >
+    ssh -oControlMaster=auto -oControlPersist=60s -oUserKnownHostsFile=/dev/null -oBatchMode=yes -oStrictHostKeyChecking=no -i {{ localhome }}/.ssh/{{ item.openstack.key_name }}.pem -l {{ vm_user }} {{ item.openstack.accessIPv4 }} 'sudo apt-get update && sudo apt-get install python-minimal -y'
+  register: result
+  until: result is success
+  retries: 30
+  delay: 10
+  with_items: "{{ newvm.results }}"
+  when: distro == "xenial"
+
+- name: WAIT for remote package manager
+  pause: seconds=30
+

@@ -1,4 +1,4 @@
 ---
 # defaults file for openstackclients
 
-os_release: pike
+ostk_release: stein

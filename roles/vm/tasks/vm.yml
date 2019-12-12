@@ -1,0 +1,50 @@
+---
+
+- include_vars: "{{ item }}"
+  with_items:
+    - "{{ lookup('env','PWD') }}/roles/{{ plat }}/defaults/main.yml"
+    - "{{ lookup('env','PWD') }}/roles/{{ plat }}/vars/main.yml"
+    - "{{ lookup('env','PWD') }}/group_vars/os_{{ pop }}_{{ proj }}_{{ distro }}.yml"
+
+- name: launch new Instance(s)
+  vars:
+    local_home: "{{ lookup('env','PWD') }}"
+  os_server:
+    # http://docs.openstack.org/developer/os-client-config/
+    state: present
+    cloud: "os_{{ pop }}_{{ proj }}"
+    name: "{{ plat }}-{{ pop }}-{{ proj }}-{{ distro }}-{{ item }}-{{ ansible_date_time.epoch }}"
+    image: "{{ image }}"
+    key_name: "{{ key_name }}"
+    flavor: "{{ flv | default ('m1.small') }}"
+    availability_zone: "{{ availability_zone }}"
+    security_groups: "{{ os_security_groups }}"
+    floating_ip_pools: "{{ ext_net_id }}"
+    #auto_ip: yes
+    nics:
+      - net-id: "{{ int_net_id }}"
+      #- net-id: "{{ mgmt_net_id|default([]) }}"
+      #- net-id: "{{ cpin_net_id|default([]) }}"
+      #- net-id: "{{ cpou_net_id|default([]) }}"
+    userdata: "{{ lookup('file', '{{ local_home }}/userdata/{{ distro }}.sh') }}"
+    meta:
+      hostname: "{{ plat }}-{{ pop }}-{{ proj }}-{{ distro }}-{{ item }}-{{ ansible_date_time.epoch }}"
+      group: "{{ plat }}"
+    timeout: 180
+    wait: yes
+  with_sequence: "start=1 end={{ nbofvms | default(1) }} format=%02x"
+  register: "newvm"
+
+- lineinfile:
+    path: "{{ lookup('env','PWD') }}/roles/{{ plat }}/vars/main.yml"
+    line: "public_ip: '{{ item.openstack.accessIPv4 }}'"
+    create: yes
+    state: present
+  with_items: "{{ newvm.results }}"
+
+- lineinfile:
+    path: "{{ lookup('env','PWD') }}/roles/{{ plat }}/vars/main.yml"
+    line: "plat_hostname: {{ item.openstack.name }}"
+    create: yes
+    state: present
+  with_items: "{{ newvm.results }}"

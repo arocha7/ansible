@@ -1,0 +1,21 @@
+---
+- name: upgrade Operating System packages to the target machine
+  hosts: "{{ target | default('localhost') }}"
+  become: true
+
+  pre_tasks:
+    - debug: msg="##### start COMMON deployment {{ lookup('pipe', 'date +%Y%m%d-%H:%M:%S') }}"
+
+    - file:
+        path: "{{ lookup('env','HOME') }}/ansible.log"
+        state: touch
+        owner: "{{ lookup('env','USER') }}"
+        group: "{{ lookup('env','USER') }}"
+        mode: "u=rw,g=rw,o=rw"
+
+  roles:
+    - common
+
+  post_tasks:
+    - debug: msg="##### ending COMMON deployment {{ lookup('pipe', 'date +%Y%m%d-%H:%M:%S') }}"
+

@@ -1,7 +1,11 @@
 # REDHAT
 
-#- name: clean cache info
-#  command: 'yum clean all'
+- name: clean cache info
+  command: 'yum clean all'
+# The YUM module does not support clearing yum cache in an idempotent way,
+#  so it was decided not to implement it, the only method is to use command
+#  and call the yum command directly, namely “command: yum clean all”
+# https://github.com/ansible/ansible/pull/31450#issuecomment-352889579
 
 - name: set external name servers for DNS resolution
   copy:
@@ -10,14 +14,9 @@
     mode: 0644
 
 - name:  upgrade all packages to the latest version
-#  become: true
   yum: name='*' state=latest update_cache=yes
 
-#- yum: name=epel-release state=latest
-# become: true
-
-- name: install useful operating system tools
+- name: install useful Operating System tools
   yum:
-    name: [sysstat, nmap, lsof, tree, wget, dialog, nscd]
+    name: [sysstat, nmap, lsof, tree, wget, git, curl, nscd]
     state: present
-#  become: true

@@ -1,38 +1,52 @@
 Role Name
 =========
 
-A brief description of the role goes here.
+A role to deploy a VM to an Openstack platform. You must have a tenant account on that VIM. 
+
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+This role use Openstack Command-line client (OSC) to operate the Openstack platform, but that is installed with the playbook.
+
+When deployed by Jenkins you have to:
+* add 'jenkins' user to 'sudoers'
+* include your '.pem' key at '$HOME/.ssh'
+
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+The following default variables are used:
+
+* ```plat ``` - to specify the application (a simple VM, for instance) you want to deploy
+* ```pop: ``` - to specify the location (PoP) where the VM will be created 
+* ```proj: ``` - to specify the Tenant where the VM wil belong
+* ```distro: ``` -  to specify the Linux distro as the Operating System
+NOTE: to add you own VIM just create a file with the right values at 'group_vars/os_{pop}_{proj}_{distro}'
+
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+To connect to an Openstack platform will need Shade library, but that is now solved by the 'openstacksdk' library that is installed during the deployment process.
+
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+This playbook creates a Ubuntu 18.04 VM on the Altice Labs PoP on the 'tango' Tenant
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+```$ ansible-playbook utils/deploy/vm.yml -e plat=vm -e pop=alb -e proj=tango -e distro=bionic -v```
+
 
 License
 -------
 
-BSD
+n.a.
+
 
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+arocha@ptinovacao.pt

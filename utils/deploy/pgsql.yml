@@ -6,6 +6,7 @@
 
 - name: installing a PostgreSQL database server
   hosts: "{{ target | default('localhost') }}"
+  #remote_user: "{{ }}"
   become: true 
   roles:
   - common

@@ -1,7 +1,7 @@
 Role Name
 =========
 
-'pgsql' role installs multiple versions of PostgreSQL on top of multiple distros 
+A role ito  multiple versions of PostgreSQL on top of multiple distros 
 
 * CentOS 7 - as steps described here: https://wiki.postgresql.org/wiki/YUM_Installation
 * Ubuntu 18.04 
@@ -22,20 +22,24 @@ Current versions are: "9.6" and "11"
 
 Dependencies
 ------------
-Previous install 
 * Python module "psycopg2"
+
+NOTE: this library is installed by this role
 
 
 Playbook Usage
 ----------------
 Example using default variables:
-```
-$ ansible-playbook utils/deploy/pgsql.yml -v
 
-$ ansible-playbook utils/deploy/pgsql.yml -e "tarball=9.6 tarball_ver=96" -v
-
-$ ansible-playbook utils/deploy/pgsql.yml -e "tarball=11 pg_ver=11" -v
 ```
+$ ansible-playbook [-i inventory] utils/deploy/pgsql.yml -v
+
+$ ansible-playbook [-i inventory] utils/deploy/pgsql.yml -e "tarball=9.6 tarball_ver=96" -v
+
+$ ansible-playbook [-i inventory] utils/deploy/pgsql.yml -e "tarball=11 pg_ver=11" -v
+```
+
+NOTE: use 'ansible' when asked for the Ansible-Vault password
 
 
 File Locations

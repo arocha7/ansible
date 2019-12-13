@@ -1,10 +1,6 @@
 ---
 # vars file for postgresql
 
-db_name: son-sp
-db_user: sonata
-db_password: s0n@t@
-
 ansible_python_interpreter: /usr/bin/python2.7
 
 #postgresql_databases:

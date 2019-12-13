@@ -7,6 +7,10 @@
 
 - include_tasks: "open-fw-ports-{{ ansible_os_family }}.yml"
 
+- name: include default extension files in vars/services (v2.2)
+  include_vars:
+    dir: "{{ lookup('env','PWD') }}/roles/pgsql/vars"
+    depth: 1
 
 # Create DB, Users and privileges
 
@@ -31,7 +35,8 @@
     password: "{{ db_password }}"
     priv: ALL
     state: present
-    encrypted: no
+    encrypted: yes
+# NOTE: HINT:  Remove UNENCRYPTED to store the password in encrypted form instead
 
 - name: Ensure user does not have unnecessary privileges
   become_user: postgres

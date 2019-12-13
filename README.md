@@ -11,3 +11,4 @@ List of exhisting roles:
 * ```onos``` - deploy ONOS SDN Controller
 * ```osc``` - deploy Openstack Command-line client
 
+NOTE: some secrets are offuscated by Ansible-Vault: use use 'ansible' as password

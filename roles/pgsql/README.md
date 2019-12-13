@@ -10,7 +10,11 @@ A role ito  multiple versions of PostgreSQL on top of multiple distros
 Requirements
 ------------
 
-* Requires Ansible +2.2 because of managed services with 'systemd' 
+- Requires Ansible +2.2 because of managed services with 'systemd' 
+
+- 'ansible-facts' requires Python 2.7.x on the target machine, then you need to pre-install it on Ubuntu 18.04 
+
+```$ sudo apt install python-minimal```
 
 
 Role Variables

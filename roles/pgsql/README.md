@@ -32,9 +32,9 @@ Playbook Usage
 Example using default variables:
 
 ```
-$ ansible-playbook [-i inventory] utils/deploy/pgsql.yml -v
+$ ansible-playbook [-i inventory] utils/deploy/pgsql.yml [-e target="INVENTORY_GROUP"] -v
 
-$ ansible-playbook [-i inventory] utils/deploy/pgsql.yml -e "tarball=9.6 tarball_ver=96" -v
+$ ansible-playbook utils/deploy/pgsql.yml -e "tarball=9.6 tarball_ver=96" -v
 
 $ ansible-playbook [-i inventory] utils/deploy/pgsql.yml -e "tarball=11 pg_ver=11" -v
 ```
@@ -58,12 +58,17 @@ Manual Start
 
 Uninstall
 ---------
-Example:
+Example: 
+* Uninstall from local host
 ```
 $ ansible-playbook utils/destroy/pgsql.yml -e "tarball=9.6 pg_dev=96" -v
 
 $ ansible-playbook utils/destroy/pgsql.yml -e "tarball=11 pg_ver=11" -v
 ```
+* Uninstall from the target machine
+```
+$ ansible-playbook utils/destroy/pgsql.yml -i inventory -e "target=INVENTORY_HOST_or_GROUP tarball=9.6 pg_dev=96" -v
+
 
 
 License

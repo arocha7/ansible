@@ -1,0 +1,28 @@
+---
+
+- name: remove ONOS database server
+  hosts: "{{ target | default('localhost') }}"
+  become: true 
+  tasks:
+
+  - name: get service facts
+    service_facts:
+
+  - name: stop ONOS
+    systemd:
+      name: onos
+      state: stopped
+    when: ansible_facts.services['onos.service'] is defined and ansible_facts.services['onos.service'].state == 'running'
+
+  - name: remove previous ONOS installation
+    yum:
+      name: onos
+      state: absent
+
+  - name: Recursively remove directory
+    file:
+      path: "{{ item }}"
+      state: absent
+    with_items:
+    - "/opt/onos"
+    - "/etc/onos"

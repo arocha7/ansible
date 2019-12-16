@@ -1,0 +1,28 @@
+---
+
+# HOW TO USE - EXAMPLES: 
+# ansible-playbook utils/destroy/onos.yml -v 
+# ansible-playbook utils/destroy/onos.yml -e "tarball=11 pg_ver=11" -v
+
+- name: remove ONOS database server
+  hosts: "{{ target | default('localhost') }}"
+  become: true 
+  tasks:
+
+  - name: stop ONOS
+    systemd:
+      name: "onos"
+      state: stopped
+
+  - name: remove previous ONOS installation
+    yum:
+      name: onos
+      state: absent
+
+  - name: Recursively remove directory
+    file:
+      path: "{{ item }}"
+      state: absent
+    with_items:
+    - "/opt/onos"
+    - "/etc/onos"

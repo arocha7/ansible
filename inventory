@@ -1,0 +1,33 @@
+# EIT1 platforms
+
+[onos]
+#172.31.8.119 ansible_user=centos
+172.31.8.121 ansible_user=ubuntu
+#172.31.8.175 ansible_user=ubuntu
+
+[odl]
+172.31.8.119 ansible_user=centos
+172.31.8.121 ansible_user=ubuntu
+172.31.8.175 ansible_user=ubuntu
+
+[jenkins]
+172.31.8.119 ansible_user=centos
+172.31.8.121 ansible_user=ubuntu
+172.31.8.175 ansible_user=ubuntu
+
+[pgsql]
+#172.31.8.119 ansible_user=centos
+#172.31.8.121 ansible_user=ubuntu
+172.31.8.175 ansible_user=ubuntu
+
+
+# DEVOPS platforms
+
+[targets]
+
+localhost     ansible_connection=local
+172.31.8.123  ansible_connection=ssh    ansible_user=tango  ansible_password=*****
+
+[all:vars]
+ansible_ssh_common_args='-o StrictHostKeyChecking=no -o KbdInteractiveAuthentication=no'
+ansible_ssh_private_key_file=~/.ssh/tng-infra.pem

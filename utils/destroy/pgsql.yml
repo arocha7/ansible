@@ -9,10 +9,14 @@
   become: true 
   tasks:
 
-  - name: stop PostgreSQL
+  - name: get service facts
+    service_facts:
+
+  - name: stop postgreSQL
     systemd:
-      name: "postgresql-{{ pg_ver }}"
+      name: "postgresql-{{ ps_ver }}"
       state: stopped
+    when: ansible_facts.services['postgresql-{{ pg_ver }}.service'] is defined and ansible_facts.services['postgresql-{{ pg_ver }}.service'].state == 'running'
 
   - name: remove previous pgSQL install
     yum:
@@ -26,7 +30,6 @@
       - "postgresql{{ pg_ver }}-devel"
       - "libpq-devel"
       - "python-psycopg2"
-
 
   - name: Recursively remove directory
     file:

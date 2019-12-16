@@ -2,17 +2,26 @@
 
 # HOW TO USE - EXAMPLES: 
 # ansible-playbook utils/destroy/onos.yml -v 
-# ansible-playbook utils/destroy/onos.yml -e "tarball=11 pg_ver=11" -v
+# ansible-playbook utils/destroy/onos.yml -v
 
 - name: remove ONOS database server
   hosts: "{{ target | default('localhost') }}"
   become: true 
   tasks:
 
+  - name: get service facts
+    service_facts:
+
+#   - name: try to work out how to access the service
+#     debug:
+#       var: ansible_facts.services['onos.service']
+
   - name: stop ONOS
     systemd:
-      name: "onos"
+      name: onos
       state: stopped
+    when: ansible_facts.services['onos.service'] is defined and ansible_facts.services['onos.service'].state == 'running'
+    #when: hostvars[inventory_hostname]['services']['onos.service'].['state'] == running
 
   - name: remove previous ONOS installation
     yum:

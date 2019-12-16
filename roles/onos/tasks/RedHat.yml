@@ -24,7 +24,7 @@
     state: directory
   ignore_errors: true
 
-- name: "As of Ansible 2.2.1.0, copying directories in the remote servers are not supported"
+- name: "As of Ansible 2.2.1, copying directories in the remote servers are not supported"
   shell: "sudo rm -fr /opt/onos/* && sudo mv /opt/onos-{{ ONOS_VERSION }}/* /opt/onos/"
 
 - name: Recursively change ownership of a directory

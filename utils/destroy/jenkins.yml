@@ -4,7 +4,7 @@
 # ansible-playbook utils/destroy/jenkins.yml -v 
 # ansible-playbook utils/destroy/jenkins.yml -v
 
-- name: remove JENKINS database server
+- name: remove JENKINS CI/CD server
   hosts: "{{ target | default('localhost') }}"
   become: true 
   tasks:

@@ -20,7 +20,7 @@
   ufw:
     state: enabled
     rule: allow
-    port: 8080
+    port: "8080"
     proto: tcp
   notify: reload ufw
 

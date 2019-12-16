@@ -1,0 +1,33 @@
+---
+
+# HOW TO USE - EXAMPLES: 
+# ansible-playbook utils/destroy/jenkins.yml -v 
+# ansible-playbook utils/destroy/jenkins.yml -v
+
+- name: remove JENKINS database server
+  hosts: "{{ target | default('localhost') }}"
+  become: true 
+  tasks:
+
+  - name: get service facts
+    service_facts:
+
+  - name: stop JENKINS
+    systemd:
+      name: jenkins
+      state: stopped
+    when: ansible_facts.services['jenkins.service'] is defined and ansible_facts.services['jenkins.service'].state == 'running'
+    #when: hostvars[inventory_hostname]['services']['jenkins.service'].['state'] == running
+
+  - name: remove previous JENKINS installation
+    yum:
+      name: jenkins
+      state: absent
+
+  - name: Recursively remove directory
+    file:
+      path: "{{ item }}"
+      state: absent
+    with_items:
+    - "/opt/jenkins"
+    - "/etc/jenkins"

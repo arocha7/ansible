@@ -1,0 +1,26 @@
+---
+
+- name: install common libraries and tools 
+  apt: name={{ item }} state=present 
+  with_items:  
+  - build-essential 
+  - software-properties-common 
+
+- name: install Jenkins APT GPG key
+  apt_key: state=present url=https://pkg.jenkins.io/debian/jenkins.io.key
+
+- name: install Jenkins repo
+  shell: "echo 'deb https://pkg.jenkins.io/debian-stable binary/' | sudo tee /etc/apt/sources.list.d/jenkins.list"
+
+- apt: update_cache=yes
+
+# Open FW ports
+#
+- name: open JENKINS default port (8080) at Ubuntu or Debian machine
+  ufw:
+    state: enabled
+    rule: allow
+    port: 8080
+    proto: tcp
+  notify: reload ufw
+

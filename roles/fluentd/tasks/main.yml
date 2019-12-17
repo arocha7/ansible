@@ -4,8 +4,13 @@
 - include_tasks: "{{ ansible_os_family }}.yml"
 
 #
-## Step 3 — Starting the Elasticsearch Container
+## Step 3 — deploying a local Elasticsearch container
 #
+
+- name: "Docker SDK for Python: docker (Python >= 2.7) or docker-py (Python 2.6)"
+  pip:
+    name: docker
+    state: present
 
 - sysctl:
     name: vm.max_map_count

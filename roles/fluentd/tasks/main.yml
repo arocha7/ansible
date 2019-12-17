@@ -2,3 +2,23 @@
 # tasks file for fluentd
 
 - include_tasks: "{{ ansible_os_family }}.yml"
+
+#
+## Step 3 — Starting the Elasticsearch Container
+#
+
+- sysctl:
+    name: vm.max_map_count
+    value: '262144'
+    state: present
+
+- name: start Elasticsearch container
+  docker_container:
+    name: elasticsearch
+    state: present
+    image: elasticsearch
+    exposed_ports:
+    - 9200:9200
+    - 9300:9300
+    command: sleep infinity
+

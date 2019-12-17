@@ -21,3 +21,10 @@
     name: "td-agent"
     state: restarted
 
+#
+## required to run Docker containers locally 
+#
+- name: "Docker SDK for Python: docker (Python >= 2.7) or docker-py (Python 2.6)"
+  pip:
+    name: docker
+    state: present

@@ -9,6 +9,11 @@
   become: true 
   tasks:
 
+  - name: start Elasticsearch container
+    docker_container:
+      name: elasticsearch
+      state: absent
+
   - name: install Elasticsearch plugin for Fluentd
     shell: td-agent-gem uninstall fluent-plugin-elasticsearch
     become: true
@@ -33,5 +38,7 @@
       path: "{{ item }}"
       state: absent
     with_items:
-    - "/opt/fluentd"
-    - "/etc/fluentd"
+    - "/opt/td-agent"
+    - "/etc/td-agent"
+    - "/var/log/td.agent"
+    - "/usr/sbin/td-agent"

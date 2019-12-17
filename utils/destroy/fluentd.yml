@@ -1,0 +1,37 @@
+---
+
+# HOW TO USE - EXAMPLES: 
+# ansible-playbook utils/destroy/fluentd.yml -v 
+# ansible-playbook utils/destroy/fluentd.yml -v
+
+- name: remove FluentD CI/CD server
+  hosts: "{{ target | default('localhost') }}"
+  become: true 
+  tasks:
+
+  - name: install Elasticsearch plugin for Fluentd
+    shell: td-agent-gem uninstall fluent-plugin-elasticsearch
+    become: true
+
+  - name: get service facts
+    service_facts:
+
+  - name: stop FluentD
+    systemd:
+      name: td-agent
+      state: stopped
+    when: ansible_facts.services['td-agent.service'] is defined and ansible_facts.services['td-agent.service'].state == 'running'
+    #when: hostvars[inventory_hostname]['services']['fluentd.service'].['state'] == running
+
+  - name: remove previous FluentD installation
+    package:
+      name: td-agent
+      state: absent
+
+  - name: Recursively remove directory
+    file:
+      path: "{{ item }}"
+      state: absent
+    with_items:
+    - "/opt/fluentd"
+    - "/etc/fluentd"

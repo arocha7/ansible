@@ -1,0 +1,12 @@
+- name: install Treasure Data agent (td-agent)
+  shell: "curl -L http://toolbelt.treasuredata.com/sh/install-ubuntu-xenial-td-agent2.sh -o install-td-agent.sh" && \
+         "sh install-td-agent.sh"
+
+- name: start 'td-agent'
+  systemd: 
+    name: td-agent
+    status: started
+
+- name: install Elasticsearch plugin for Fluentd
+  shell: td-agent-gem install fluent-plugin-elasticsearch
+  become: true

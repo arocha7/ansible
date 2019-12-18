@@ -1,12 +1,11 @@
 - name: install Treasure Data agent (td-agent)
-  shell: "curl -L https://toolbelt.treasuredata.com/sh/install-{{ ansible_user_id }}-{{ ansible_distribution_release }}-td-agent3.sh | sh"
+  shell: curl -L https://toolbelt.treasuredata.com/sh/install-ubuntu-{{ ansible_distribution_release }}-td-agent3.sh | sh
 
 - name: install Elasticsearch plugin for Fluentd
   shell: td-agent-gem install fluent-plugin-elasticsearch
 
 - name: set Fluentd configuration to the target machine
   copy:
-    #src: "{{ lookup('env','PWD') }}/roles/fluentd/files/td-agent.conf"
     src: "td-agent.conf"
     dest: "/etc/td-agent/td-agent.conf"
 

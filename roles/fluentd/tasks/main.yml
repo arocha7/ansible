@@ -7,6 +7,11 @@
 ## Step 3 — deploying a local Elasticsearch container
 #
 
+- name: assure that Docker SDK ('docker-py') is not previously installed
+  pip:
+    name: "['docker-py', 'docker']"
+    state: absent
+
 - name: "Docker SDK for Python: docker (Python >= 2.7) or docker-py (Python 2.6)"
   pip:
     name: docker
@@ -21,7 +26,7 @@
   docker_container:
     name: elasticsearch
     state: present
-    image: elasticsearch
+    image: "elasticsearch:{{ es_tag }}"
     exposed_ports:
     - 9200:9200
     - 9300:9300

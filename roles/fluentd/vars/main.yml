@@ -1,2 +1,4 @@
 ---
 # vars file for fluentd
+
+es_tag: 7.5.0

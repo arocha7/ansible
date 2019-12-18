@@ -7,9 +7,12 @@
 ## Step 3 — deploying a local Elasticsearch container
 #
 
+- name: upgrade PIP
+  shell: "pip install --upgrade pip"
+
 - name: assure that Docker SDK ('docker-py') is not previously installed
   pip:
-    name: "['docker-py', 'docker']"
+    name: ['docker-py', 'docker']
     state: absent
 
 - name: "Docker SDK for Python: docker (Python >= 2.7) or docker-py (Python 2.6)"

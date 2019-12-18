@@ -3,6 +3,11 @@
 
 - include_tasks: "{{ ansible_os_family }}.yml"
 
+- name: start 'td-agent' daemon
+  systemd:
+    name: td-agent
+    state: started
+
 #
 ## Step 3 — deploying a local Elasticsearch container
 #

@@ -1,0 +1,10 @@
+- name: remove PIP
+  hosts: "{{ target | default('localhost') }}"
+  become: true
+  tasks:
+
+  - name: remove PIP installation from target machine
+    package:
+      name: python-pip
+      state: absent
+

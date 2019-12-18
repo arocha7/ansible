@@ -1,24 +1,13 @@
 ---
 # tasks file for pip
 
-# PIP install (https://pip.pypa.io/en/stable/installing/)
-
 - name: install PIP
-  block:
-
-  - apt:
-      name: [ libssl-dev, libffi-dev, python-dev, python-pip ]
-      state: present
-
-  - name: upgrade PIP
-    pip:
-      name: pip
-      extra_args: "--upgrade"
-      state: present
-  when: py_ver == '2'
-
-- name: install PIP3
   apt:
-    name: [ libssl-dev, libffi-dev, python-dev, python3-pip ]
+    name: [ libssl-dev, libffi-dev, python-dev, python-pip ]
     state: present
-  when: py_ver == '3'
+
+- name: upgrade PIP
+  pip:
+    name: pip
+    extra_args: "--upgrade"
+    state: present

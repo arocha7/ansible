@@ -1,64 +1,21 @@
 ---
 # tasks file for pip
 
-# PIP install (https://pip.pypa.io/en/stable/installing/)
-
-#- name: install EPEL
   # We recommend disabling EPEL when using RDO packages \
   # due to updates in EPEL breaking backwards compatibility. \
   # Or, preferably pin package versions using the 'yum-versionlock' plugin
+
+- name: PIP is not available in CentOS 7 core repositories, we need to enable EPEL
+  yum:
+    name: [epel-release, python-pip, python-devel]
+    state: present
+
+- name: uninstall EPEL
+  yum: 
+    name: epel-release
+    state: absent
+
+#- name: install the 'Development tools' package group
 #  yum:
-#    name: epel-release
-#    state: latest
-#    update_cache: yes
-
-- name: install the 'Development tools' package group
-  yum:
-    name: "@Development tools"
-    state: present
-    lock_timeout: 120
-
-- name: upgrade SetupTools
-  yum:
-    name: python-setuptools
-    state: latest
-
-- name: install PIP pre-required packages
-  yum:
-    name: [openssl-devel, libffi-devel, python-wheel]
-    state: present
-
-- name: PIP3 install on Redhat/CentOS
-  block:
-
-  - name: install IUS (Inline with Upstream Stable) package
-    yum:
-      name: https://centos7.iuscommunity.org/ius-release.rpm
-      state: present
-
-  - name: install Python3
-    yum:
-      name: python36u
-      state: present
-
-  - name: create Symbolic Link
-    shell: 'cd /usr/bin/ && ln -s /usr/bin/python3.6 python3'
-
-  - name: install PIP3 to Redhat/CentOS
-    yum:
-      name: "python36u-pip"
-      state: present
-
-  - name: create Symbolic Link
-    shell: 'cd /usr/bin/ && ln -s /usr/bin/pip3.6 pip3'
-
-  when: py_ver == '3'
-
-- name: install PIP
-  yum:
-    name: 
-      - python-pip
-      - python-devel
-    state: present
-  when: py_ver == '2'
-
+#    name: "@Development tools"
+#    state: present

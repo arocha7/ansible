@@ -1,22 +1,14 @@
 ---
 
-# HOW TO USE - EXAMPLES: 
-# ansible-playbook utils/destroy/fluentd.yml -v 
-# ansible-playbook utils/destroy/fluentd.yml -v
+# HOW TO USE: ```$ ansible-playbook utils/destroy/fluentd.yml -v```
 
 - name: remove FluentD CI/CD server
   hosts: "{{ target | default('localhost') }}"
   become: true 
   tasks:
 
-  - name: start Elasticsearch container
-    docker_container:
-      name: elasticsearch
-      state: absent
-
-  - name: install Elasticsearch plugin for Fluentd
-    shell: td-agent-gem uninstall fluent-plugin-elasticsearch
-    become: true
+  - name: uninstall Elasticsearch plugin for Fluentd
+    shell: "yes 4 | td-agent-gem uninstall fluent-plugin-elasticsearch"
 
   - name: get service facts
     service_facts:

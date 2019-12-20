@@ -3,40 +3,63 @@
 
 - include_tasks: "{{ ansible_os_family }}.yml"
 
+# Configuration
+
+### output plugins: send data to Elasticsearch
+
+- name: install output plugin for Elasticsearch
+  shell: td-agent-gem install fluent-plugin-elasticsearch
+
+### output plugins: send data to Graylog2
+
+- name: install output plugin for Graylog
+  get_url: 
+    url: https://raw.githubusercontent.com/emsearcy/fluent-plugin-gelf/master/lib/fluent/plugin/out_gelf.rb
+    dest: /etc/td-agent/plugin/
+
+- name: gem-install GELFs Ruby client
+  shell: td-agent-gem install gelf
+
+# Start daemon
+
 - name: start 'td-agent' daemon
   systemd:
     name: td-agent
     state: started
-
 #
 ## Step 3 — deploying a local Elasticsearch container
 #
 
-- name: upgrade PIP
-  shell: "pip install --upgrade pip"
+#- name: install PIP
+#  package:
+#    name: python-pip
+#    state: present
 
-- name: assure that Docker SDK ('docker-py') is not previously installed
-  pip:
-    name: ['docker-py', 'docker']
-    state: absent
+#- name: upgrade PIP
+#  shell: "pip install --upgrade pip"
 
-- name: "Docker SDK for Python: docker (Python >= 2.7) or docker-py (Python 2.6)"
-  pip:
-    name: docker
-    state: present
+#- name: assure that Docker SDK ('docker-py') is not previously installed
+#  pip:
+#    name: ['docker-py', 'docker']
+#    state: absent
 
-- sysctl:
-    name: vm.max_map_count
-    value: '262144'
-    state: present
+#- name: "Docker SDK for Python: docker (Python >= 2.7) or docker-py (Python 2.6)"
+#  pip:
+#    name: docker
+#    state: present
 
-- name: start Elasticsearch container
-  docker_container:
-    name: elasticsearch
-    state: present
-    image: "elasticsearch:{{ es_tag }}"
-    exposed_ports:
-    - 9200:9200
-    - 9300:9300
-    command: sleep infinity
+#- sysctl:
+#    name: vm.max_map_count
+#    value: '262144'
+#    state: present
+
+#- name: start Elasticsearch container
+#  docker_container:
+#    name: elasticsearch
+#    state: present
+#    image: "elasticsearch:{{ es_tag }}"
+#    exposed_ports:
+#    - 9200:9200
+#    - 9300:9300
+#    command: sleep infinity
 

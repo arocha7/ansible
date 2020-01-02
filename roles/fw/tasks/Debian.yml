@@ -3,12 +3,9 @@
 
 # UBUNTU/DEBIAN
 
-- name: start 'firewall' service
+- name: installing FW package
+  apt: name=ufw state=latest update_cache=yes
+
+- name: start FW service
   systemd: name=ufw state=started enabled=yes
 
-- name: open SVC port at FW
-  ufw:
-    state: enabled
-    rule: allow # TO FIX
-    proto: tcp
-    port: 80

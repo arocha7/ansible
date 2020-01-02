@@ -1,0 +1,38 @@
+# Redhat
+- block:
+
+  - name: allow all access to tcp port 80
+    firewalld:
+      #port: 80/tcp
+      service: http
+      permanent: yes
+      state: enabled
+
+  - name: Allow all access to tcp port 443
+    firewalld:
+      #port: 443/tcp
+      service: https
+      permanent: yes
+      state: enabled
+
+  when: ansible_os_family == 'RedHat'
+
+# Debian
+- block:
+
+  - name: allow all access to HTTP service
+    ufw:
+      rule: allow
+      port: '80'
+      proto: tcp
+      state: enabled # reloads FW and enables FW on boot
+
+  - name: allow all access to HTTPS service
+    ufw:
+      rule: allow
+      port: '443'
+      proto: tcp
+      state: enabled # reloads FW and enables FW on boot
+
+  when: ansible_os_family == 'Debian'
+

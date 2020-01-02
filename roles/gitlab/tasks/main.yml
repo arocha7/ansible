@@ -1,0 +1,45 @@
+---
+# tasks file for gitlab
+
+- name: install Postfix to send notification emails
+  package:
+    name: postfix
+    state: present
+
+- name: start Postfix
+  systemd:
+    name: postfix
+    state: started
+    enabled: yes
+
+- block:
+
+  - name: add the GitLab package repository and install the package
+    get_url:
+      url: https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.rpm.sh
+      dest: /tmp
+      mode: 0755
+
+  - name: install the package
+    shell: /tmp/script.rpm.sh
+
+  when: ansible_os_family == 'RedHat'
+
+- block:
+
+  - name: add the GitLab package repository and install the package
+    get_url:
+      url: https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh
+      dest: /tmp
+      mode: 0755
+
+  - name: install the package
+    shell: /tmp/script.deb.sh
+
+  when: ansible_os_family == 'Debian'
+
+- name: install Gitlab CE
+  package:
+    name: gitlab-ce
+    state: present
+

@@ -3,7 +3,11 @@
 
 # UBUNTU/DEBIAN
 
+<<<<<<< HEAD
 - name: install FW service
+=======
+- name: installing FW package
+>>>>>>> gitlab
   apt: name=ufw state=latest update_cache=yes
 
 - name: start FW service

@@ -43,3 +43,18 @@
     name: gitlab-ce
     state: present
 
+# Gitlab CONFIG
+
+- name: create a backup of config file
+  copy:
+    src: /etc/gitlab/gitlab.rb
+    dest: /etc/gitlab/gitlab.rb
+    remote_src: yes
+
+- name: set config file
+  copy: 
+    src: gitlab.rb
+    dest: /etc/gitlab/gitlab.rb
+
+- name: reconfigure
+  shell: gitlab-ctl reconfigure

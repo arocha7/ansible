@@ -1,9 +1,6 @@
 ---
 # tasks file for gitlab
 
-#- name: installing packages based on distro
-#  include_tasks: "{{ ansible_os_family }}.yml"
-
 - name: install Postfix to send notification emails
   package:
     name: postfix
@@ -15,26 +12,31 @@
     state: started
     enabled: yes
 
-- name: add the GitLab package repository and install the package
-  get_url:
-    url: https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.rpm.sh
-    dest: /tmp
-    mode: 0755
+- block:
+
+  - name: add the GitLab package repository and install the package
+    get_url:
+      url: https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.rpm.sh
+      dest: /tmp
+      mode: 0755
+
+  - name: install the package
+    shell: /tmp/script.rpm.sh
+
   when: ansible_os_family == 'RedHat'
 
-- name: add the GitLab package repository and install the package
-  get_url:
-    url: https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh
-    dest: /tmp
-    mode: 0755
+- block:
+
+  - name: add the GitLab package repository and install the package
+    get_url:
+      url: https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh
+      dest: /tmp
+      mode: 0755
+
+  - name: install the package
+    shell: /tmp/script.deb.sh
+
   when: ansible_os_family == 'Debian'
-
-- name: update cache
-  package:
-    update_cache: yes
-
-- name: install the package
-  shell: /tmp/script.rpm.sh
 
 - name: install Gitlab CE
   package:

@@ -1,0 +1,9 @@
+---
+# tasks file for pip3
+
+block:
+  - name: install PIP3
+    yum:
+      name: python3-pip
+      state: present
+  when: ansible_os_family == 'RedHat'

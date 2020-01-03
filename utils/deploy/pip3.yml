@@ -1,0 +1,9 @@
+---
+- name: deploy PIP 3 to the target machine
+  hosts: "{{ target | default('localhost') }}"
+  gather_facts: yes
+  become: true
+  roles:
+    - python3
+    - pip3
+

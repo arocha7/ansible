@@ -48,7 +48,7 @@
 - name: create a backup of config file
   copy:
     src: /etc/gitlab/gitlab.rb
-    dest: /etc/gitlab/gitlab.rb
+    dest: /etc/gitlab/gitlab.rb.SOURCE
     remote_src: yes
 
 - name: set config file

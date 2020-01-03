@@ -5,7 +5,10 @@
   become: true
   tasks:
 
-  - name: remove Gitlab CE
+  - name: uninstall Gitlab
+    shell: gitlab-ctl uninstall
+
+  - name: remove Gitlab package
     package: 
       name: gitlab-ce
       state: absent

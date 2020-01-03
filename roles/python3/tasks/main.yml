@@ -1,0 +1,46 @@
+---
+# tasks file for python3
+
+#- shell: "python3 --version"
+#  register: python_version_installed
+#  ignore_errors: true
+
+- block: 
+
+  - name: install developer tools
+    yum: 
+      name: "{{ packages }}"
+      state: present
+    vars:
+      packages:
+      #- "@Development tools"
+      - gcc 
+      - openssl-devel
+      - bzip2-devel
+
+  - name: unarchive Python 3 and install the package
+    unarchive:
+      src: "https://www.python.org/ftp/python/{{ py3ver }}/Python-{{ py3ver }}.tgz"
+      dest: /tmp
+      remote_src: yes
+
+  - name: compile the source code into an installation package
+    shell: "/tmp/Python-{{ py3ver }}/configure --enable-optimizations && make altinstall"
+
+  - name: create a symbolic link to 'python3'
+    shell: "ln -s /usr/local/bin/python3.8 /usr/bin/python3"
+
+  - name: install PIP3 
+    yum:
+      name: python3-pip
+      state: present
+
+  when: ansible_os_family == 'RedHat'
+
+- block:
+
+  - name: 
+    shell: echo "ToBeDone"
+
+  when: ansible_os_family == 'Debian'
+

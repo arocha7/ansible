@@ -1,24 +1,27 @@
 # EIT1 platforms
 
+[gitlab]
+ce7gitlab ansible_host=172.31.8.135 ansible_user=centos
+
 [onos]
-ce7_onos ansible_host=172.31.8.119 ansible_user=centos
-u18_onos ansible_host=172.31.8.121 ansible_user=ubuntu
-u16_onos ansible_host=172.31.8.175 ansible_user=ubuntu
+ce7onos ansible_host=172.31.8.119 ansible_user=centos
+u18onos ansible_host=172.31.8.121 ansible_user=ubuntu
+u16onos ansible_host=172.31.8.175 ansible_user=ubuntu
 
 [odl]
-ce7_odl ansible_host=172.31.8.119 ansible_user=centos
-u18_odl ansible_host=172.31.8.121 ansible_user=ubuntu
-u16_odl ansible_host=172.31.8.175 ansible_user=ubuntu
+ce7odl ansible_host=172.31.8.119 ansible_user=centos
+u18odl ansible_host=172.31.8.121 ansible_user=ubuntu
+u16odl ansible_host=172.31.8.175 ansible_user=ubuntu
 
 [jenkins]
-ce7_jnks ansible_host=172.31.8.119 ansible_user=centos
-u18_jnks ansible_host=172.31.8.121 ansible_user=ubuntu
-u16_jnks ansible_host=172.31.8.175 ansible_user=ubuntu
+ce7jnks ansible_host=172.31.8.119 ansible_user=centos
+u18jnks ansible_host=172.31.8.121 ansible_user=ubuntu
+u16jnks ansible_host=172.31.8.175 ansible_user=ubuntu
 
 [pgsql]
-ce7_pgsql ansible_host=172.31.8.119 ansible_user=centos
-u18_pgsql ansible_host=172.31.8.121 ansible_user=ubuntu
-u16_pgsql ansible_host=172.31.8.175 ansible_user=ubuntu
+ce7pgsql ansible_host=172.31.8.119 ansible_user=centos
+u18pgsql ansible_host=172.31.8.121 ansible_user=ubuntu
+u16pgsql ansible_host=172.31.8.175 ansible_user=ubuntu
 
 
 # DEVOPS platforms

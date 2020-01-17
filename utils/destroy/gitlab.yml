@@ -1,47 +1,37 @@
 ---
-- name: deploy Gitlab to the target machine
+
+# HOW TO USE: ```$ ansible-playbook utils/destroy/gitlab.yml -v```
+
+- name: remove Gitlab CI/CD server
   hosts: "{{ target | default('localhost') }}"
-  gather_facts: yes
-  become: true
+  become: true 
   tasks:
 
-  - name: uninstall Gitlab
-    shell: gitlab-ctl uninstall
+  - name: stop Gitlab service
+    shell: gitlab-ctl stop
+    ignore_errors: true
 
-  - name: remove Gitlab package
-    package: 
-      name: gitlab-ce
+  - name: stop Gitlab service (... just in case)
+    systemd:
+      name: gitlab-runsvdir.service
+      state: stopped
+    ignore_errors: true
+
+  - name: remove previous Gitlab installation
+    package:
+      name: "{{ item }}"
       state: absent
-  
-  - name: remove Postfix
-    package: 
-      name: postfix
+    with_items:
+    - gitlab-ce
+    - gitlab-runner
+    ignore_errors: true
+
+  - name: Recursively remove directories
+    file:
+      path: "{{ item }}"
       state: absent
-
-  - block:
-
-    - name: remove Gitlab from repos cache
-      file:
-        name: /etc/yum.repos.d/gitlab_gitlab-ce.repo
-        state: absent
-
-    - name: remove temp file
-      file:
-        name: /tmp/script.rpm.sh 
-        state: absent
-
-    when: ansible_os_family == 'RedHat'
-
-  - block: 
-
-    - name: remove Gitlab from repos cache
-      file:
-        name: /etc/apt/sources.list.d/gitlab_gitlab-ce.repo
-        state: absent
-
-    - name: remove temp file
-      file:
-        name: /tmp/script.deb.sh 
-        state: absent
-
-    when: ansible_os_family == 'Debian'
+    with_items:
+    - "/opt/gitlab"
+    - "/etc/gitlab"
+    - "/var/log/gitlab"
+    - "/usr/bin/gitlab*"

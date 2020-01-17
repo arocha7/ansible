@@ -38,6 +38,9 @@
 
   when: ansible_os_family == 'Debian'
 
+
+# Gitlab service start
+
 - name: install Gitlab CE
   package:
     name: gitlab-ce
@@ -63,7 +66,10 @@
     state: directory
     mode: '0755'
 
-- name: reconfigure
+
+# Gitlab service start
+
+- name: reconfigure Gitlab service 
   shell: gitlab-ctl reconfigure
 
 
@@ -88,18 +94,18 @@
 
   when: ansible_os_family == 'Debian'
 
-# Register Gitlab Runner - 
+# Register Gitlab Runner - <<< PRECISA DE UM TOKEN ASSOCIADO A UM PROJECTO >>>
 
-- name: register Gitlab Runner
-  shell: 'gitlab-runner register \
-  --non-interactive \
-  --url "https://gitlab-ci.ptin.corppt.com/" \
-  #--registration-token "PROJECT_REGISTRATION_TOKEN" \
-  --executor "shell" \
-  --shell "bash"
-  #--docker-image alpine:latest \
-  --description "shell-runner" \
-  --tag-list "shell,alb,cognitive" \
-  --run-untagged="true" \
-  --locked="false" \
-  --access-level="not_protected"'
+#- name: register Gitlab Runner
+#  shell: 'gitlab-runner register \
+#  --non-interactive \
+#  --url "https://gitlab-ci.ptin.corppt.com/" \
+#  #--registration-token "PROJECT_REGISTRATION_TOKEN" \
+#  --executor "shell" \
+#  --shell "bash"
+#  #--docker-image alpine:latest \
+#  --description "shell-runner" \
+#  --tag-list "shell,alb,cognitive" \
+#  --run-untagged="true" \
+#  --locked="false" \
+#  --access-level="not_protected"'

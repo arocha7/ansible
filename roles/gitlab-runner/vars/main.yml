@@ -2,3 +2,4 @@
 # vars file for gitlab
 
 gitlab_srv: gitlab-ci.ptin.corppt.com
+project_registration_token: XXX

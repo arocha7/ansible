@@ -19,7 +19,10 @@ No hostvars or group vars are set.
 Dependencies
 ------------
 
-n.a.
+As a best pratice, you should previously create and mount a dedicated Volume for Gitlab, keeping the VM as small as possible.
+If you choose to use a dedicated volume (ex: '/data'), then a viable way is the creation of a symbolic link to the default Gitlab directory:
+
+```cd /opt/var && sudo ln -s /data gitlab```
 
 
 Example Playbook

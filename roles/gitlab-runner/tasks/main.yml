@@ -1,0 +1,41 @@
+---
+# tasks file for gitlab-runner
+
+# Gitlab Runner package- https://gitlab-runner-downloads.s3.amazonaws.com/latest/index.html
+
+- block:
+
+  - name: install RPM Gitlab Runner package 
+    yum:
+      name: https://gitlab-runner-downloads.s3.amazonaws.com/latest/rpm/gitlab-runner_amd64.rpm
+      state: present
+
+
+  when: ansible_os_family == 'RedHat'
+
+- block:
+
+  - name: install DEB Gitlab Runner package
+    apt: 
+      name: https://gitlab-runner-downloads.s3.amazonaws.com/latest/deb/gitlab-runner_amd64.deb
+      state: present
+
+  when: ansible_os_family == 'Debian'
+
+# Register Gitlab Runner 
+# PANIC: The registration-token needs to be entered
+# <<< PRECISA DE UM TOKEN ASSOCIADO A UM PROJECTO >>>
+
+- name: register Gitlab Runner
+  shell: 'gitlab-runner register \
+  --non-interactive \
+  --url "https://{{ gitlab_srv }}/" \
+  --registration-token "{{ project_registration_token }}" \
+  --executor "shell" \
+  --shell "bash"
+  #--docker-image alpine:latest \
+  --description "shell-runner" \
+  --tag-list "shell,alb,cognitive" \
+  --run-untagged="true" \
+  --locked="false" \
+  --access-level="not_protected"'

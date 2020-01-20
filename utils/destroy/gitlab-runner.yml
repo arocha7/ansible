@@ -1,0 +1,32 @@
+---
+
+# HOW TO USE: ```$ ansible-playbook utils/destroy/gitlab.yml -v```
+
+- name: remove Gitlab Runner
+  hosts: "{{ target | default('localhost') }}"
+  become: true 
+  tasks:
+
+  - name: stop Gitlab Runner service
+    shell: gitlab-runner stop
+
+  - name: uninstall Gitlab Runner
+    shell: gitlab-runner uninstall
+
+  - name: remove Gitlab Runner packages (... just in case)
+    package:
+      name: "{{ item }}"
+      state: absent
+    with_items:
+    - gitlab-runner
+    ignore_errors: true
+
+  - name: Recursively remove directories
+    file:
+      path: "{{ item }}"
+      state: absent
+    with_items:
+    - "/usr/share/gitlab-runner"
+    - "/etc/gitlab-runner"
+    - "/usr/bin/gitlab-runner"
+    - "/usr/lib/gitlab-runner"

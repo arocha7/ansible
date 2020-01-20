@@ -11,19 +11,21 @@
     shell: gitlab-ctl stop
     ignore_errors: true
 
-  - name: stop Gitlab service (... just in case)
-    systemd:
-      name: gitlab-runsvdir.service
-      state: stopped
+  - name: stop Gitlab service
+    shell: gitlab-ctl graceful-kill
     ignore_errors: true
 
-  - name: remove previous Gitlab installation
+  - name: kill all processes and uninstall the process supervisor
+    shell: gitlab-ctl uninstall
+    ignore_errors: true
+
+  - name: remove Gitlab installation
     package:
       name: "{{ item }}"
       state: absent
     with_items:
+    - gitlab-runsvdir.service
     - gitlab-ce
-    - gitlab-runner
     ignore_errors: true
 
   - name: Recursively remove directories
@@ -35,3 +37,4 @@
     - "/etc/gitlab"
     - "/var/log/gitlab"
     - "/usr/bin/gitlab*"
+

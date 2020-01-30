@@ -1,0 +1,12 @@
+- name: install UFW
+  apt:
+    name: ufw
+    state: present
+    enabled: yes
+
+- name: start UFW
+  systemd: 
+    name: ufw
+    state: present
+    enabled: yes
+ 

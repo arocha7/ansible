@@ -3,6 +3,10 @@
 [gitlab]
 ce7gitlab ansible_host=172.31.8.135 ansible_user=centos
 
+[runner]
+ce7gitlab-runner ansible_host=172.31.8.154 ansible_user=centos
+u18gitlab-runner ansible_host=172.31.8.142 ansible_user=ubuntu
+
 [onos]
 ce7onos ansible_host=172.31.8.119 ansible_user=centos
 u18onos ansible_host=172.31.8.121 ansible_user=ubuntu
@@ -29,7 +33,7 @@ u16pgsql ansible_host=172.31.8.175 ansible_user=ubuntu
 [targets]
 
 localhost     ansible_connection=local
-172.31.8.123  ansible_connection=ssh    ansible_user=tango  ansible_password=tango
+172.31.8.123  ansible_connection=ssh    ansible_user=tango  ansible_password=*****
 
 [all:vars]
 ansible_ssh_common_args='-o StrictHostKeyChecking=no -o KbdInteractiveAuthentication=no'

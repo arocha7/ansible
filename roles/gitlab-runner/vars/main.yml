@@ -1,5 +1,18 @@
 ---
 # vars file for gitlab
+# http://172.31.8.135/future-networks/<PROJ>/-/settings/ci_cd
 
+# on permise
 gitlab_srv: gitlab-ci.ptin.corppt.com
-project_registration_token: XXX
+# vOLT
+#project_registration_token: "_PEV_-sGieLtWPQk9F56"
+#vBNG
+#project_registration_token: "x-d-cSqxqBL1sxTZeTii"
+#Cognitive Call Center
+project_registration_token: "LbB_Wf31cX_9Wyn-ZUP5"
+
+
+# external
+#gitlab_srv: gitlab.com/alb2020
+#project_registration_token: XXX
+

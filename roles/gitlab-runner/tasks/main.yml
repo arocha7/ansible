@@ -22,6 +22,12 @@
 
   when: ansible_os_family == 'Debian'
 
+- name: Insert a line at the end of a file.
+  lineinfile:
+    path: /etc/hosts
+    line: 172.31.8.135 ce7gitlab gitlab-ci.ptin.corppt.com
+
+
 # Register Gitlab Runner 
 # PANIC: The registration-token needs to be entered
 # <<< PRECISA DE UM TOKEN ASSOCIADO A UM PROJECTO >>>
@@ -29,7 +35,7 @@
 - name: register Gitlab Runner
   shell: 'gitlab-runner register \
   --non-interactive \
-  --url "https://{{ gitlab_srv }}/" \
+  --url "https://{{ gitlab_srv }}" \
   --registration-token "{{ project_registration_token }}" \
   --executor "shell" \
   --shell "bash"

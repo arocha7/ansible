@@ -1,6 +1,6 @@
 ---
 # tasks file for gitlab
-# https://about.gitlab.com/install/#centos-7
+# https://about.gitlab.com/install/
 
 - name: install Postfix to send notification emails
   package:
@@ -68,6 +68,15 @@
     state: directory
     mode: '0755'
 
+- name: fix error during startup
+  copy:
+    src: "{{ item }}"
+    dest: /opt/gitlab/embedded/etc/
+  with_items:
+  - 90-omnibus-gitlab-kernel.sem.conf
+  - 90-omnibus-gitlab-kernel.shmall.conf
+  - 90-omnibus-gitlab-kernel.shmmax.conf
+
 - include_tasks: "open-fw-ports.yml"
 
 # configure and start Gitlab service
@@ -75,3 +84,7 @@
 - name: start Gitlab service (via 'reconfigure')
   shell: gitlab-ctl reconfigure
 
+- name: restart
+  systemd:
+    name: gitlab-runsvdir.service
+    state: restarted

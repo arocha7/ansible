@@ -1,14 +1,14 @@
 Role Name
 =========
 
-A Role to deploy on permise Gitlab.
+A Role to deploy Gitla on premise
 
 Requirements
 ------------
 
-No special requirements are needed.
+No special requirements are needed
 
-Firewall control tool is activated during playbook run.
+Firewall control tool is activated during playbook run
 
 
 Role Variables
@@ -27,21 +27,23 @@ Example Playbook
 
 ```ansible-playbook utils/deploy/gitlab.yml [ -i inventory -e target=gitlab -v]```
 
+NOTE: if you are deploying to a remote machine, set the 'target' variable with the remote IP address or add an entry alias in the Inventory file 
+
 
 Post-deployment verification
 ----------------------------
 
-'gitlab-runner' service starts automatically. 
+'gitlab' service starts automatically. 
 
-```$ sudo gitlab-runner status```
+```$ sudo gitlab-ctl status```
 
 Runtime platform                                    arch=amd64 os=linux pid=13680 revision=ac8e767a version=12.6.0
-gitlab-runner: Service is running!
+gitlab-ctl: Service is running!
 
-```$ sudo gitlab-runner list```
+```$ sudo gitlab-ctl list```
 
 Runtime platform                                    arch=amd64 os=linux pid=13694 revision=ac8e767a version=12.6.0
-Listing configured runners                          ConfigFile=/etc/gitlab-runner/config.toml
+Listing configured ctls                          ConfigFile=/etc/gitlab-ctl/config.toml
 
 
 License

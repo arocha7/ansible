@@ -1,0 +1,16 @@
+- name: install C++ compiler
+  yum:
+   name: "{{ packages }}"
+  vars:
+    packages:
+    - gcc-c++
+    - make
+    - curl
+
+- name: get Node JS repository
+  shell: 'curl -sL https://rpm.nodesource.com/setup_"{{ nodejs_ver }}".x | sudo -E bash -'
+
+- name: install Node JS
+  yum:
+    name: nodejs
+    state: present

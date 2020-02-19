@@ -1,0 +1,17 @@
+---
+- name: deploy Node JS to the target machine
+  hosts: "{{ target | default('localhost') }}"
+  become: true
+
+  pre_tasks:
+    - debug: msg="##### start Node JS deployment {{ lookup('pipe', 'date +%Y%m%d-%H:%M:%S') }}"
+    - file:
+        path: ansible.log
+        state: touch
+
+  roles:
+    - nodejs
+
+  post_tasks:
+    - debug: msg="##### ending Node JS deployment {{ lookup('pipe', 'date +%Y%m%d-%H:%M:%S') }}"
+

@@ -1,0 +1,26 @@
+#- name: install C++ compiler
+#  yum:
+#   name: "{{ packages }}"
+#  vars:
+#    packages:
+#    - gcc-c++
+#    - make
+#    - curl
+
+- name: get Node JS repository
+  shell: 'curl -sL https://deb.nodesource.com/setup_"{{ nodejs_ver }}".x | sudo -E bash -'
+
+- name: upgrade the cache of local packages to the latest version
+  apt:
+    name: '*'
+    update_cache: yes
+    autoclean: yes
+    autoremove: yes
+ 
+- name: install Node JS
+  apt:
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - nodejs
+    - npm

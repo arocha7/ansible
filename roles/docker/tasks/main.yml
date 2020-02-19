@@ -1,0 +1,18 @@
+---
+# tasks file for docker
+
+- name: install 'wget'
+  package:
+    name: wget
+    state: present
+
+- name: install Docker engine
+  shell: "wget -qO- https://get.docker.com/ | sh"
+
+- name: start Docker engine
+  systemd: 
+    name: docker.service
+    state: started
+    enabled: yes
+
+- include_tasks: "{{ ansible_os_family }}.yml"

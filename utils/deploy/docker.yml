@@ -1,0 +1,17 @@
+---
+- name: deploy Docker to the target machine
+  hosts: "{{ target | default('localhost') }}"
+  become: true
+
+  pre_tasks:
+    - debug: msg="##### start Docker deployment {{ lookup('pipe', 'date +%Y%m%d-%H:%M:%S') }}"
+    - file:
+        path: ansible.log
+        state: touch
+
+  roles:
+    - docker
+
+  post_tasks:
+    - debug: msg="##### ending Docker deployment {{ lookup('pipe', 'date +%Y%m%d-%H:%M:%S') }}"
+

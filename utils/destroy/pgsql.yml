@@ -14,7 +14,7 @@
 
   - name: stop postgreSQL
     systemd:
-      name: "postgresql-{{ ps_ver }}"
+      name: "postgresql-{{ pg_ver }}"
       state: stopped
     when: ansible_facts.services['postgresql-{{ pg_ver }}.service'] is defined and ansible_facts.services['postgresql-{{ pg_ver }}.service'].state == 'running'
 

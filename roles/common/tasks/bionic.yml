@@ -10,12 +10,13 @@
 #  become_user: root
 
 - name: previous install APTitude
-  apt: name=aptitude state=present
+  apt:
+    name: aptitude
+    state: present
 
 - name: upgrade the cache of local packages to the latest version
   apt:
     name: '*'
-    #upgrade: full
     update_cache: yes
     autoclean: yes
     autoremove: yes

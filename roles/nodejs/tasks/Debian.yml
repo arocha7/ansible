@@ -1,11 +1,13 @@
-#- name: install C++ compiler
-#  yum:
-#   name: "{{ packages }}"
-#  vars:
-#    packages:
-#    - gcc-c++
-#    - make
-#    - curl
+- name: install C++ compiler
+  apt:
+   name: "{{ packages }}"
+  vars:
+    packages:
+    - g++
+    - gcc
+    - make
+    - build-essential
+    - curl
 
 - name: get Node JS repository
   shell: 'curl -sL https://deb.nodesource.com/setup_"{{ nodejs_ver }}".x | sudo -E bash -'

@@ -1,2 +1,2 @@
 [vm]
-vm-alb-tango-bionic-01-1576169378 ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/centos/.ssh/tng-infra.pem ansible_host=172.31.8.175 
+vm-alb-tango-Core-01-1581078548 ansible_connection=ssh ansible_user=centos ansible_ssh_private_key_file=/home/centos/.ssh/tng-infra.pem ansible_host=172.31.8.205 

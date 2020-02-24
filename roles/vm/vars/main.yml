@@ -3,3 +3,5 @@
 
 public_ip: '172.31.8.175'
 plat_hostname: vm-alb-tango-bionic-01-1576169378
+public_ip: '172.31.8.205'
+plat_hostname: vm-alb-tango-Core-01-1581078548

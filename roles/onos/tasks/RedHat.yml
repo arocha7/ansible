@@ -14,7 +14,7 @@
 
 - name: Unarchive a file that needs to be downloaded (added in 2.0)
   unarchive:
-    src: "http://repo1.maven.org/maven2/org/onosproject/onos-releases/{{ ONOS_VERSION }}/onos-{{ ONOS_VERSION }}.tar.gz"
+    src: "https://repo1.maven.org/maven2/org/onosproject/onos-releases/{{ ONOS_VERSION }}/onos-{{ ONOS_VERSION }}.tar.gz"
     dest: /opt/
     remote_src: yes
 

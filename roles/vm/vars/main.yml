@@ -1,5 +1,2 @@
 ---
 # vars file for vm
-
-public_ip: '172.31.8.175'
-plat_hostname: vm-alb-tango-bionic-01-1576169378

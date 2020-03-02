@@ -25,4 +25,4 @@ where:
 
 * 'target' - is the target machine or group of target machines
 
-* 'distro' - is the operating system distribution, ex: 'RedHat' or Debian' like
+* 'distro' - is the operating system distribution, ex: "RedHat" or "Debian" like

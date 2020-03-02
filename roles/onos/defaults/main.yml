@@ -1,6 +1,3 @@
 ---
 # defaults file for onos
 
-ONOS_VERSION: 2.2.0
-
-ONOS_APPS: drivers,openflow,gui2

@@ -1,5 +1,13 @@
 # EIT1 platforms
 
+[dsep]
+dsep-dev ansible_host=172.31.8.199 ansible_user=centos
+dsep-prd ansible_host=172.31.8.247 ansible_user=centos
+
+
+[sdan]
+sdan ansible_host=172.31.8.130 ansible_user=ubuntu
+
 [gitlab]
 ce7gitlab ansible_host=172.31.8.135 ansible_user=centos
 
@@ -8,9 +16,9 @@ ce7gitlab-runner ansible_host=172.31.8.154 ansible_user=centos
 u18gitlab-runner ansible_host=172.31.8.142 ansible_user=ubuntu
 
 [onos]
-ce7onos ansible_host=172.31.8.119 ansible_user=centos
-u18onos ansible_host=172.31.8.121 ansible_user=ubuntu
-u16onos ansible_host=172.31.8.175 ansible_user=ubuntu
+ce7onos ansible_host=172.31.8.196 ansible_user=centos
+u18onos ansible_host=172.31.8.146 ansible_user=ubuntu
+#u16onos ansible_host=172.31.8.175 ansible_user=ubuntu
 
 [odl]
 ce7odl ansible_host=172.31.8.119 ansible_user=centos

@@ -6,10 +6,10 @@
     state: disabled
 
 - name: disable Firewall
-  include_tasks: "{{ lookup('env','PWD') }}/roles/common/tasks/disable-fw-Redhat.yml"
-  when: distro == 'RedHat' or distro == 'centos'
+  include_tasks: "{{ lookup('env','PWD') }}/roles/common/tasks/disable-fw-RedHat.yml"
+  when: ansible_os_family == 'RedHat'
 - include_tasks: "{{ lookup('env','PWD') }}/roles/common/tasks/disable-fw-Debian.yml"
-  when: distro == 'Debian' or distro == 'ubuntu'
+  when: ansible_os_family == 'Debian'
 
 # For a different ONOS_VERSION, set it at 'roles/onos/defaults/main.yml'
 #- name: get ONOS tarball
@@ -20,20 +20,16 @@
 - name: copy ONOS tarball to the remote machine
   copy:
     src: "/tmp/onos-{{ ONOS_VERSION }}.tar.gz"
-    dest: "/opt/onos-{{ ONOS_VERSION }}.tar.gz"
+    dest: "/tmp/onos-{{ ONOS_VERSION }}.tar.gz"
 
-- name: unarchive a file that needs to be downloaded (added in 2.0)
+- name: unarchive ONOS tarball on the remote machine
   unarchive:
-    src: "/opt/onos-{{ ONOS_VERSION }}.tar.gz"
-    dest: "/opt/onos"
+    src: "/tmp/onos-{{ ONOS_VERSION }}.tar.gz"
+    dest: "/opt"
     remote_src: yes
 
-#- name: create directory for ONOS
-#  file:
-#    src: /opt/onos-{{ ONOS_VERSION }}
-#    dest: /opt/onos
-#    state: link
-#    remote_src: yes
+- name: rename ONOS_HOME directory 
+  shell: "mv /opt/onos-{{ ONOS_VERSION }}/* /opt/onos/"
 
 - copy:
     src: /opt/onos/init/onos.initd

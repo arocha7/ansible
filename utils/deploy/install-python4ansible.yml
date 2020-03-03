@@ -1,0 +1,12 @@
+---
+- name: pre-deployment tasks: install python for Ansible
+  hosts: all
+  become: yes  gather_facts: False
+  pre_tasks:
+    - name: Install python for Ansible
+      raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal)
+      changed_when: False
+    - setup: # aka gather_facts
+
+# Credits to: 
+# https://medium.com/@perwagnernielsen/ansible-tutorial-part-1-inventory-files-vagrant-and-remote-hosts-33a15b0185c0

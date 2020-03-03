@@ -1,41 +1,14 @@
 # EIT1 platforms
-
-[gitlab]
-ce7gitlab ansible_host=172.31.8.135 ansible_user=centos
-
-[runner]
-ce7gitlab-runner ansible_host=172.31.8.154 ansible_user=centos
-u18gitlab-runner ansible_host=172.31.8.142 ansible_user=ubuntu
-
-[onos]
-ce7onos ansible_host=172.31.8.119 ansible_user=centos
-u18onos ansible_host=172.31.8.121 ansible_user=ubuntu
-u16onos ansible_host=172.31.8.175 ansible_user=ubuntu
-
-[odl]
-ce7odl ansible_host=172.31.8.119 ansible_user=centos
-u18odl ansible_host=172.31.8.121 ansible_user=ubuntu
-u16odl ansible_host=172.31.8.175 ansible_user=ubuntu
-
-[jenkins]
-ce7jnks ansible_host=172.31.8.119 ansible_user=centos
-u18jnks ansible_host=172.31.8.121 ansible_user=ubuntu
-u16jnks ansible_host=172.31.8.175 ansible_user=ubuntu
-
-[pgsql]
-ce7pgsql ansible_host=172.31.8.119 ansible_user=centos
-u18pgsql ansible_host=172.31.8.121 ansible_user=ubuntu
-u16pgsql ansible_host=172.31.8.175 ansible_user=ubuntu
-
-
-# DEVOPS platforms
-
-[targets]
-
 localhost     ansible_connection=local
-172.31.8.123  ansible_connection=ssh    ansible_user=tango  ansible_password=*****
+
+
+[dsep]
+dsep-demo ansible_host=172.31.8.177 ansible_user=centos
+dsep-test ansible_host=172.31.8.179 ansible_user=centos
+dsep-prd  ansible_host=172.31.8.247 ansible_user=centos
+
 
 [all:vars]
 ansible_ssh_common_args='-o StrictHostKeyChecking=no -o KbdInteractiveAuthentication=no'
-ansible_ssh_private_key_file=~/.ssh/tng-infra.pem
+ansible_ssh_private_key_file=~/.ssh/ostk-support.pem
 

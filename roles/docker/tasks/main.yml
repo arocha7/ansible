@@ -16,3 +16,7 @@
     enabled: yes
 
 #- include_tasks: "{{ ansible_os_family }}.yml"
+- name: add user to docker group
+  user:
+    name: "{{ lookup('env','USER') }}"
+    groups: docker

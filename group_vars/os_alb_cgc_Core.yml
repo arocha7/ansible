@@ -1,0 +1,14 @@
+# DEFAULT VM CONFIG
+nbofvms: 1
+#vm_user: centos
+distro: Core
+image: "CentOS-7-x86_64-GenericCloud-1907"
+flavor: m1.medium
+os_security_groups: "{{ plat }}-secgrp"
+fip: admin_floating_net
+availability_zone: nova
+region_name: regionOne
+key_name: ostk-support
+int_net_id: "34392370-150e-469a-ae17-571fb55dce96" # INT
+ext_net_id: "3283ec5d-984e-46e7-8eac-312a79b878f1" # FIP
+

@@ -18,8 +18,8 @@
   os_keypair:
     cloud: "os_{{ pop }}_{{ proj }}"
     state: present
-    name: tng-infra
-    public_key_file: "{{ lookup('env','HOME') }}/.ssh/tng-infra.pub"
+    name: ostk-support
+    public_key_file: "{{ lookup('env','HOME') }}/.ssh/ostk-support.pub"
   when:
     - vm_key.failed
     - '"present but key hash not the same as offered. Delete key first." in vm_key.var'

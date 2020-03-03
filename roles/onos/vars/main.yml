@@ -1,2 +1,8 @@
 ---
 # vars file for onos
+
+ONOS_VERSION: 2.3.0
+
+#ONOS_APPS: drivers,openflow,gui2
+ONOS_APPS: drivers,openflow,segmentrouting,fpm,dhcprelay,netcfghostprovider,routeradvertisement,gui2
+

@@ -9,4 +9,5 @@
   apt: name=python-selinux state=present
 
 - name: Disable SELinux
-  selinux: state=disabled
+  selinux:
+    state: disabled

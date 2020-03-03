@@ -5,9 +5,6 @@
   become: true 
   tasks:
 
-  - name: get service facts
-    service_facts:
-
   - name: stop ONOS
     systemd:
       name: onos
@@ -15,9 +12,11 @@
     when: ansible_facts.services['onos.service'] is defined and ansible_facts.services['onos.service'].state == 'running'
 
   - name: remove previous ONOS installation
-    yum:
+    package:
       name: onos
       state: absent
+
+  - include_vars: "{{ lookup('env','PWD') }}/roles/onos/vars/main.yml"
 
   - name: Recursively remove directory
     file:
@@ -25,4 +24,6 @@
       state: absent
     with_items:
     - "/opt/onos"
-    - "/etc/onos"
+    - "/opt/onos-{{ ONOS_VERSION }}"
+    - "/etc/init.d/onos"
+    - "/etc/systemd/system/onos.service"

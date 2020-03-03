@@ -2,11 +2,76 @@
 # tasks file for ONOS
 
 - name: disable SElinux
-  include_tasks: "{{ lookup('env','PWD') }}/roles/common/tasks/disable-selinux-{{ ansible_os_family }}.yml"
+  selinux:
+    state: disabled
 
-- name: disable Firewall and SElinux
-  include_tasks: "{{ lookup('env','PWD') }}/roles/common/tasks/disable-fw-{{ ansible_os_family }}.yml"
+- name: disable Firewall
+  include_tasks: "{{ lookup('env','PWD') }}/roles/common/tasks/disable-fw-Redhat.yml"
+  when: distro == 'RedHat' or distro == 'centos'
+- include_tasks: "{{ lookup('env','PWD') }}/roles/common/tasks/disable-fw-Debian.yml"
+  when: distro == 'Debian' or distro == 'ubuntu'
 
-- name: installing ONOS
-  include_tasks: "{{ ansible_os_family }}.yml"
+# For a different ONOS_VERSION, set it at 'roles/onos/defaults/main.yml'
+#- name: get ONOS tarball
+#  get_url:
+#    url: "https://repo1.maven.org/maven2/org/onosproject/onos-releases/{{ ONOS_VERSION }}/onos-{{ ONOS_VERSION }}.tar.gz"
+#    dest: "/tmp/onos-{{ ONOS_VERSION }}.tar.gz"
+
+- name: copy ONOS tarball to the remote machine
+  copy:
+    src: "/tmp/onos-{{ ONOS_VERSION }}.tar.gz"
+    dest: "/opt/onos-{{ ONOS_VERSION }}.tar.gz"
+
+- name: unarchive a file that needs to be downloaded (added in 2.0)
+  unarchive:
+    src: "/opt/onos-{{ ONOS_VERSION }}.tar.gz"
+    dest: "/opt/onos"
+    remote_src: yes
+
+#- name: create directory for ONOS
+#  file:
+#    src: /opt/onos-{{ ONOS_VERSION }}
+#    dest: /opt/onos
+#    state: link
+#    remote_src: yes
+
+- copy:
+    src: /opt/onos/init/onos.initd
+    dest: /etc/init.d/onos
+    mode: "0755"
+    remote_src: yes
+
+- copy:
+    src: /opt/onos/init/onos.service
+    dest: /etc/systemd/system/
+    mode: "0755"
+    remote_src: yes
+
+- name: Ensure group 'sdn' exists
+  group:
+    name: sdn
+    state: present
+
+- name: Add the user 'sdn' with 'system' privileges
+  user:
+    name: sdn
+    state: present
+    comment: ´SDN system user'
+    system: true
+
+- name: Recursively change ownership of a directory
+  file:
+    path: /opt/onos
+    state: directory
+    recurse: yes
+    mode: "0755"
+    owner: sdn
+    group: sdn
+
+- name: start ONOS
+  systemd:
+    name: onos
+    state: restarted
+    daemon_reload: yes
+    enabled: yes
 

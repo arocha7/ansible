@@ -3,5 +3,5 @@
 domain_name: sonata-nfv.eu
 plat: vm
 localhome: "{{ lookup('env','HOME') }}"
-key_name: tng-infra
+key_name: ostk-support
 #flv: m1.small

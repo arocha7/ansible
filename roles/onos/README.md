@@ -1,31 +1,67 @@
 Role Name
 =========
 
-A brief description of the role goes here.
+A role to deploy ONOS to the target machine(s)
+
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+n.a.
+
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+For the time being, ONOS_VERSION=2.3.0 - change it in 'roles/onos/vars/main.yml' 
+
+Default location for variables are empty: 'defaults/main.yml', 'vars/main.yml', 'host_vars', 'group_vars'
+
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+ONOS requires JDK that is installed by this deployment.
+
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+To deploy to the local machine:
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+```ansible-playbook utils/deploy/onos.yml -v```
+
+
+Verification
+------------
+
+```
+$ systemctl status onos -l
+
+● onos.service - Open Network Operating System
+   Loaded: loaded (/etc/systemd/system/onos.service; enabled; vendor preset: disabled)
+   Active: active (running) since Wed 2020-03-04 08:29:02 UTC; 56s ago
+  Process: 29395 ExecStart=/etc/init.d/onos start (code=exited, status=0/SUCCESS)
+ Main PID: 29557 (karaf)
+   CGroup: /system.slice/onos.service
+           ├─29557 /bin/sh /opt/onos/apache-karaf-4.2.6/bin/karaf server server server
+           └─29683 /bin/java -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -Dkaraf.log.console=INFO -Dds.lock.timeout.milliseconds=10000 -Djava.endorsed.dirs=/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.242.b08-0.el7_7.x86_64/jre/jre/lib/endorsed:/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.242.b08-0.el7_7.x86_64/jre/lib/endorsed:/opt/onos/apache-karaf-4.2.6/lib/endorsed -Djava.ext.dirs=/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.242.b08-0.el7_7.x86_64/jre/jre/lib/ext:/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.242.b08-0.el7_7.x86_64/jre/lib/ext:/opt/onos/apache-karaf-4.2.6/lib/ext -Dkaraf.instances=/opt/onos/apache-karaf-4.2.6/instances -Dkaraf.home=/opt/onos/apache-karaf-4.2.6 -Dkaraf.base=/opt/onos/apache-karaf-4.2.6 -Dkaraf.data=/opt/onos/apache-karaf-4.2.6/data -Dkaraf.etc=/opt/onos/apache-karaf-4.2.6/etc -Dkaraf.log=/opt/onos/apache-karaf-4.2.6/data/log -Dkaraf.restart.jvm.supported=true -Djava.io.tmpdir=/opt/onos/apache-karaf-4.2.6/data/tmp -Djava.util.logging.config.file=/opt/onos/apache-karaf-4.2.6/etc/java.util.logging.properties -Dkaraf.startLocalConsole=false -Dkaraf.startRemoteShell=true -classpath /opt/onos/apache-karaf-4.2.6/lib/boot/org.apache.karaf.diagnostic.boot-4.2.6.jar:/opt/onos/apache-karaf-4.2.6/lib/boot/org.apache.karaf.jaas.boot-4.2.6.jar:/opt/onos/apache-karaf-4.2.6/lib/boot/org.apache.karaf.main-4.2.6.jar:/opt/onos/apache-karaf-4.2.6/lib/boot/org.apache.karaf.specs.activator-4.2.6.jar:/opt/onos/apache-karaf-4.2.6/lib/boot/org.osgi.core-6.0.0.jar org.apache.karaf.main.Main
+
+Mar 04 08:28:58 ce7baseline systemd[1]: Starting Open Network Operating System...
+Mar 04 08:28:58 ce7baseline sudo[29405]:     root : TTY=unknown ; PWD=/ ; USER=root ; COMMAND=/opt/onos/karaf/bin/status
+Mar 04 08:29:01 ce7baseline onos[29395]: /opt/onos/apache-karaf-4.2.6/data/port shutdown port file doesn't exist. The container is not running.
+Mar 04 08:29:02 ce7baseline onos[29395]: Starting ONOS
+Mar 04 08:29:02 ce7baseline runuser[29555]: pam_unix(runuser:session): session opened for user root by (uid=0)
+Mar 04 08:29:02 ce7baseline systemd[1]: Started Open Network Operating System.
+Mar 04 08:29:02 ce7baseline onos[29395]: [  OK  ]
+
+
+$ /opt/onos/karaf/bin/status
+
+Running ...
+
+```
+
 
 License
 -------
@@ -35,4 +71,4 @@ BSD
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+Alberto Rocha, arocha@ptinovacao.pt

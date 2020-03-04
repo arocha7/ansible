@@ -59,8 +59,38 @@ Mar 04 08:29:02 ce7baseline onos[29395]: [  OK  ]
 $ /opt/onos/karaf/bin/status
 
 Running ...
+```
+
+To access the ONOS CLI:
 
 ```
+$ /opt/onos/bin/onos -l [karaf | onos]
+Password authentication
+Password:
+Welcome to Open Network Operating System (ONOS)!
+     ____  _  ______  ____
+    / __ \/ |/ / __ \/ __/
+   / /_/ /    / /_/ /\ \
+   \____/_/|_/\____/___/
+
+Documentation: wiki.onosproject.org
+Tutorials:     tutorials.onosproject.org
+Mailing lists: lists.onosproject.org
+
+Come help out! Find out how at: contribute.onosproject.org
+
+Hit '<tab>' for a list of available commands
+and '[cmd] --help' for help on a specific command.
+Hit '<ctrl-d>' or type 'logout' to exit ONOS session.
+
+karaf@root > feature:list
+onos@root > feature:list
+
+``` 
+
+To check the ONOS web gui:
+
+```curl http://172.31.8.196:8181/onos/v1/devices --user onos:rocks```
 
 
 License

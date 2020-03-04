@@ -32,7 +32,7 @@
     remote_src: yes
 
 - name: rename ONOS_HOME directory 
-  shell: "mv /opt/onos-{{ ONOS_VERSION }}/* /opt/onos/"
+  shell: "mv /opt/onos-{{ ONOS_VERSION }} /opt/onos"
 
 - copy:
     src: /opt/onos/init/onos.initd

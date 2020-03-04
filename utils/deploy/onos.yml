@@ -7,7 +7,7 @@
     JAVA_HOME: "/usr/lib/jvm/jre-openjdk"
     PATH: "/usr/lib/jvm/jre-openjdk:{{ ansible_env.PATH }}"
     ONOS_USER: sdn
-    ONOS_APPS: drivers,openflow,gui2
+    ONOS_APPS: drivers,openflow,segmentrouting,fpm,dhcprelay,netcfghostprovider,routeradvertisement,gui2
     PYTHONHTTPSVERIFY: 0
 
   pre_tasks:

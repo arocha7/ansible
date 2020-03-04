@@ -23,19 +23,13 @@
 - name: get ONOS tarball from source
   get_url:
     url: "https://repo1.maven.org/maven2/org/onosproject/onos-releases/{{ ONOS_VERSION }}/onos-{{ ONOS_VERSION }}.tar.gz"
-    #dest: "/tmp/onos-{{ ONOS_VERSION }}.tar.gz"
-    dest: /opt
+    dest: /tmp
 
-#- name: copy ONOS tarball to the remote machine
-#  copy:
-#    src: "/tmp/onos-{{ ONOS_VERSION }}.tar.gz"
-#    dest: "/tmp/onos-{{ ONOS_VERSION }}.tar.gz"
-
-#- name: unarchive ONOS tarball on the remote machine
-#  unarchive:
-#    src: "/tmp/onos-{{ ONOS_VERSION }}.tar.gz"
-#    dest: "/opt"
-#    remote_src: yes
+- name: unarchive ONOS tarball on the remote machine
+  unarchive:
+    src: "/tmp/onos-{{ ONOS_VERSION }}.tar.gz"
+    dest: "/opt"
+    remote_src: yes
 
 - name: rename ONOS_HOME directory 
   shell: "mv /opt/onos-{{ ONOS_VERSION }}/* /opt/onos/"

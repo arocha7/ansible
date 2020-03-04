@@ -13,9 +13,11 @@ n.a.
 Role Variables
 --------------
 
-For the time being, ONOS_VERSION=2.3.0 - change it in 'roles/onos/vars/main.yml' 
+For the time being, the following variables are set:
 
-Default location for variables are empty: 'defaults/main.yml', 'vars/main.yml', 'host_vars', 'group_vars'
+* ONOS_VERSION=2.3.0 - change it in 'roles/onos/vars/main.yml' 
+
+* ONOS_APPS: drivers,openflow,segmentrouting,fpm,dhcprelay,netcfghostprovider,routeradvertisement,gui2 - change it in 'roles/onos/defaults/main.yml'
 
 
 Dependencies

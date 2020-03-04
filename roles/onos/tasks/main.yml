@@ -1,6 +1,14 @@
 ---
 # tasks file for ONOS
 
+- name: install Python bindings to SELinux shared libraries
+  yum:
+    name: libselinux-python
+  when: ansible_os_family == 'RedHat'
+- apt:
+    name: python-selinux
+  when: ansible_os_family == 'Debian'
+
 - name: disable SElinux
   selinux:
     state: disabled

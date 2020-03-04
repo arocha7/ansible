@@ -4,3 +4,4 @@
   become: true
   tags:
    - firewalld
+  ignore_errors: true # ToBeFixed

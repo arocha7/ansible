@@ -1,0 +1,9 @@
+---
+# tasks file for cst
+
+- name: deploy Google's Container Structure Tests framework
+  get_url:
+    url: https://storage.googleapis.com/container-structure-test/latest/container-structure-test-linux-amd64
+    dest: /usr/local/bin/  
+    mode: 755
+

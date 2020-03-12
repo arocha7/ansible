@@ -1,2 +1,4 @@
 ---
 # vars file for docker-compose
+
+DOCKER_COMPOSE_VER: 1.25.4

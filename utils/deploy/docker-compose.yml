@@ -1,8 +1,7 @@
 ---
 
-- name: Deploy docker-compose to target machine
+- name: deploy Docker-Compose to target machine
   hosts: "{{ target | default('localhost') }}"
   become: true
-
   roles:
     - docker-compose

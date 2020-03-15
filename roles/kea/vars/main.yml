@@ -1,2 +1,6 @@
 ---
 # vars file for kea
+
+POSTGRES_VERSION: 12
+#POSTGRES_VERSION: 11
+#POSTGRES_VERSION: 96

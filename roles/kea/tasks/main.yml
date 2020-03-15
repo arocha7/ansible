@@ -1,92 +1,131 @@
 ---
 # tasks file for kea
 
-- name: update local package repo
-
-
-- name: install 'autoreconf'
-  package:
-    name: [autoconf, automake, libtool, pkg-config]
-    state: present
-
 - block:
-    - name: install the 'Development tools' package group
-      yum:
-        name: "@Development tools"
-        state: present
+
+  - name: install the 'Development tools' package group
+    yum:
+      name: "@Development tools"
+      state: present
+
+  - name: install all pre-built/native dependencies
+    yum:
+      name: [ 'cmake', 'bison', 'flex', 'pcre-devel', 'libev-devel', 'protobuf-c-devel', 'protobuf-c-compiler', 'make', 'rpm-build', 'doxygen' ]
+      state: present
+
+  - name: install required libraries and tools
+    yum:
+      name: [ 'autoconf', 'automake', 'libtool', 'gtest-devel', 'openssl-devel', 'python-devel', 'git', 'wget' ]
+      state: present
+
+  - name: install EPEL (log4cplus requirement)
+    yum:
+      name: 'epel-release'
+      state: present
+
+  - name: install required libraries 
+    yum:
+      name: [ 'log4cplus', 'log4cplus-devel', 'ccache', 'libcmocka-devel', 'boost-devel', 'centos-release-scl' ]
+      state: present
+
+  - yum:
+      name: 'devtoolset-7-gcc*'
+      state: present
+
+  - name: set environ to use GCC7
+    shell: scl enable devtoolset-7 bash
+
+  - name: install MySQL client and the client development libraries
+    yum:
+      name: [ 'mariadb', 'mariadb-devel' ]
+      state: present
+
+  - name: install PostgreSQL client and the client development libraries - RedHat like
+    yum: 
+      name: https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm
+      state: present
+  - yum:
+      name: "postgresql{{ POSTGRES_VERSION }}"
+      state: present
+
   when: ansible_facts['distribution'] == 'CentOS'
+
 
 - block: 
-    - name: upgrade the cache of local packages to the latest version
-      apt:
-        name: '*'
-        #upgrade: full
-        update_cache: yes
-        autoclean: yes
-        autoremove: yes
-    - name: install development libraries and tools
-      apt: name=build-essential state=latest
+
+  - name: install 'autoreconf'
+    apt:
+      name: [ 'autoconf', 'automake', 'libtool', 'pkg-config' ]
+      state: present
+
+  - name: upgrade the cache of local packages to the latest version
+    apt:
+      name: '*'
+      #upgrade: full
+      update_cache: yes
+      autoclean: yes
+      autoremove: yes
+
+  - name: install development libraries and tools
+    apt:
+      name: build-essential
+      state: latest
+
+  - name: install OpenSSL 
+    apt:
+      name: [ 'libssl-dev', 'liblog4cplus', 'python-dev' ]
+      state: present
+
+
+  - name: install MySQL client and the client development libraries
+    apt:
+      name: [ 'mysql-client', 'libmysqlclient20', 'libmysqlclient-dev', 'libmysqld-dev' ]
+      state: present
+
+  - name: add pgSQL repo 
+    shell: echo 'deb http://apt.postgresql.org/pub/repos/apt/ buster-pgdg main' >> /etc/apt/sources.list.d/pgdg.list
+
+  - name: import the repository signing key
+    shell: wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add - && apt update
+
+  - name: install PostgreSQL client and the client development libraries - Debian like
+    apt: 
+      name: postgresql-11
+
   when: ansible_facts['distribution'] == 'Ubuntu'
 
-- name: install OpenSSL 
-  yum:
-    name: [ 'openssl-devel', 'log4cplus', 'python-devel' ]
-    state: present
-  when: ansible_facts['distribution'] == 'CentOS'
 
-- name: install OpenSSL 
-  apt:
-    name: [ 'libssl-dev', 'liblog4cplus', 'python-dev' ]
-    state: present
-  when: ansible_facts['distribution'] == 'Ubuntu'
+- name: Enable ccache
+  shell: declare -x PATH="/usr/lib64/ccache:$PATH"
 
-- name: install an up-to-date version of [C++ Boost library](http://www.boost.org/more/getting_started/unix-variants.html)
-  get_url:
-    url: https://dl.bintray.com/boostorg/release/1.72.0/source/boost_1_72_0.tar.gz
-    dest: /tmp
+- name: fetch, build and install libredblack
+  git:
+    repo: https://github.com/sysrepo/libredblack.git
+    dest: /tmp/libredblack
 
-- name: extract Boost tarball
-  unarchive:
-    src: /tmp/boost_1_72_0.tar.gz
-    dest: /tmp
-- name: boostrap Boost library
-  shell: cd /tmp/boost_1_72_0 && ./bootstrap.sh && ./b2 install --with=all && ./b2 headers
+- name: config, make, install 'libredblack'
+  shell: /tmp/libredblack/configure && \
+         /tmp/libredblack/make && \
+         /tmp/libredblack/make install
 
-- name: generate the configure script
-  shell: autoreconf --install
 
-- name: install MySQL client and the client development libraries
-  yum:
-    name: [ 'mariadb', 'mariadb-devel' ]
-    state: present
-  when: ansible_facts['distribution'] == 'CentOS'
 
-- name: install MySQL client and the client development libraries
-  apt:
-    name: [ 'mysql-client', 'libmysqlclient20', 'libmysqlclient-dev', 'libmysqld-dev' ]
-    state: present
-  when: ansible_facts['distribution'] == 'Debian'
+#- name: install an up-to-date version of [C++ Boost library](http://www.boost.org/more/getting_started/unix-variants.html)
+#  get_url:
+#    url: https://dl.bintray.com/boostorg/release/1.72.0/source/boost_1_72_0.tar.gz
+#    dest: /tmp
 
-- name: install PostgreSQL client and the client development libraries - RedHat like
-  yum: 
-    name:
-      - https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm
-      - postgresql12
-  when: ansible_facts['distribution'] == 'CentOS'
+#- name: extract Boost tarball
+#  unarchive:
+#    src: /tmp/boost_1_72_0.tar.gz
+#    dest: /tmp
 
-- name: add pgSQL repo 
-  shell: echo 'deb http://apt.postgresql.org/pub/repos/apt/ buster-pgdg main' >> /etc/apt/sources.list.d/pgdg.list
-  when: ansible_facts['distribution'] == 'Debian'
+#- name: boostrap Boost library
+#  shell: cd /tmp/boost_1_72_0 && ./bootstrap.sh && ./b2 headers && ./b2 install --with=all 
 
-- name: import the repository signing key
-  shell: wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add - && apt update
-  when: ansible_facts['distribution'] == 'Debian'
+#- name: generate the configure script
+#  shell: autoreconf --install
 
-- name: install PostgreSQL client and the client development libraries - Debian like
-  apt: 
-    name: postgresql-11
-  when: ansible_facts['distribution'] == 'Debian'
-
-- name: configure Kea install
-  shell: ./configure --prefix=/opt/kea --with-boost-include=/usr/include/boost --with-log4cplus=/opt/log4cplus --with-openssl --with-mysql -with-openssl
+#- name: configure Kea install
+#  shell: ./configure --prefix=/opt/kea --with-boost-include=/usr/include/boost --with-log4cplus=/opt/log4cplus --with-openssl --with-mysql -with-openssl
 

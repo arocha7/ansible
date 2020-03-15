@@ -1,0 +1,9 @@
+---
+- name: deploy KEA to the target machine
+  hosts: "{{ target | default('localhost') }}"
+  become: true
+  connection: local
+
+  roles:
+    -  kea
+

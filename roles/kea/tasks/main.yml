@@ -73,7 +73,7 @@
 
   - name: install OpenSSL 
     apt:
-      name: [ 'libssl-dev', 'liblog4cplus', 'python-dev' ]
+      name: [ 'libssl-dev', 'liblog4cplus-dev', 'python-dev' ]
       state: present
 
 
@@ -86,7 +86,7 @@
     shell: echo 'deb http://apt.postgresql.org/pub/repos/apt/ buster-pgdg main' >> /etc/apt/sources.list.d/pgdg.list
 
   - name: import the repository signing key
-    shell: wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add - && apt update
+    shell: wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - && apt update
 
   - name: install PostgreSQL client and the client development libraries - Debian like
     apt: 

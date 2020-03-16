@@ -53,25 +53,19 @@
 
 - block: 
 
+#  - name: upgrade the cache of local packages to the latest version
+#    apt:
+#      name: '*'
+#      update_cache: yes
+#      autoclean: yes
+#      autoremove: yes
+
   - name: install 'autoreconf'
     apt:
-      name: [ 'autoconf', 'automake', 'libtool', 'pkg-config' ]
+      name: [ 'autoconf', 'automake', 'libtool', 'pkg-config', 'build-essential' ]
       state: present
 
-  - name: upgrade the cache of local packages to the latest version
-    apt:
-      name: '*'
-      #upgrade: full
-      update_cache: yes
-      autoclean: yes
-      autoremove: yes
-
-  - name: install development libraries and tools
-    apt:
-      name: build-essential
-      state: latest
-
-  - name: install OpenSSL 
+  - name: install OpenSSL and log4cplus libs
     apt:
       name: [ 'libssl-dev', 'liblog4cplus-dev', 'python-dev' ]
       state: present
@@ -82,31 +76,53 @@
       name: [ 'mysql-client', 'libmysqlclient20', 'libmysqlclient-dev', 'libmysqld-dev' ]
       state: present
 
-  - name: add pgSQL repo 
-    shell: echo 'deb http://apt.postgresql.org/pub/repos/apt/ buster-pgdg main' >> /etc/apt/sources.list.d/pgdg.list
-
   - name: import the repository signing key
-    shell: wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - && apt update
+    apt_key:
+       url: https://www.postgresql.org/media/keys/ACCC4CF8.asc
+
+  - name: add pgSQL apt repository
+    apt_repository: 
+      repo: 'deb http://apt.postgresql.org/pub/repos/apt/ bionic-pgdg main' 
+      state: present 
+      update_cache: yes
 
   - name: install PostgreSQL client and the client development libraries - Debian like
     apt: 
-      name: postgresql-11
+      name: postgresql-client-11
 
   when: ansible_facts['distribution'] == 'Ubuntu'
 
+####
+## KEA
+#####
 
-- name: Enable ccache
-  shell: declare -x PATH="/usr/lib64/ccache:$PATH"
+- name: get KEA tarball
+  get_url: 
+    url: https://ftp.isc.org/isc/kea/1.7.5/kea-1.7.5.tar.gz
+    dest: /tmp
 
-- name: fetch, build and install libredblack
-  git:
-    repo: https://github.com/sysrepo/libredblack.git
-    dest: /tmp/libredblack
+- name: unarchive KEA tarball
+  unarchive:
+    src: /tmp/kea-1.7.5.tar.gz
+    dest: /tmp
+    remote_src: yes
 
-- name: config, make, install 'libredblack'
-  shell: /tmp/libredblack/configure && \
-         /tmp/libredblack/make && \
-         /tmp/libredblack/make install
+- shell: cd /tmp/kea-1.7.5 &&  ./configure --prefix=/opt/kea --with-boost-include=/usr/include/boost --with-log4cplus=/opt/log4cplus --with-openssl --with-mysql -with-openssl
+- shell: make
+- shell: make install
+
+#- name: Enable ccache
+#  shell: declare -x PATH="/usr/lib64/ccache:$PATH"
+
+#- name: fetch, build and install libredblack
+#  git:
+#    repo: https://github.com/sysrepo/libredblack.git
+#    dest: /tmp/libredblack
+
+#- name: config, make, install 'libredblack'
+#  shell: /tmp/libredblack/configure && \
+#         /tmp/libredblack/make && \
+#         /tmp/libredblack/make install
 
 
 

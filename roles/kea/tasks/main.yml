@@ -86,7 +86,17 @@
   when: ansible_facts['distribution'] == 'Ubuntu'
 
 
-#### GCC install start - https://linuxhostsupport.com/blog/how-to-install-gcc-on-centos-7
+- name: assure that GIT and CURL are installed
+  package:
+    name: 
+      - git
+      - curl
+    state: present
+
+
+###
+# [GCC install start ](https://linuxhostsupport.com/blog/how-to-install-gcc-on-centos-7)
+###
 
 - name: install an up-to-date version of GCC from the source (requires gcc +4.9.0)
   get_url:
@@ -97,9 +107,9 @@
   unarchive:
      src: "/tmp/gcc-{{ GCC_VER }}.tar.gz"
      dest: /tmp
-     remote_src: yes                                                                                                                                                 
+     remote_src: yes                                              
 
-- name: install bzip2 and run the 'download_prerequisites' script to download some prerequisites needed by GCC
+- name: install BZIP2 and run the 'download_prerequisites' script to download some prerequisites needed by GCC
   yum:
     name: bzip2
     state: present
@@ -113,7 +123,7 @@
 - name: compile GCC source code
   shell: "cd /tmp/gcc-{{ GCC_VER }} && make -j 4"
 
-- name: install GVV
+- name: install GCC
   shell: "cd /tmp/gcc-{{ GCC_VER }} && make install"
 
 #####

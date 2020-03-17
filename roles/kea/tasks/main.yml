@@ -28,13 +28,6 @@
       name: [ 'log4cplus', 'log4cplus-devel', 'ccache', 'libcmocka-devel', 'boost-devel', 'centos-release-scl' ]
       state: present
 
-  - yum:
-      name: 'devtoolset-7-gcc*'
-      state: present
-
-  - name: set environ to use GCC7
-    shell: scl enable devtoolset-7 bash
-
   - name: install MySQL client and the client development libraries
     yum:
       name: [ 'mariadb', 'mariadb-devel' ]
@@ -53,12 +46,12 @@
 
 - block: 
 
-#  - name: upgrade the cache of local packages to the latest version
-#    apt:
-#      name: '*'
-#      update_cache: yes
-#      autoclean: yes
-#      autoremove: yes
+  - name: upgrade the cache of local packages to the latest version
+    apt:
+      name: '*'
+      update_cache: yes
+      autoclean: yes
+      autoremove: yes
 
   - name: install 'autoreconf'
     apt:
@@ -92,9 +85,39 @@
 
   when: ansible_facts['distribution'] == 'Ubuntu'
 
-####
-## KEA
+
+#### GCC install start - https://linuxhostsupport.com/blog/how-to-install-gcc-on-centos-7
+
+- name: install an up-to-date version of GCC from the source (requires gcc +4.9.0)
+  get_url:
+    url: "http://ftp.mirrorservice.org/sites/sourceware.org/pub/gcc/releases/gcc-{{ GCC_VER }}/gcc-{{ GCC_VER }}.tar.gz"
+    dest: /tmp
+
+- name: unarchive a file that is already on the remote machine
+  unarchive:
+     src: "/tmp/gcc-{{ GCC_VER }}.tar.gz"
+     dest: /tmp
+     remote_src: yes                                                                                                                                                 
+
+- name: install bzip2 and run the 'download_prerequisites' script to download some prerequisites needed by GCC
+  yum:
+    name: bzip2
+    state: present
+
+- name: install GCC pre-requisties
+  shell: "cd /tmp/gcc-{{ GCC_VER }} && ./contrib/download_prerequisites"
+
+- name: configure the GCC build environment
+  shell: "cd /tmp/gcc-{{ GCC_VER }} && ./configure --enable-multilib --enable-languages=c,c++"
+
+- name: compile GCC source code
+  shell: "cd /tmp/gcc-{{ GCC_VER }} && make -j 4"
+
+- name: install GVV
+  shell: "cd /tmp/gcc-{{ GCC_VER }} && make install"
+
 #####
+
 
 - name: get KEA tarball
   get_url: 
@@ -107,9 +130,14 @@
     dest: /tmp
     remote_src: yes
 
-- shell: cd /tmp/kea-1.7.5 &&  ./configure --prefix=/opt/kea --with-boost-include=/usr/include/boost --with-log4cplus=/opt/log4cplus --with-openssl --with-mysql -with-openssl
-- shell: make
-- shell: make install
+- name: configure KEA and generate 'make' 
+  shell: cd /tmp/kea-1.7.5 &&  ./configure --prefix=/opt/kea --with-boost-include=/usr/include/boost --with-log4cplus=/opt/log4cplus --with-openssl --with-mysql -with-openssl
+
+- name: compile KEA
+  shell: make
+
+- name: install KEA
+  shell: make install
 
 #- name: Enable ccache
 #  shell: declare -x PATH="/usr/lib64/ccache:$PATH"

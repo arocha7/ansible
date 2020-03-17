@@ -15,7 +15,7 @@
 
   - name: install required libraries and tools
     yum:
-      name: [ 'autoconf', 'automake', 'libtool', 'gtest-devel', 'openssl-devel', 'python-devel', 'git', 'wget' ]
+      name: [ 'autoconf', 'automake', 'libtool', 'openssl-devel', 'python-devel', 'git', 'wget' ]
       state: present
 
   - name: install EPEL (log4cplus requirement)
@@ -25,7 +25,7 @@
 
   - name: install required libraries 
     yum:
-      name: [ 'log4cplus', 'log4cplus-devel', 'ccache', 'libcmocka-devel', 'boost-devel', 'centos-release-scl' ]
+      name: [ 'log4cplus', 'log4cplus-devel', 'ccache', 'libcmocka-devel', 'boost-devel', 'gtest-devel' ]
       state: present
 
   - name: install MySQL client and the client development libraries
@@ -92,7 +92,6 @@
       - git
       - curl
     state: present
-
 
 ###
 # [GCC install start ](https://linuxhostsupport.com/blog/how-to-install-gcc-on-centos-7)

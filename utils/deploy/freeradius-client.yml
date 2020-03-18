@@ -1,0 +1,7 @@
+---
+- name: deploy FreeRADIUS to the target machine
+  hosts: "{{ target | default('localhost') }}"
+  become: true
+  roles:
+    - freeradius-client
+

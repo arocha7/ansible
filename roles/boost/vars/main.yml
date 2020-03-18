@@ -2,5 +2,5 @@
 # vars file for boost
 
 BOOST_VER: 1.72.0
-BOOST_VERSION: 1_72_0
+BOOST_VERSION: '1_72_0'
 

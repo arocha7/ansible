@@ -5,6 +5,13 @@
 # [GCC install start ](https://linuxhostsupport.com/blog/how-to-install-gcc-on-centos-7)
 ###
 
+- block:
+
+  - name: install BZIP2 and run the 'download_prerequisites' script to download some prerequisites needed by GCC
+    package:
+      name: bzip2
+      state: present
+
 #- name: uninstall previous default GCC version
 #  yum:
 #    name: gcc
@@ -12,30 +19,28 @@
 #    state: absent
 #  when: ansible_facts['distribution'] == 'CentOS'
 
-- name: install an up-to-date version of GCC from the source (requires gcc +4.9.0)
-  get_url:
-    url: "http://ftp.mirrorservice.org/sites/sourceware.org/pub/gcc/releases/gcc-{{ GCC_VER }}/gcc-{{ GCC_VER }}.tar.gz"
-    dest: /tmp
+#- name: install an up-to-date version of GCC from the source (requires gcc +4.9.0)
+#  get_url:
+#    url: "http://ftp.mirrorservice.org/sites/sourceware.org/pub/gcc/releases/gcc-{{ GCC_VER }}/gcc-{{ GCC_VER }}.tar.gz"
+#    dest: /tmp
              
-- name: unarchive a file that is already on the remote machine
-  unarchive: 
-    src: "/tmp/gcc-{{ GCC_VER }}.tar.gz"
-    dest: /tmp
-    remote_src: yes
+  - name: unarchive a file that is already on the remote machine
+    unarchive: 
+      src: "/tmp/gcc-{{ GCC_VER }}.tar.gz"
+      dest: /tmp
+      remote_src: yes
 
-- name: install BZIP2 and run the 'download_prerequisites' script to download some prerequisites needed by GCC
-  package:
-    name: bzip2
-    state: present
+  - name: install GCC pre-requisties
+    shell: "cd /tmp/gcc-{{ GCC_VER }} && ./contrib/download_prerequisites"
 
-- name: install GCC pre-requisties
-  shell: "cd /tmp/gcc-{{ GCC_VER }} && ./contrib/download_prerequisites"
+  - name: configure the GCC build environment
+    shell: "cd /tmp/gcc-{{ GCC_VER }} && ./configure --disable-multilib --enable-languages=c,c++"
 
-- name: configure the GCC build environment
-  shell: "cd /tmp/gcc-{{ GCC_VER }} && ./configure --disable-multilib --enable-languages=c,c++"
+  - name: compile GCC source code
+    shell: "cd /tmp/gcc-{{ GCC_VER }} && make"
 
-- name: compile GCC source code
-  shell: "cd /tmp/gcc-{{ GCC_VER }} && make"
+  - name: install GCC 
+    shell: "cd /tmp/gcc-{{ GCC_VER }} && make install"
 
-- name: install GCC 
-  shell: "cd /tmp/gcc-{{ GCC_VER }} && make install"
+  when: ansible_facts['distribution'] == 'CentOS'
+

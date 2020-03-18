@@ -5,8 +5,9 @@
   pre_tasks:
     - kea_requirements.yml
   roles:
-    - { role: gcc, GCC_VER: "{{ GCC_VER }}"
-    - { role: boost, BOOST_VER: "{{ BOOST_VER }}"
+    - "{ role: gcc, GCC_VER: {{ GCC_VER }}"
+    - "{ role: boost, BOOST_VER: {{ BOOST_VER }}"
     - freeradius-client
+    - sysprep
     - kea
 

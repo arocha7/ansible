@@ -4,15 +4,15 @@
 ###                                                                                                                                                                     # [GCC install start ](https://linuxhostsupport.com/blog/how-to-install-gcc-on-centos-7)
 ###
 
-- name: uninstall previous default GCC version
-  yum:
-    name: gcc
-    skip_broken: yes
-    state: absent
-  when: ansible_facts['distribution'] == 'CentOS'
-                                                                                                                                                                        #- name: install an up-to-date version of GCC from the source (requires gcc +4.9.0)
-#  get_url:                                                                                                                                                             #    url: "http://ftp.mirrorservice.org/sites/sourceware.org/pub/gcc/releases/gcc-{{ GCC_VER }}/gcc-{{ GCC_VER }}.tar.gz"
-#    dest: /tmp
+#- name: uninstall previous default GCC version
+#  yum:
+#    name: gcc
+#    skip_broken: yes
+#    state: absent
+#  when: ansible_facts['distribution'] == 'CentOS'
+                                                                                                                                                                       #- name: install an up-to-date version of GCC from the source (requires gcc +4.9.0)
+  get_url:                                                                                                                                                             #    url: "http://ftp.mirrorservice.org/sites/sourceware.org/pub/gcc/releases/gcc-{{ GCC_VER }}/gcc-{{ GCC_VER }}.tar.gz"
+    dest: /tmp
                                                                                                                                                                         - name: unarchive a file that is already on the remote machine
   unarchive:                                                                                                                                                                 src: "/tmp/gcc-{{ GCC_VER }}.tar.gz"
      dest: /tmp
@@ -21,7 +21,6 @@
   package:
     name: bzip2
     state: present
-
                                                                                                                                                                         - name: install GCC pre-requisties
   shell: "cd /tmp/gcc-{{ GCC_VER }} && ./contrib/download_prerequisites"
 

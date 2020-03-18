@@ -1,9 +1,9 @@
 ---
 # tasks file for SYSREPO
 
-# ccache
+# Ccache
 
-- name: install CCACHE libraries
+- name: install Ccache - a compiler cache that speeds up recompilation by caching previous compilations and detecting when the same compilation is being done again\
   yum:
     name: [ 'ccache' ]
     state: present
@@ -12,7 +12,7 @@
   shell: declare -x PATH="/usr/lib64/ccache:$PATH"
 
 
-# libredblack
+# libRedBlack
 
 - name: fetch, build and install libredblack
   git:

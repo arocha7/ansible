@@ -8,14 +8,19 @@
       name: "@Development tools"
       state: present
 
-  - name: install all pre-built/native dependencies
+#  - name: install all pre-built/native dependencies
+#    yum:
+#      name: [ 'cmake', 'bison', 'flex', 'pcre-devel', 'libev-devel', 'protobuf-c-devel', 'protobuf-c-compiler', 'make', 'rpm-build', 'doxygen' ]
+#      state: present
+
+  - name: install OpenSSL (or [Botan >ver. 2](https://botan.randombit.net/))
     yum:
-      name: [ 'cmake', 'bison', 'flex', 'pcre-devel', 'libev-devel', 'protobuf-c-devel', 'protobuf-c-compiler', 'make', 'rpm-build', 'doxygen' ]
+      name: 'openssl-devel'
       state: present
 
   - name: install required libraries and tools
     yum:
-      name: [ 'autoconf', 'automake', 'libtool', 'openssl-devel', 'python-devel' ]
+      name: [ 'autoconf', 'automake', 'libtool', 'python-devel' ]
       state: present
 
   - name: install EPEL (log4cplus requirement)
@@ -23,9 +28,14 @@
       name: 'epel-release'
       state: present
 
-  - name: install required libraries 
+  - name: install 'log4cplus' libraries 
     yum:
-      name: [ 'log4cplus', 'log4cplus-devel', 'ccache', 'libcmocka-devel', 'boost-devel', 'gtest-devel' ]
+      name: [ 'log4cplus', 'log4cplus-devel' ]
+      state: present
+
+  - name: install other (optional) libraries 
+    yum:
+      name: [ 'ccache', 'libcmocka-devel', 'gtest-devel' ]
       state: present
 
   - name: install MySQL client and the client development libraries

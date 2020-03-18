@@ -2,8 +2,11 @@
 - name: deploy KEA to the target machine
   hosts: "{{ target | default('localhost') }}"
   become: true
-  connection: local
-
+  pre_tasks:
+    - kea_requirements.yml
   roles:
-    -  kea
+    - { role: gcc, GCC_VER: "{{ GCC_VER }}"
+    - { role: boost, BOOST_VER: "{{ BOOST_VER }}"
+    - freeradius-client
+    - kea
 

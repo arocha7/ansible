@@ -1,0 +1,4 @@
+---
+# vars file for gcc
+
+GCC_VER: 9.3.0

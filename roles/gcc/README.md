@@ -16,21 +16,7 @@ A description of the settable variables for this role should go here, including 
 Dependencies
 ------------
 
-The following products are installed before KEA instalaltion:
-
-* [GCC](https://gcc.gnu.org/) - because default version of GCC in CentOS 7 (4.8.5) is not supported. Actual GCC version in Ubuntu 18.04 is 7.5.0 and that is ok since minimum version for KEA is 4.9.0. March 2020 we are using ver. 9.3.0
-
-* [Boost](http://www.boost.org/) - additions to the Standard C++ Library. March 2020 we are using [Boost ver. 1.72.0](https://www.boost.org/doc/libs/1_72_0/more/getting_started/unix-variants.html)
-
-* [MySQL client]() 
-
-* [PostgreSQL client]() 
-
-* [FreeRADIUS client]() 
-
-* [YANG/NETCONF interface]() - requires [Sysprep](https://www.sysrepo.org/) - note that building 'libyang' requires a minimum gcc version >4.9.0
-
-
+A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
 
 Example Playbook
 ----------------

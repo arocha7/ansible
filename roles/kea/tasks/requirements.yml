@@ -1,0 +1,98 @@
+---
+# tasks file for KEA requirements
+
+- block:
+
+  - name: install the 'Development tools' package group
+    yum:
+      name: "@Development tools"
+      state: present
+
+  - name: install all pre-built/native dependencies
+    yum:
+      name: [ 'cmake', 'bison', 'flex', 'pcre-devel', 'libev-devel', 'protobuf-c-devel', 'protobuf-c-compiler', 'make', 'rpm-build', 'doxygen' ]
+      state: present
+
+  - name: install required libraries and tools
+    yum:
+      name: [ 'autoconf', 'automake', 'libtool', 'openssl-devel', 'python-devel' ]
+      state: present
+
+  - name: install EPEL (log4cplus requirement)
+    yum:
+      name: 'epel-release'
+      state: present
+
+  - name: install required libraries 
+    yum:
+      name: [ 'log4cplus', 'log4cplus-devel', 'ccache', 'libcmocka-devel', 'boost-devel', 'gtest-devel' ]
+      state: present
+
+  - name: install MySQL client and the client development libraries
+    yum:
+      name: [ 'mariadb', 'mariadb-devel' ]
+      state: present
+
+  - name: install PostgreSQL client and the client development libraries - RedHat like
+    yum: 
+      name: https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm
+      state: present
+
+  - yum:
+      name: "postgresql{{ POSTGRES_VERSION }}"
+      state: present
+
+  when: ansible_facts['distribution'] == 'CentOS'
+
+
+- block: 
+
+  - name: upgrade the cache of local packages to the latest version
+    apt:
+      name: '*'
+      update_cache: yes
+      autoclean: yes
+      autoremove: yes
+
+  - name: install 'autoreconf'
+    apt:
+      name: [ 'autoconf', 'automake', 'libtool', 'pkg-config', 'build-essential' ]
+      state: present
+
+  - name: install OpenSSL and log4cplus libs
+    apt:
+      name: [ 'libssl-dev', 'liblog4cplus-dev', 'python-dev' ]
+      state: present
+
+
+  - name: install MySQL client and the client development libraries
+    apt:
+      name: [ 'mysql-client', 'libmysqlclient20', 'libmysqlclient-dev', 'libmysqld-dev' ]
+      state: present
+
+  - name: import the repository signing key
+    apt_key:
+       url: https://www.postgresql.org/media/keys/ACCC4CF8.asc
+
+  - name: add pgSQL apt repository
+    apt_repository: 
+      repo: 'deb http://apt.postgresql.org/pub/repos/apt/ bionic-pgdg main' 
+      state: present 
+      update_cache: yes
+
+  - name: install PostgreSQL client and the client development libraries - Debian like
+    apt: 
+      name: postgresql-client-11
+
+  when: ansible_facts['distribution'] == 'Ubuntu'
+
+
+- name: assure that GIT and CURL are installed
+  package:
+    name: 
+      - git
+      - curl
+      - wget
+      - texinfo # Makeinfo
+    state: present
+

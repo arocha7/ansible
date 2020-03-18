@@ -1,0 +1,52 @@
+---
+# tasks file for SYSREPO
+
+# ccache
+
+- name: install CCACHE libraries
+  yum:
+    name: [ 'ccache' ]
+    state: present
+
+- name: enable CCACHE
+  shell: declare -x PATH="/usr/lib64/ccache:$PATH"
+
+
+# libredblack
+
+- name: fetch, build and install libredblack
+  git:
+    repo: https://github.com/sysrepo/libredblack.git
+    dest: /tmp
+
+- name: config, make, install 'libredblack'
+  shell: cd /tmp/libredblack/configure && ./configure
+- shell: cd /tmp/libredblack/ && make
+- shell: cd /tmp/libredblack && make install
+
+
+# 'libyang' is YANG data modelling language parser and toolkit written (and providing API) in C
+
+- name: get LIBYANG tarball
+  get_url:
+    url: https://github.com/CESNET/libyang/archive/v0.16-r2.tar.gz
+    dest: /tmp
+
+- name: unarchive LIBYANG tarball
+  unarchive:
+    src: /tmp/v0.16-r2.tar.gz
+    dest: /tmp
+    remote_src: yes
+
+- name: configure LIBYANG and generate 'make'
+  shell: cd /tmp/libyang-0.16-r2 && mkdir build && cd build && cmake .. 
+
+- name: compile LIBYANG
+  shell: cd /tmp/libyang-0.16-r2/build && make
+
+- name: install LIBYANG
+  shell: cd /tmp/libyang-0.16-r2/build && make install
+
+
+# swig
+

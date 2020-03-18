@@ -1,132 +1,24 @@
 ---
-# tasks file for kea
-
-- block:
-
-  - name: install the 'Development tools' package group
-    yum:
-      name: "@Development tools"
-      state: present
-
-  - name: install all pre-built/native dependencies
-    yum:
-      name: [ 'cmake', 'bison', 'flex', 'pcre-devel', 'libev-devel', 'protobuf-c-devel', 'protobuf-c-compiler', 'make', 'rpm-build', 'doxygen' ]
-      state: present
-
-  - name: install required libraries and tools
-    yum:
-      name: [ 'autoconf', 'automake', 'libtool', 'openssl-devel', 'python-devel', 'git', 'wget' ]
-      state: present
-
-  - name: install EPEL (log4cplus requirement)
-    yum:
-      name: 'epel-release'
-      state: present
-
-  - name: install required libraries 
-    yum:
-      name: [ 'log4cplus', 'log4cplus-devel', 'ccache', 'libcmocka-devel', 'boost-devel', 'gtest-devel' ]
-      state: present
-
-  - name: install MySQL client and the client development libraries
-    yum:
-      name: [ 'mariadb', 'mariadb-devel' ]
-      state: present
-
-  - name: install PostgreSQL client and the client development libraries - RedHat like
-    yum: 
-      name: https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm
-      state: present
-  - yum:
-      name: "postgresql{{ POSTGRES_VERSION }}"
-      state: present
-
-  when: ansible_facts['distribution'] == 'CentOS'
-
-
-- block: 
-
-  - name: upgrade the cache of local packages to the latest version
-    apt:
-      name: '*'
-      update_cache: yes
-      autoclean: yes
-      autoremove: yes
-
-  - name: install 'autoreconf'
-    apt:
-      name: [ 'autoconf', 'automake', 'libtool', 'pkg-config', 'build-essential' ]
-      state: present
-
-  - name: install OpenSSL and log4cplus libs
-    apt:
-      name: [ 'libssl-dev', 'liblog4cplus-dev', 'python-dev' ]
-      state: present
-
-
-  - name: install MySQL client and the client development libraries
-    apt:
-      name: [ 'mysql-client', 'libmysqlclient20', 'libmysqlclient-dev', 'libmysqld-dev' ]
-      state: present
-
-  - name: import the repository signing key
-    apt_key:
-       url: https://www.postgresql.org/media/keys/ACCC4CF8.asc
-
-  - name: add pgSQL apt repository
-    apt_repository: 
-      repo: 'deb http://apt.postgresql.org/pub/repos/apt/ bionic-pgdg main' 
-      state: present 
-      update_cache: yes
-
-  - name: install PostgreSQL client and the client development libraries - Debian like
-    apt: 
-      name: postgresql-client-11
-
-  when: ansible_facts['distribution'] == 'Ubuntu'
-
-
-- name: assure that GIT and CURL are installed
-  package:
-    name: 
-      - git
-      - curl
-    state: present
-
-###
-# [GCC install start ](https://linuxhostsupport.com/blog/how-to-install-gcc-on-centos-7)
-###
-
-- name: install an up-to-date version of GCC from the source (requires gcc +4.9.0)
-  get_url:
-    url: "http://ftp.mirrorservice.org/sites/sourceware.org/pub/gcc/releases/gcc-{{ GCC_VER }}/gcc-{{ GCC_VER }}.tar.gz"
-    dest: /tmp
-
-- name: unarchive a file that is already on the remote machine
-  unarchive:
-     src: "/tmp/gcc-{{ GCC_VER }}.tar.gz"
-     dest: /tmp
-     remote_src: yes                                              
-
-- name: install BZIP2 and run the 'download_prerequisites' script to download some prerequisites needed by GCC
-  yum:
-    name: bzip2
-    state: present
-
-- name: install GCC pre-requisties
-  shell: "cd /tmp/gcc-{{ GCC_VER }} && ./contrib/download_prerequisites"
-
-- name: configure the GCC build environment
-  shell: "cd /tmp/gcc-{{ GCC_VER }} && ./configure --enable-multilib --enable-languages=c,c++"
-
-- name: compile GCC source code
-  shell: "cd /tmp/gcc-{{ GCC_VER }} && make -j 4"
-
-- name: install GCC
-  shell: "cd /tmp/gcc-{{ GCC_VER }} && make install"
+# tasks file for KEA
 
 #####
+# Sysrepo >0.7.6
+#####
 
+
+#####
+# LibYANG >0.16-r2
+#####
+
+
+#####
+# GoogleTest >1.8
+#####
+
+
+#####
+# KEA
+#####
 
 - name: get KEA tarball
   get_url: 
@@ -140,41 +32,14 @@
     remote_src: yes
 
 - name: configure KEA and generate 'make' 
-  shell: cd /tmp/kea-1.7.5 &&  ./configure --prefix=/opt/kea --with-boost-include=/usr/include/boost --with-log4cplus=/opt/log4cplus --with-openssl --with-mysql -with-openssl
+  shell: cd /tmp/kea-1.7.5 && ./configure --prefix=/opt/kea --with-boost-include=/usr/include/boost --with-log4cplus=/opt/log4cplus --with-openssl --with-mysql -with-openssl
 
 - name: compile KEA
-  shell: make
+  shell: cd /tmp/kea-1.7.5 && make
 
 - name: install KEA
-  shell: make install
+  shell: cd /tmp/kea-1.7.5 && make install
 
-#- name: Enable ccache
-#  shell: declare -x PATH="/usr/lib64/ccache:$PATH"
-
-#- name: fetch, build and install libredblack
-#  git:
-#    repo: https://github.com/sysrepo/libredblack.git
-#    dest: /tmp/libredblack
-
-#- name: config, make, install 'libredblack'
-#  shell: /tmp/libredblack/configure && \
-#         /tmp/libredblack/make && \
-#         /tmp/libredblack/make install
-
-
-
-#- name: install an up-to-date version of [C++ Boost library](http://www.boost.org/more/getting_started/unix-variants.html)
-#  get_url:
-#    url: https://dl.bintray.com/boostorg/release/1.72.0/source/boost_1_72_0.tar.gz
-#    dest: /tmp
-
-#- name: extract Boost tarball
-#  unarchive:
-#    src: /tmp/boost_1_72_0.tar.gz
-#    dest: /tmp
-
-#- name: boostrap Boost library
-#  shell: cd /tmp/boost_1_72_0 && ./bootstrap.sh && ./b2 headers && ./b2 install --with=all 
 
 #- name: generate the configure script
 #  shell: autoreconf --install

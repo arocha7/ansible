@@ -1,17 +1,22 @@
 ---
 # tasks file for KEA requirements
 
+- name: assure that GIT and CURL are installed
+  package:
+    name: 
+      - git
+      - curl
+      - wget
+      - texinfo # Makeinfo
+    state: present
+
+
+#- name: install all pre-built/native dependencies
+#  yum:
+#    name: [ 'cmake', 'bison', 'flex', 'pcre-devel', 'libev-devel', 'protobuf-c-devel', 'protobuf-c-compiler', 'make', 'rpm-build', 'doxygen' ]
+#    state: present
+
 - block:
-
-  - name: install the 'Development tools' package group
-    yum:
-      name: "@Development tools"
-      state: present
-
-#  - name: install all pre-built/native dependencies
-#    yum:
-#      name: [ 'cmake', 'bison', 'flex', 'pcre-devel', 'libev-devel', 'protobuf-c-devel', 'protobuf-c-compiler', 'make', 'rpm-build', 'doxygen' ]
-#      state: present
 
   - name: install OpenSSL (or [Botan >ver. 2](https://botan.randombit.net/))
     yum:
@@ -95,14 +100,4 @@
       name: postgresql-client-11
 
   when: ansible_facts['distribution'] == 'Ubuntu'
-
-
-- name: assure that GIT and CURL are installed
-  package:
-    name: 
-      - git
-      - curl
-      - wget
-      - texinfo # Makeinfo
-    state: present
 

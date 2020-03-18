@@ -3,11 +3,11 @@
   hosts: "{{ target | default('localhost') }}"
   become: true
   pre_tasks:
-    - kea_requirements.yml
+    - requirements.yml
   roles:
-    - "{ role: gcc, GCC_VER: {{ GCC_VER }}"
-    - "{ role: boost, BOOST_VER: {{ BOOST_VER }}"
+    - { role: gcc, GCC_VER: 9.3.0 }
+    - { role: boost, BOOST_VER: 1.72.0 }
     - freeradius-client
-    - sysprep
+    - sysrepo
     - kea
 

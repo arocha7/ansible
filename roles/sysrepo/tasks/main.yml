@@ -8,17 +8,17 @@
     name: [ 'ccache' ]
     state: present
 
-- name: enable CCACHE
+- name: enable Ccache
   shell: '#!/bin/bash && declare -x PATH="/usr/lib64/ccache:$PATH"'
 
 
 # libRedBlack
 
-- name: fetch, build and install libredblack
-  git:
-    repo: https://github.com/sysrepo/libredblack.git
-    dest: /tmp/libredblack
-    force: yes
+#- name: fetch, build and install libredblack
+#  git:
+#    repo: https://github.com/sysrepo/libredblack.git
+#    dest: /tmp/libredblack
+#    force: yes
 
 - name: config, make, install 'libredblack'
   shell: cd /tmp/libredblack && ./configure
@@ -26,54 +26,52 @@
 - shell: cd /tmp/libredblack && make install
 
 
-
+###
 # [CMake](https://cmake.org/install/)
+###
 
-- name: get CNAKE tarball
-  get_url:
-    url: https://github.com/Kitware/CMake/releases/download/v3.16.5/cmake-3.16.5.tar.gz
-    dest: /tmp
+#- name: get CMAKE tarball
+#  get_url:
+#    url: https://github.com/Kitware/CMake/releases/download/v3.16.5/cmake-3.16.5.tar.gz
+#    dest: /tmp
 
-- name: unarchive CMAKE tarball
-  unarchive:
-    src: /tmp/cmake-3.16.5.tar.gz
-    dest: /tmp
-    remote_src: yes
+#- name: unarchive CMAKE tarball
+#  unarchive:
+#    src: /tmp/cmake-3.16.5.tar.gz
+#    dest: /tmp
+#    remote_src: yes
 
-- name: configure CMAKE and generate 'make'
-  shell: cd /tmp/cmake-3.16.5 && ./bootstrap
+#- name: configure CMAKE and generate 'make'
+#  shell: cd /tmp/cmake-3.16.5 && ./bootstrap
 
-- name: compile LCMAKE
-  shell: cd /tmp/cmake-3.16.5 && make
+#- name: compile CMAKE
+#  shell: cd /tmp/cmake-3.16.5 && make
 
-- name: install CMAKE
-  shell: cd /tmp/cmake-3.16.5 && make install
+#- name: install CMAKE
+#  shell: cd /tmp/cmake-3.16.5 && make install
 
-
-
-
+###
 # 'libyang' is YANG data modelling language parser and toolkit written (and providing API) in C
+###
 
 - name: get LIBYANG tarball
   get_url:
-    url: https://github.com/CESNET/libyang/archive/v0.16-r2.tar.gz
+    url: https://github.com/CESNET/libyang/archive/v1.0.130.tar.gz
     dest: /tmp
 
 - name: unarchive LIBYANG tarball
   unarchive:
-    src: /tmp/libyang-0.16-r2.tar.gz
+    src: /tmp/v1.0.130.tar.gz
     dest: /tmp
     remote_src: yes
 
 - name: configure LIBYANG and generate 'make'
-  shell: cd /tmp/libyang-0.16-r2 && mkdir build && cd build && cmake .. 
+  shell: cd /tmp/libyang-1.0.130 && mkdir -p build && cd build && cmake .. 
 
 - name: compile LIBYANG
-  shell: cd /tmp/libyang-0.16-r2/build && make
+  shell: cd /tmp/libyang-1.0.130/build && make
 
 - name: install LIBYANG
-  shell: cd /tmp/libyang-0.16-r2/build && make install
+  shell: cd /tmp/libyang-1.0.130/build && make install
 
-
-# swig
 

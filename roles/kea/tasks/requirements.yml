@@ -11,12 +11,12 @@
     state: present
 
 
-#- name: install all pre-built/native dependencies
-#  yum:
-#    name: [ 'cmake', 'bison', 'flex', 'pcre-devel', 'libev-devel', 'protobuf-c-devel', 'protobuf-c-compiler', 'make', 'rpm-build', 'doxygen' ]
-#    state: present
-
 - block:
+
+  - name: install all pre-built/native dependencies
+    yum:
+      name: [ 'libcmocka-devel', 'gtest-devel', 'bison', 'flex', 'pcre-devel', 'libev-devel', 'protobuf-c-devel', 'protobuf-c-compiler', 'rpm-build', 'doxygen' ]
+      state: present
 
   - name: install OpenSSL (or [Botan >ver. 2](https://botan.randombit.net/))
     yum:
@@ -25,10 +25,10 @@
 
   - name: install required libraries and tools
     yum:
-      name: [ 'autoconf', 'automake', 'libtool', 'python-devel' ]
+      name: [ 'autoconf', 'automake', 'libtool', 'python-devel', 'ccache', 'make', 'cmake' ]
       state: present
 
-  - name: install EPEL (log4cplus requirement)
+  - name: install EPEL ('log4cplus' requirement)
     yum:
       name: 'epel-release'
       state: present
@@ -36,11 +36,6 @@
   - name: install 'log4cplus' libraries 
     yum:
       name: [ 'log4cplus', 'log4cplus-devel' ]
-      state: present
-
-  - name: install other (optional) libraries 
-    yum:
-      name: [ 'ccache', 'libcmocka-devel', 'gtest-devel' ]
       state: present
 
   - name: install MySQL client and the client development libraries
@@ -69,15 +64,13 @@
       autoclean: yes
       autoremove: yes
 
-  - name: install 'autoreconf'
+  - name: install devel tools
     apt:
-      name: [ 'autoconf', 'automake', 'libtool', 'pkg-config', 'build-essential' ]
-      state: present
+      name: [ 'autoconf', 'automake', 'libtool', 'pkg-config', 'build-essential', 'python-dev', 'cmake', 'make' ]
 
-  - name: install OpenSSL and log4cplus libs
+  - name: install required packages
     apt:
-      name: [ 'libssl-dev', 'liblog4cplus-dev', 'python-dev' ]
-      state: present
+      name: [ 'ccache', 'libboost-dev', 'libboost-system-dev', 'liblog4cplus-dev', 'libssl-dev', 'libprec3-dev', 'bison',  'flex', 'devscripts', 'debhelper' ]
 
 
   - name: install MySQL client and the client development libraries

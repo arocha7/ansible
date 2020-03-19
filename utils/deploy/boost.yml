@@ -1,0 +1,7 @@
+---
+- name: deploy BOOST (C++ library) to the target machine
+  hosts: "{{ target | default('localhost') }}"
+  become: true
+  roles:
+    - boost
+

@@ -5,8 +5,8 @@
 ###
 
 [onos]
-ce7onos ansible_host=172.31.8.196 ansible_user=centos
-u18onos ansible_host=172.31.8.146 ansible_user=ubuntu
+ce7onos ansible_host=172.31.8.205 ansible_user=centos
+u18onos ansible_host=172.31.8.149 ansible_user=ubuntu
 
 ###
 ## WHERE - a Datacenter, a Region
@@ -18,5 +18,5 @@ u18onos ansible_host=172.31.8.146 ansible_user=ubuntu
 
 [all:vars]
 ansible_ssh_common_args='-o StrictHostKeyChecking=no -o KbdInteractiveAuthentication=no'
-ansible_ssh_private_key_file=~/.ssh/ostk-support.pem
+ansible_ssh_private_key_file=~/.ssh/tng-infra.pem
 

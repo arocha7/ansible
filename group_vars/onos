@@ -1,0 +1,6 @@
+# webservers:dbservers:&staging:!phoenix
+# targets all machines in the groups ‘webservers’ and ‘dbservers’ that are also in the group ‘staging’, except any machines in the group ‘phoenix’
+
+# onos:!{{ excluded }}:&{{ required }}
+
+# onos:&centos:!ubuntu

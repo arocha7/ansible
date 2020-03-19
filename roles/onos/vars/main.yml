@@ -3,3 +3,7 @@
 
 ONOS_VERSION: 2.3.0
 
+KARAF_VERSION: 4.2.6
+
+KARAF_ROOT: /opt/onos/apache-karaf-{{ KARAF_VERSION }}
+

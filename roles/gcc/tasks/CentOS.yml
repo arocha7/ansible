@@ -1,7 +1,12 @@
 ---
 
+- name: install 'Development tools' package group for CentOS
+  yum:
+    name: "@Development tools"
+    state: present
+
 ###
-# [GCC install start ](https://linuxhostsupport.com/blog/how-to-install-gcc-on-centos-7)
+# [install latest GCC](https://linuxhostsupport.com/blog/how-to-install-gcc-on-centos-7)
 ###
 
 - name: install BZIP2 and run the 'download_prerequisites' script to download some prerequisites needed by GCC
@@ -31,7 +36,7 @@
   shell: "cd /tmp/gcc-{{ GCC_VER }} && ./contrib/download_prerequisites"
 
 - name: configure the GCC build environment
-  shell: "cd /tmp/gcc-{{ GCC_VER }} && ./configure --disable-multilib --enable-languages=c,c++"
+  shell: "cd /tmp/gcc-{{ GCC_VER }} && ./configure --prefix=/usr/local --disable-multilib --enable-languages=c,c++"
 
 - name: compile GCC source code
   shell: "cd /tmp/gcc-{{ GCC_VER }} && make"

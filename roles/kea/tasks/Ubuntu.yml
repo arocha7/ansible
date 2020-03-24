@@ -47,6 +47,7 @@
       - 'liblog4cplus-dev'
       - 'libssl-dev'
       - 'ccache'
+      - 'doxygen'
       - 'devscripts'
       - 'debhelper'
 

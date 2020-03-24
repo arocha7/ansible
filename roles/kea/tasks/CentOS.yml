@@ -1,2 +1,100 @@
 ---
 
+- name: upgrade all packages
+  yum:
+    name: '*'
+    state: latest
+
+- name: assure that GIT and CURL are installed
+  yum:
+    name:
+      - git
+      - curl
+      - wget
+      - texinfo # Makeinfo
+    state: present
+
+- name: install all pre-built/native dependencies
+  yum:
+    name: 
+      - 'bison'
+      - 'flex'
+      - 'pcre-devel'
+      - 'libev-devel'
+      - 'protobuf-c-devel'
+      - 'protobuf-c-compiler'
+      - 'rpm-build'
+      - 'doxygen'
+      - 'autoconf'
+      - 'automake'
+      - 'libtool'
+      - 'gtest-devel'
+      - 'python-devel'
+      - 'make'
+      - 'cmake'
+    state: present
+
+- name: install OpenSSL (or [Botan >ver. 2](https://botan.randombit.net/))
+  yum:
+    name: 'openssl-devel'
+    state: present
+
+
+###
+# log4cplus
+###
+
+- name: install EPEL ('log4cplus' requirement)
+  yum:
+    name: 'epel-release'
+    state: present
+
+- name: install 'log4cplus' libraries
+  yum:
+    name: [ 'log4cplus', 'log4cplus-devel', 'ccache', 'libcmocka-devel' ]
+    state: present
+
+- name: install EPEL ('log4cplus' requirement)
+  yum:
+    name: 'epel-release'
+    state: absent
+
+- name: enable Ccache
+  shell: '#!/bin/bash && declare -x PATH="/usr/lib64/ccache:$PATH"'
+
+
+###
+# libRedBlack for Sysrepo
+###
+
+- name: fetch, build and install libredblack
+  git:
+    repo: https://github.com/sysrepo/libredblack.git
+    dest: /tmp/libredblack
+    force: yes
+- name: config 'libredblack'
+  shell: cd /tmp/libredblack && ./configure
+- name: make 'libredblack'
+  shell: cd /tmp/libredblack && make
+- name: install 'libredblack'
+  shell: cd /tmp/libredblack && make install
+
+
+###
+# DB clients
+###
+
+- name: install MySQL client and the client development libraries
+  yum:
+    name: [ 'mariadb', 'mariadb-devel' ]
+    state: present
+
+- name: install PostgreSQL client and the client development libraries - RedHat like
+  yum:
+    name: https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm
+    state: present
+
+- yum:
+    name: "postgresql{{ POSTGRES_VERSION }}"
+    state: present
+

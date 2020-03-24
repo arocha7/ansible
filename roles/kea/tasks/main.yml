@@ -32,6 +32,7 @@
   get_url:
     url: https://github.com/CESNET/libyang/archive/v1.0.130.tar.gz
     dest: /tmp
+    mode: '0755'
 
 - name: unarchive LIBYANG tarball
   unarchive:
@@ -59,6 +60,7 @@
   get_url:
     url: https://github.com/sysrepo/sysrepo/archive/v1.4.2.tar.gz
     dest: /tmp
+    mode: '0755'
 
 - name: unarchive SYSREPO tarball
   unarchive:
@@ -92,6 +94,7 @@
   get_url:
     url: https://ftp.isc.org/isc/kea/1.7.5/kea-1.7.5.tar.gz
     dest: /tmp
+    mode: '0755'
 
 - name: unarchive KEA tarball
   unarchive:

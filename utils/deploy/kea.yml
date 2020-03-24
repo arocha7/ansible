@@ -2,12 +2,8 @@
 - name: deploy KEA to the target machine
   hosts: "{{ target | default('localhost') }}"
   become: true
-  pre_tasks:
-    - include: "{{ lookup('env','PWD') }}/roles/kea/tasks/requirements.yml"
   roles:
-    - { role: gcc, GCC_VER: 9.3.0 }
-    - { role: boost, BOOST_VER: 1.72.0 }
-    - freeradius-client
-    - sysrepo
+#    - { role: gcc, GCC_VER: 9.3.0 }
+#    - { role: boost, BOOST_VER: 1.72.0 }
     - kea
 

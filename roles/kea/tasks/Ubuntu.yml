@@ -1,0 +1,71 @@
+---
+
+- name: upgrade the cache of local packages to the latest version
+  apt:
+    name: '*'
+    update_cache: yes
+    autoclean: yes
+    autoremove: yes
+
+- name: install a list of packages
+  apt:
+    pkg:
+    - python-apt
+    - python3-apt
+    - aptitude
+
+- name: assure that GIT and CURL are installed
+  package:
+    name:
+      - git
+      - curl
+      - wget
+      - texinfo # Makeinfo
+    state: present
+
+- name: install a list of packages (devel tools)
+  apt:
+    pkg:
+      - 'build-essential'
+      - 'pkg-config'
+      - 'python-dev'
+      - 'cmake'
+      - 'make'
+      - 'bison'
+      - 'flex'
+      - 'libavl-dev'
+      - 'libev-dev'
+      - 'libpcre3-dev'
+      - 'libprotobuf-c-dev'
+      - 'protobuf-c-compiler' 
+      - 'swig'
+      - 'autoconf'
+      - 'automake'
+      - 'libtool'
+      - 'libboost-dev'
+      - 'libboost-system-dev'
+      - 'liblog4cplus-dev'
+      - 'libssl-dev'
+      - 'ccache'
+      - 'devscripts'
+      - 'debhelper'
+
+- name: install MySQL client and the client development libraries
+  apt:
+    name: [ 'mysql-client', 'libmysqlclient20', 'libmysqlclient-dev', 'libmysqld-dev' ]
+    state: present
+
+- name: import the repository signing key
+  apt_key:
+    url: https://www.postgresql.org/media/keys/ACCC4CF8.asc
+
+- name: add pgSQL apt repository
+  apt_repository:
+    repo: 'deb http://apt.postgresql.org/pub/repos/apt/ bionic-pgdg main'
+    state: present
+    update_cache: yes
+
+- name: install PostgreSQL client and the client development libraries - Debian like
+  apt:
+    name: postgresql-client-11
+

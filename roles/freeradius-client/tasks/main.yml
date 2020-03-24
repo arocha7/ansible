@@ -11,11 +11,12 @@
     dest: /tmp/freeradius-client
 
 - name: configura FreeRADIUS 
-  shell: cd /tmp/freeradius-client && ./configure
+  shell: cd /tmp/freeradius-client && ./configure --prefix=/usr/local
 
 - name: compile FreeRADIUS
   shell: cd /tmp/freeradius-client && make
 
 - name: install FreeRADIUS
   shell: cd /tmp/freeradius-client && make install
+  become: true
 

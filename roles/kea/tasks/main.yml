@@ -1,27 +1,95 @@
 ---
-# tasks file for KEA
+# tasks file for kea
 
-#####
-# Sysrepo >0.7.6
-#####
+- name: installing KEA DHCPv4 and DHCPv6 server 
+  include_tasks: "{{ ansible_distribution }}.yml"
+
+###
+# FreeRADIUS client library
+###
+
+- name: install FreeRADIUS client library
+  git:
+    repo: 'https://github.com/FreeRADIUS/freeradius-client.git'
+    dest: /tmp/freeradius-client
+
+- name: configura FreeRADIUS
+  shell: cd /tmp/freeradius-client && ./configure --prefix=/usr/local
+
+- name: compile FreeRADIUS
+  shell: cd /tmp/freeradius-client && make
+
+- name: install FreeRADIUS
+  shell: cd /tmp/freeradius-client && make install
+  become: true
 
 
-#####
-# LibYANG >0.16-r2
-#####
+###
+# NETCONF ver. 1.0.130 (March 2020)
+###
+
+- name: get LIBYANG tarball
+  get_url:
+    url: https://github.com/CESNET/libyang/archive/v1.0.130.tar.gz
+    dest: /tmp
+
+- name: unarchive LIBYANG tarball
+  unarchive:
+    src: /tmp/v1.0.130.tar.gz
+    dest: /tmp
+    remote_src: yes
+
+- name: configure LIBYANG and generate 'make'
+  shell: cd /tmp/libyang-1.0.130 && mkdir -p build && cd build && cmake ..
+# ```cmake -DPCRE_LIBRARY=/usr/lib64/lipcre.so -DPCRE_INCLUDE_DIR=/usr/include ..```
+
+- name: compile LIBYANG
+  shell: cd /tmp/libyang-1.0.130/build && make
+
+- name: install LIBYANG
+  shell: cd /tmp/libyang-1.0.130/build && make install
+  become: true
 
 
-#####
-# GoogleTest >1.8
-#####
+###
+# SYSREPO ver. 1.4.2 (March 2020)
+###
+
+- name: get SYSREPO tarball
+  get_url:
+    url: https://github.com/sysrepo/sysrepo/archive/v1.4.2.tar.gz
+    dest: /tmp
+
+- name: unarchive SYSREPO tarball
+  unarchive:
+    src: /tmp/v1.4.2.tar.gz
+    dest: /tmp
+    remote_src: yes
+
+- name: configure SYSREPO and generate 'make'
+  shell: cd /tmp/sysrepo-1.4.2 && mkdir -p build && cd build && cmake \
+         -DCMAKE_BUILD_TYPE=Debug \
+         -DGEN_LANGUAGE_BINDINGS=ON \
+         -DGEN_CPP_BINDINGS=ON \
+         -DGEN_PYTHON_BINDINGS=OFF \
+         -DGEN_LUA_BINDINGS=OFF \
+         -DENABLE_TESTS=OFF \
+         ..
+
+- name: compile SYSREPO
+  shell: cd /tmp/sysrepo-1.4.2/build && make
+
+- name: install SYSREPO
+  shell: cd /tmp/sysrepo-1.4.2/build && make install
+  become: true
 
 
-#####
-# KEA
-#####
+###
+# KEA ver. 1.7.5 (March 2020)
+###
 
 - name: get KEA tarball
-  get_url: 
+  get_url:
     url: https://ftp.isc.org/isc/kea/1.7.5/kea-1.7.5.tar.gz
     dest: /tmp
 
@@ -31,19 +99,22 @@
     dest: /tmp
     remote_src: yes
 
-- name: configure KEA and generate 'make' 
-  shell: cd /tmp/kea-1.7.5 && ./configure --prefix=/opt/kea --with-boost-include=/usr/include/boost --with-log4cplus=/opt/log4cplus --with-openssl --with-mysql -with-openssl
+- name: KEA - autoreconfigure
+  shell: cd /tmp/kea-1.7.5 && autoreconf -i
+
+- name: configure KEA and generate 'make'
+  shell: cd /tmp/kea-1.7.5 && ./configure \
+    --prefix=/opt/kea \
+    --with-boost-include=/usr/include/boost \
+    --with-log4cplus=/opt/log4cplus \
+    --with-openssl \
+    --with-mysql \
+    --with-openssl \
+    --with-sysrepo
 
 - name: compile KEA
   shell: cd /tmp/kea-1.7.5 && make
 
 - name: install KEA
   shell: cd /tmp/kea-1.7.5 && make install
-
-
-#- name: generate the configure script
-#  shell: autoreconf --install
-
-#- name: configure Kea install
-#  shell: ./configure --prefix=/opt/kea --with-boost-include=/usr/include/boost --with-log4cplus=/opt/log4cplus --with-openssl --with-mysql -with-openssl
 

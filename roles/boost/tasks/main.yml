@@ -5,7 +5,7 @@
 # [portable C++ BOOST library](https://www.boost.org/doc/libs/1_72_0/more/getting_started/unix-variants.html)
 #####
 
-- name: install an up-to-date version of [C++ Boost library](http://www.boost.org/more/getting_started/unix-variants.html)
+- name: install latest version of [C++ Boost library](http://www.boost.org/more/getting_started/unix-variants.html)
   get_url:
     url: "https://dl.bintray.com/boostorg/release/{{ BOOST_VER }}/source/boost_{{ BOOST_VERSION }}.tar.gz"
     dest: /tmp

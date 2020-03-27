@@ -1,2 +1,12 @@
 ---
 # defaults file for kea
+
+gcc: true
+boost: true
+openssh: true
+botan: false
+mysql_cli: true
+pgsql_cli: true
+freeradius_cli: true
+libyang: true
+

@@ -51,22 +51,32 @@
       - 'devscripts'
       - 'debhelper'
 
-- name: install MySQL client and the client development libraries
-  apt:
-    name: [ 'mysql-client', 'libmysqlclient20', 'libmysqlclient-dev', 'libmysqld-dev' ]
-    state: present
+- name: MySQL client
+  block:
 
-- name: import the repository signing key
-  apt_key:
-    url: https://www.postgresql.org/media/keys/ACCC4CF8.asc
+  - name: install MySQL client and the client development libraries
+    apt:
+      name: [ 'mysql-client', 'libmysqlclient20', 'libmysqlclient-dev', 'libmysqld-dev' ]
+      state: present
 
-- name: add pgSQL apt repository
-  apt_repository:
-    repo: 'deb http://apt.postgresql.org/pub/repos/apt/ bionic-pgdg main'
-    state: present
-    update_cache: yes
+  when: mysql_cli == true
 
-- name: install PostgreSQL client and the client development libraries - Debian like
-  apt:
-    name: postgresql-client-11
+- name: PostgreSQL client
+  block:
+
+  - name: import the repository signing key
+    apt_key:
+      url: https://www.postgresql.org/media/keys/ACCC4CF8.asc
+
+  - name: add pgSQL apt repository
+    apt_repository:
+      repo: 'deb http://apt.postgresql.org/pub/repos/apt/ bionic-pgdg main'
+      state: present
+      update_cache: yes
+
+  - name: install PostgreSQL client and the client development libraries - Debian like
+    apt:
+      name: postgresql-client-11
+
+  when: pgsql_cli == true
 

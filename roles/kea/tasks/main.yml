@@ -8,68 +8,84 @@
 # FreeRADIUS client library
 ###
 
-- name: install FreeRADIUS client library
-  git:
-    repo: 'https://github.com/FreeRADIUS/freeradius-client.git'
-    dest: /tmp/freeradius-client
+- name: FreeRADIUS
+  block: 
 
-- name: configura FreeRADIUS
-  shell: cd /tmp/freeradius-client && ./configure --prefix=/usr/local
+  - name: install FreeRADIUS client library
+    git:
+      repo: 'https://github.com/FreeRADIUS/freeradius-client.git'
+      dest: /tmp/freeradius-client
 
-- name: compile FreeRADIUS
-  shell: cd /tmp/freeradius-client && make
+  - name: configura FreeRADIUS
+    shell: cd /tmp/freeradius-client && ./configure --prefix=/usr/local
 
-- name: install FreeRADIUS
-  shell: cd /tmp/freeradius-client && make install
-  become: true
+  - name: compile FreeRADIUS
+    shell: cd /tmp/freeradius-client && make
 
+  - name: install FreeRADIUS
+    shell: cd /tmp/freeradius-client && make install
+    become: true
+
+  when: freeradius_cli == true
 
 ###
 # NETCONF ver. 1.0.130 (March 2020)
 ###
+#
+###
+# netconf (RFC-6241) agent
+# Netconf provides a framework for the exchange of management information between agents (servers) and clients. 
+# The yuma123 agent is a daemon which listens for incoming netconf requests from clients and provides responses. 
+# [Homepage:](https://sourceforge.net/projects/yuma123) 
+###
+# YANG data model (RFC6020)
+###
 
-- name: get LIBYANG tarball
-  get_url:
-    url: https://github.com/CESNET/libyang/archive/v1.0.130.tar.gz
-    dest: /tmp
-    mode: '0755'
+- name: LIBYANG+SYSREPO
+  block:
 
-- name: unarchive LIBYANG tarball
-  unarchive:
-    src: /tmp/v1.0.130.tar.gz
-    dest: /tmp
-    remote_src: yes
+  - name: get LIBYANG tarball
+    get_url:
+      url: https://github.com/CESNET/libyang/archive/v1.0.130.tar.gz
+      dest: /tmp
+      mode: '0755'
 
-- name: configure LIBYANG and generate 'make'
-  shell: cd /tmp/libyang-1.0.130 && mkdir -p build && cd build && cmake ..
-# ```cmake -DPCRE_LIBRARY=/usr/lib64/lipcre.so -DPCRE_INCLUDE_DIR=/usr/include ..```
+  - name: unarchive LIBYANG tarball
+    unarchive:
+      src: /tmp/v1.0.130.tar.gz
+      dest: /tmp
+      remote_src: yes
 
-- name: compile LIBYANG
-  shell: cd /tmp/libyang-1.0.130/build && make
+  - name: configure LIBYANG and generate 'make'
+    shell: cd /tmp/libyang-1.0.130 && mkdir -p build && cd build && cmake ..
+    # ```cmake -DPCRE_LIBRARY=/usr/lib64/lipcre.so -DPCRE_INCLUDE_DIR=/usr/include ..```
 
-- name: install LIBYANG
-  shell: cd /tmp/libyang-1.0.130/build && make install
-  become: true
+  - name: compile LIBYANG
+    shell: cd /tmp/libyang-1.0.130/build && make
+
+  - name: install LIBYANG
+    shell: cd /tmp/libyang-1.0.130/build && make install
+    become: true
 
 
 ###
 # SYSREPO ver. 1.4.2 (March 2020)
 ###
 
-- name: get SYSREPO tarball
-  get_url:
-    url: https://github.com/sysrepo/sysrepo/archive/v1.4.2.tar.gz
-    dest: /tmp
-    mode: '0755'
+  - name: get [SYSREPO](https://www.sysrepo.org/) tarball
+    get_url:
+      url: https://github.com/sysrepo/sysrepo/archive/v1.4.2.tar.gz
+      dest: /tmp
+      mode: '0755'
 
-- name: unarchive SYSREPO tarball
-  unarchive:
-    src: /tmp/v1.4.2.tar.gz
-    dest: /tmp
-    remote_src: yes
+  - name: unarchive SYSREPO tarball
+    unarchive:
+      src: /tmp/v1.4.2.tar.gz
+      dest: /tmp
+      remote_src: yes
 
-- name: configure SYSREPO and generate 'make'
-  shell: cd /tmp/sysrepo-1.4.2 && mkdir -p build && cd build && cmake \
+  - name: configure SYSREPO and generate 'make'
+    shell: cd /tmp/sysrepo-1.4.2 && mkdir -p build && cd build && cmake \
          -DCMAKE_BUILD_TYPE=Debug \
          -DGEN_LANGUAGE_BINDINGS=ON \
          -DGEN_CPP_BINDINGS=ON \
@@ -78,13 +94,14 @@
          -DENABLE_TESTS=OFF \
          ..
 
-- name: compile SYSREPO
-  shell: cd /tmp/sysrepo-1.4.2/build && make
+  - name: compile SYSREPO
+    shell: cd /tmp/sysrepo-1.4.2/build && make
 
-- name: install SYSREPO
-  shell: cd /tmp/sysrepo-1.4.2/build && make install
-  become: true
+  - name: install SYSREPO
+    shell: cd /tmp/sysrepo-1.4.2/build && make install
+    become: true
 
+  when: libyang == true
 
 ###
 # KEA ver. 1.7.5 (March 2020)
@@ -121,3 +138,6 @@
 - name: install KEA
   shell: cd /tmp/kea-1.7.5 && make install
 
+###
+# [YANG/NETCONF support](https://kea.readthedocs.io/en/kea-1.6.1/arm/netconf.html)
+###

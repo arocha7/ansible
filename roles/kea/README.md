@@ -20,7 +20,7 @@ Role Variables
 Dependencies
 ------------
 
-The following products are installed before KEA instalaltion:
+The following products are installed by the playbook before KEA instalaltion:
 
 * [GCC](https://gcc.gnu.org/) - because default version of GCC in CentOS 7 (4.8.5) is not supported. Actual GCC version in Ubuntu 18.04 is 7.5.0 and that is ok since minimum version for KEA is 4.9.0. As of March 2020, this playbook deploys the latest tarball version 9.3.0
 
@@ -28,7 +28,9 @@ The following products are installed before KEA instalaltion:
 
 * OpenSSL (or Botan)
 
-* make
+
+Optional tools
+--------------
 
 * [MySQL client]() 
 
@@ -46,11 +48,26 @@ The following products are installed before KEA instalaltion:
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+To deploy Kea with all available options, just run:
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+```
+ansible-playbook utils/deploy/kea.yml
+```
+
+To deploy Kea with selected options, just run (ex,):
+
+```
+ansible-playbook utils/deploy/kea.yml \
+  -e gcc=true \
+  -e boost=true \
+  -e openssl=true \
+  -e botan=false \
+  -e mysql_cli=false \
+  -e pgsql_cli=true \
+  -e freeradius_cli=true \
+  -e libyang=true
+```
+
 
 License
 -------
@@ -60,4 +77,4 @@ BSD
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+arocha@ptinovacao.pt

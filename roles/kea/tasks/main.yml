@@ -84,11 +84,18 @@
       dest: /tmp
       remote_src: yes
 
+  - name: install 'clang' (?)
+    package:
+      name: 
+        - clang
+        - valgrind
+      state: present
+
   - name: configure SYSREPO and generate 'make'
     shell: cd /tmp/sysrepo-1.4.2 && mkdir -p build && cd build && cmake \
          -DCMAKE_BUILD_TYPE=Debug \
          -DGEN_LANGUAGE_BINDINGS=ON \
-         -DGEN_CPP_BINDINGS=ON \
+         -DGEN_CPP_BINDINGS=OFF \
          -DGEN_PYTHON_BINDINGS=OFF \
          -DGEN_LUA_BINDINGS=OFF \
          -DENABLE_TESTS=OFF \
@@ -131,6 +138,10 @@
     --with-mysql \
     --with-openssl \
     --with-sysrepo
+  vars:
+    pkg_config_path: /usr/local/lib/
+  environment:
+    PKG_CONFIG_PATH: '{{ pkg_config_path }}'
 
 - name: compile KEA
   shell: cd /tmp/kea-1.7.5 && make

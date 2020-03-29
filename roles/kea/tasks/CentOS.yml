@@ -5,14 +5,45 @@
     name: '*'
     state: latest
 
-- name: assure that GIT and CURL are installed
+###
+# GCC
+###
+
+- name: install CentOS SCLo RH Testing repository: 
+  yum: 
+    name: centos-release-scl-rh
+    state: present
+
+- name: install devtoolset-7-gcc rpm package
+  yum:
+    name: devtoolset-7-gcc 
+    enablerepo: centos-sclo-rh-testing
+    state: present
+
+
+###
+# Boost
+###
+
+- name: the Boost C++ headers and shared development libraries
+  yum:
+    name: boost-devel
+    state: present
+
+
+###
+# GIT, WGET and CURL
+###
+
+- name: assure that GIT, WGET and CURL are installed
   yum:
     name:
-      - git
-      - curl
-      - wget
-      - texinfo # Makeinfo
+      - 'git'
+      - 'curl'
+      - 'wget'
+      - 'texinfo'
     state: present
+
 
 - name: install all pre-built/native dependencies
   yum:
@@ -34,6 +65,10 @@
       - 'cmake'
     state: present
 
+
+###
+# OpenSSL
+###
 - name: install OpenSSL (or [Botan >ver. 2](https://botan.randombit.net/))
   yum:
     name: 'openssl-devel'
@@ -54,30 +89,13 @@
     name: [ 'log4cplus', 'log4cplus-devel', 'ccache', 'libcmocka-devel' ]
     state: present
 
-- name: install EPEL ('log4cplus' requirement)
-  yum:
-    name: 'epel-release'
-    state: absent
+#- name: install EPEL ('log4cplus' requirement)
+#  yum:
+#    name: 'epel-release'
+#    state: absent
 
 - name: enable Ccache
   shell: '#!/bin/bash && declare -x PATH="/usr/lib64/ccache:$PATH"'
-
-
-###
-# libRedBlack for Sysrepo
-###
-
-- name: fetch, build and install libredblack
-  git:
-    repo: https://github.com/sysrepo/libredblack.git
-    dest: /tmp/libredblack
-    force: yes
-- name: config 'libredblack'
-  shell: cd /tmp/libredblack && ./configure
-- name: make 'libredblack'
-  shell: cd /tmp/libredblack && make
-- name: install 'libredblack'
-  shell: cd /tmp/libredblack && make install
 
 
 ###
@@ -97,4 +115,23 @@
 - yum:
     name: "postgresql{{ POSTGRES_VERSION }}"
     state: present
+
+
+###
+# 'libRedBlack' is required for Sysrepo on CentOS 7
+###
+
+- name: fetch, build and install libredblack
+  git:
+    repo: https://github.com/sysrepo/libredblack.git
+    dest: /tmp/libredblack
+    force: yes
+- name: config 'libredblack'
+  shell: cd /tmp/libredblack && ./configure
+
+- name: make 'libredblack'
+  shell: cd /tmp/libredblack && make
+
+- name: install 'libredblack'
+  shell: cd /tmp/libredblack && make install
 

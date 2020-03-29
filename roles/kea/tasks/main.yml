@@ -41,7 +41,7 @@
 # YANG data model (RFC6020)
 ###
 
-- name: LIBYANG+SYSREPO
+- name: LIBYANG + SYSREPO
   block:
 
   - name: get LIBYANG tarball
@@ -93,12 +93,15 @@
 
   - name: configure SYSREPO and generate 'make'
     shell: cd /tmp/sysrepo-1.4.2 && mkdir -p build && cd build && cmake \
-         -DCMAKE_BUILD_TYPE=Debug \
          -DGEN_LANGUAGE_BINDINGS=ON \
          -DGEN_CPP_BINDINGS=OFF \
          -DGEN_PYTHON_BINDINGS=OFF \
          -DGEN_LUA_BINDINGS=OFF \
          -DENABLE_TESTS=OFF \
+         -DENABLE_LYD_PRIV=ON \
+         -DCMAKE_BUILD_TYPE=Debug \
+         -DCMAKE_INSTALL_PREFIX:PATH=/usr \
+         -DCMAKE_BUILD_TYPE:String="Release" \
          ..
 
   - name: compile SYSREPO
@@ -109,6 +112,10 @@
     become: true
 
   when: libyang == true
+
+###
+# [YANG/NETCONF support](https://kea.readthedocs.io/en/kea-1.6.1/arm/netconf.html)
+###
 
 ###
 # KEA ver. 1.7.5 (March 2020)
@@ -149,6 +156,3 @@
 - name: install KEA
   shell: cd /tmp/kea-1.7.5 && make install
 
-###
-# [YANG/NETCONF support](https://kea.readthedocs.io/en/kea-1.6.1/arm/netconf.html)
-###

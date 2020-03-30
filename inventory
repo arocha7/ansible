@@ -9,13 +9,14 @@ localhost     ansible_connection=local
 [dsep]
 dsep-demo ansible_host=172.31.8.177
 dsep-test ansible_host=172.31.8.179
-dsep-prd  ansible_host=172.31.8.247
+dsep-prod ansible_host=172.31.8.247
 
 [sdan]
 sdan ansible_host=172.31.8.130
 
 [gitlab]
-ce7gitlab ansible_host=172.31.8.135
+ce7gitlab     ansible_host=172.31.8.135
+u18gitlab-dev ansible_host=172.31.8.112
 
 [runner]
 ce7gitlab-runner ansible_host=172.31.8.154

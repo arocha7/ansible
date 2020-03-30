@@ -139,7 +139,7 @@
 - name: configure KEA and generate 'make'
   shell: cd /tmp/kea-1.7.5 && ./configure \
     --prefix=/opt/kea \
-    --with-boost-include=/usr/include/boost \
+    --with-boost-include=/usr/include/x86_64-linux-gnu/ \
     --with-log4cplus=/opt/log4cplus \
     --with-openssl \
     --with-mysql \

@@ -9,7 +9,7 @@
 # GCC
 ###
 
-- name: install CentOS SCLo RH Testing repository: 
+- name: install CentOS SCLo RH Testing repository
   yum: 
     name: centos-release-scl-rh
     state: present

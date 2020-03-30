@@ -51,15 +51,11 @@
       - 'devscripts'
       - 'debhelper'
 
-- name: MySQL client
-  block:
-
-  - name: install MySQL client and the client development libraries
-    apt:
-      name: [ 'mysql-client', 'libmysqlclient20', 'libmysqlclient-dev', 'libmysqld-dev' ]
-      state: present
-
-  when: mysql_cli == true
+- name: install MySQL client and the client development libraries
+  apt:
+    name: [ 'mysql-client', 'libmysqlclient20', 'libmysqlclient-dev', 'libmysqld-dev' ]
+    state: present
+  when: mysql_cli == 'true'
 
 - name: PostgreSQL client
   block:
@@ -78,5 +74,5 @@
     apt:
       name: postgresql-client-11
 
-  when: pgsql_cli == true
+  when: pgsql_cli == 'true'
 

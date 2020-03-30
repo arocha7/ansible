@@ -65,9 +65,7 @@
 - name: install 'boost'
   apt:
     name:
-      - 'boost'
-      - 'libboost-dev'
-      - 'libboost-system-dev'
+      - 'libboost-all-dev'
     state: present
 
 - name: MySQL client

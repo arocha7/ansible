@@ -16,7 +16,7 @@
       repo: 'https://github.com/FreeRADIUS/freeradius-client.git'
       dest: /tmp/freeradius-client
 
-  - name: configura FreeRADIUS
+  - name: configure FreeRADIUS
     shell: cd /tmp/freeradius-client && ./configure --prefix=/usr/local
 
   - name: compile FreeRADIUS
@@ -80,7 +80,7 @@
 
   - name: unarchive SYSREPO tarball
     unarchive:
-      src: /tmp/v1.4.2.tar.gz
+      src: /tmp/sysrepo-1.4.2.tar.gz
       dest: /tmp
       remote_src: yes
 

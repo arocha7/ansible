@@ -52,7 +52,7 @@
 
   - name: unarchive LIBYANG tarball
     unarchive:
-      src: /tmp/v1.0.130.tar.gz
+      src: /tmp/libyang-1.0.130.tar.gz
       dest: /tmp
       remote_src: yes
 

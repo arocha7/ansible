@@ -42,8 +42,6 @@
       - 'autoconf'
       - 'automake'
       - 'libtool'
-      - 'libboost-dev'
-      - 'libboost-system-dev'
       - 'liblog4cplus-dev'
       - 'libssl-dev'
       - 'ccache'
@@ -51,10 +49,35 @@
       - 'devscripts'
       - 'debhelper'
 
-- name: install MySQL client and the client development libraries
-  apt:
-    name: [ 'mysql-client', 'libmysqlclient20', 'libmysqlclient-dev', 'libmysqld-dev' ]
+###
+# Boost
+###
+
+- name: install Boost from a PPA
+  apt_repository:
+    repo: ppa:mhier/libboost-latest
     state: present
+
+- name: run the equivalent of "apt-get update" as a separate step
+  apt:
+    update_cache: yes
+
+- name: install 'boost'
+  apt:
+    name:
+      - 'boost'
+      - 'libboost-dev'
+      - 'libboost-system-dev'
+    state: present
+
+- name: MySQL client
+  block:
+
+  - name: install MySQL client and the client development libraries
+    apt:
+      name: [ 'mysql-client', 'libmysqlclient20', 'libmysqlclient-dev', 'libmysqld-dev' ]
+      state: present
+
   when: mysql_cli == 'true'
 
 - name: PostgreSQL client

@@ -146,8 +146,7 @@
     --with-openssl \
     --with-sysrepo
   vars:
-    #pkg_config_path: /usr/local/lib/
-    pkg_config_path: /usr/lib/x86_64-linux-gnu/
+    pkg_config_path: '/usr/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu/pkgconfig'
   environment:
     PKG_CONFIG_PATH: '{{ pkg_config_path }}'
 

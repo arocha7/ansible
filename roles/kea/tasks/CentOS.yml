@@ -27,7 +27,9 @@
 
 - name: the Boost C++ headers and shared development libraries
   yum:
-    name: boost-devel
+    name: 
+      - boost
+      - boost-devel
     state: present
 
 

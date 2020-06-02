@@ -1,2 +1,5 @@
 ---
 # tasks file for mongodb
+
+- include_tasks: "{{ ansible_os_family }}.yml"
+

@@ -1,0 +1,17 @@
+---
+- name: deploy MongoDB to the target machine
+  hosts: "{{ target | default('localhost') }}"
+  become: true
+
+  pre_tasks:
+    - debug: msg="##### start MongoDB deployment {{ lookup('pipe', 'date +%Y%m%d-%H:%M:%S') }}"
+    - file:
+        path: "{{ lookup('env','HOME') }}/ansible.log"
+        state: touch
+
+  roles:
+    - mongodb
+
+  post_tasks:
+    - debug: msg="##### ending MongoDB deployment {{ lookup('pipe', 'date +%Y%m%d-%H:%M:%S') }}"
+

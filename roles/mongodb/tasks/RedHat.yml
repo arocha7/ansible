@@ -1,0 +1,14 @@
+- name: Add repository
+  yum_repository:
+    name: "mongodb-org-{{ mongodb_ver }}"
+    description: 'MongoDB repo'
+    baseurl: https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/"{{ mongodb_ver }}"/x86_64/
+    gpgcheck: yes
+    enabled: yes
+    gpgkey: https://www.mongodb.org/static/pgp/server-"{{ mongodb_ver }}".asc
+
+- name: install the latest stable version of MongoDB Community Edition
+  yum:
+    name: mongodb-org
+    state: latest
+

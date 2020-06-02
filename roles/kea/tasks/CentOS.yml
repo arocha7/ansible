@@ -20,6 +20,10 @@
     enablerepo: centos-sclo-rh-testing
     state: present
 
+- name: ???
+  yum:
+    name: gcc-c++
+    state: present
 
 ###
 # Boost

@@ -13,7 +13,7 @@ n.a.
 Role Variables
 --------------
 
-nodejs_ver: 12
+nodejs_ver: 14
 
 
 Dependencies
@@ -29,21 +29,22 @@ Including an example of how to use your role (for instance, with variables passe
 
     - hosts: cgc
       roles:
-         - { role: nodejs, nodejs_ver: 12 }
+         - { role: nodejs, nodejs_ver: 14 }
 
 
 How to use
 ----------
 
-```ansible-playbook utils/deploy/nodejs.yml -i inventory -e target=cgc -e nodejs_ver=12 -v```
+```ansible-playbook utils/deploy/nodejs.yml -i inventory -e target=cgc -e nodejs_ver=14 -v```
 
 
 License
 -------
 
-BSD
+n.a.
+
 
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+arocha@ptinovacao.pt

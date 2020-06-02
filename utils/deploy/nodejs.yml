@@ -6,7 +6,7 @@
   pre_tasks:
     - debug: msg="##### start Node JS deployment {{ lookup('pipe', 'date +%Y%m%d-%H:%M:%S') }}"
     - file:
-        path: ansible.log
+        path: "{{ lookup('env','PWD') }}/ansible.log"
         state: touch
 
   roles:

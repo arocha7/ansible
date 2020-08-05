@@ -1,0 +1,27 @@
+---
+- name: deploy JMETER to the target machine
+  hosts: "{{ target | default('localhost') }}"
+  become: true
+  connection: local
+  environment:
+    JAVA_HOME: "/usr/lib/jvm/jre-openjdk"
+    PATH: "/usr/lib/jvm/jre-openjdk:{{ ansible_env.PATH }}"
+
+  pre_tasks:
+    - debug: msg="##### start JMETER deployment {{ lookup('pipe', 'date +%Y%m%d-%H:%M:%S') }}"
+
+    - file:
+        path: "{{ lookup('env','HOME') }}/ansible.log"
+        state: touch
+        owner: "{{ lookup('env','USER') }}"
+        group: "{{ lookup('env','USER') }}"
+        mode: "u=rw,g=rw,o=rw"
+
+  roles:
+#    - osc
+    - openjdk
+    - jmeter
+
+  post_tasks:
+    - debug: msg="##### ending JMETER deployment {{ lookup('pipe', 'date +%Y%m%d-%H:%M:%S') }}"
+

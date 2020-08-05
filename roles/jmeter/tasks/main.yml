@@ -1,0 +1,8 @@
+---
+# tasks file for jmeter
+
+- name: Unarchive a file that needs to be downloaded (added in 2.0)
+  unarchive:
+    src: 'https://downloads.apache.org//jmeter/binaries/apache-jmeter-{{ jmeter_ver }}.tgz'
+    dest: /opt
+    remote_src: yes
